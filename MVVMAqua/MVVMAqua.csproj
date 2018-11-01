@@ -45,6 +45,11 @@
   <ItemGroup>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
+    <Compile Include="Converters\BoolToVisibilityCollapsedConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityHiddenConverter.cs" />
+    <Compile Include="Converters\InvertedBoolConverter.cs" />
+    <Compile Include="Converters\InvertedBoolToVisibilityCollapsedConverter.cs" />
+    <Compile Include="Converters\InvertedBoolToVisibilityHiddenConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
