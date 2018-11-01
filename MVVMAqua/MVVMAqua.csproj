@@ -71,6 +71,9 @@
     <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\ModalMessageVM.cs" />
     <Compile Include="ViewModels\ModalWindowVM.cs" />
+    <Compile Include="Views\ModalMessageView.xaml.cs">
+      <DependentUpon>ModalMessageView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Close.png" />
@@ -80,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Navigation\Regions\Region.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ModalMessageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
