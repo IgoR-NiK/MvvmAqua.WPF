@@ -54,5 +54,11 @@
     <Compile Include="Enums\ModalIcon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Close.png" />
+    <Resource Include="Images\error.png" />
+    <Resource Include="Images\information.png" />
+    <Resource Include="Images\question.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
