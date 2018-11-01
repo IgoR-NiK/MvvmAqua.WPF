@@ -50,6 +50,8 @@
     <Compile Include="Converters\InvertedBoolConverter.cs" />
     <Compile Include="Converters\InvertedBoolToVisibilityCollapsedConverter.cs" />
     <Compile Include="Converters\InvertedBoolToVisibilityHiddenConverter.cs" />
+    <Compile Include="Enums\ModalButtons.cs" />
+    <Compile Include="Enums\ModalIcon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
