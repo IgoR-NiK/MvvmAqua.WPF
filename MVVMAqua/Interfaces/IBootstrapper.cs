@@ -1,9 +1,9 @@
 ﻿using System;
-using MvvmAqua.Enums;
-using MvvmAqua.ViewModels;
-using MvvmAqua.Windows;
+using MVVMAqua.Enums;
+using MVVMAqua.ViewModels;
+using MVVMAqua.Windows;
 
-namespace MvvmAqua.Interfaces
+namespace MVVMAqua.Interfaces
 {
 	internal interface IBootstrapper
 	{

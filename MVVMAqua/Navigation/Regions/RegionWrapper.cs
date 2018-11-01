@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-using MvvmAqua.Interfaces;
-using MvvmAqua.ViewModels;
+using MVVMAqua.Interfaces;
+using MVVMAqua.ViewModels;
 
-namespace MvvmAqua.Navigation.Regions
+namespace MVVMAqua.Navigation.Regions
 {
 	public class RegionWrapper
 	{

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MvvmAqua.Navigation
+namespace MVVMAqua.Navigation
 {
 	static class NavigationHelper
 	{

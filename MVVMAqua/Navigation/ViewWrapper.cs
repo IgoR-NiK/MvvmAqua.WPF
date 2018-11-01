@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-using MvvmAqua.ViewModels;
+using MVVMAqua.ViewModels;
 
-namespace MvvmAqua.Navigation
+namespace MVVMAqua.Navigation
 {
 	class ViewWrapper
 	{

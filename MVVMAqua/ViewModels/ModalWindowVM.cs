@@ -1,6 +1,6 @@
-﻿using MvvmLibrary.Enums;
+﻿using MVVMAqua.Enums;
 
-namespace MvvmAqua.ViewModels
+namespace MVVMAqua.ViewModels
 {
 	class ModalWindowVM : BaseVM
 	{

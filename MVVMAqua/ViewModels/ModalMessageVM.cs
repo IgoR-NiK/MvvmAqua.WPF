@@ -1,13 +1,12 @@
 ﻿using System;
 
-using MvvmAqua.Enums;
-using MvvmAqua.Interfaces;
+using MVVMAqua.Enums;
 
-namespace MvvmAqua.ViewModels
+namespace MVVMAqua.ViewModels
 {
 	class ModalMessageVM : BaseVM
 	{
-		const string Path = "pack://application:,,,/MvvmLibrary;component/Images/";
+		const string Path = "pack://application:,,,/MVVMAqua;component/Images/";
 
 		private string iconPath;
 		public string IconPath

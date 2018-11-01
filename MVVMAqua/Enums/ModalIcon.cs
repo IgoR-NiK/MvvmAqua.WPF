@@ -1,4 +1,4 @@
-﻿namespace MvvmAqua.Enums
+﻿namespace MVVMAqua.Enums
 {
 	/// <summary>
 	/// Тип иконки рядом с текстом в модальном окне.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MvvmAqua.Messaging
+namespace MVVMAqua.Messaging
 {
 	class SubscriberWrapper
 	{

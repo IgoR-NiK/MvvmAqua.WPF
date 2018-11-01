@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MvvmAqua.Views
+namespace MVVMAqua.Views
 {
 	/// <summary>
 	/// Логика взаимодействия для ModalView.xaml

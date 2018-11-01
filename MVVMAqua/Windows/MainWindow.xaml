@@ -1,0 +1,16 @@
+﻿<local:BaseWindow x:Class="MVVMAqua.Windows.MainWindow" 
+                  x:ClassModifier="internal"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:local="clr-namespace:MVVMAqua.Windows"
+                  mc:Ignorable="d" 
+                  Title="{Binding Path=WindowTitle}"
+                  Width="735" Height="600"
+                  MinWidth="735" MinHeight="600"
+                  WindowStartupLocation="CenterScreen">
+    <Grid>
+
+    </Grid>
+</local:BaseWindow>

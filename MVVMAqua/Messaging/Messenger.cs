@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MvvmAqua.Interfaces;
+using MVVMAqua.Interfaces;
 
-namespace MvvmAqua.Messaging
+namespace MVVMAqua.Messaging
 {
 	public class Messenger : IMessenger
 	{

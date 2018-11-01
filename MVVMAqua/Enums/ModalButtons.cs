@@ -1,4 +1,4 @@
-﻿namespace MvvmAqua.Enums
+﻿namespace MVVMAqua.Enums
 {
 	/// <summary>
 	/// Количество кнопок модального окна.

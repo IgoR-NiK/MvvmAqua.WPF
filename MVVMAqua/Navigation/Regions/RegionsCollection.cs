@@ -1,11 +1,11 @@
-﻿using MvvmAqua.ViewModels;
+﻿using MVVMAqua.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MvvmAqua.Navigation.Regions
+namespace MVVMAqua.Navigation.Regions
 {
 	public class RegionsCollection
 	{

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace MvvmAqua.Converters
+namespace MVVMAqua.Converters
 {
 	public class InvertedBoolToVisibilityHiddenConverter : IValueConverter
 	{

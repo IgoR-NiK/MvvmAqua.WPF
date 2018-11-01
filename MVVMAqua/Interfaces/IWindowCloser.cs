@@ -1,4 +1,4 @@
-﻿namespace MvvmAqua.Interfaces
+﻿namespace MVVMAqua.Interfaces
 {
 	public interface IWindowCloser
 	{

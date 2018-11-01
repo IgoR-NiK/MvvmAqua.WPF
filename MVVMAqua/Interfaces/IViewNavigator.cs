@@ -1,11 +1,11 @@
 ﻿using System;
 
-using MvvmAqua.Enums;
-using MvvmAqua.ViewModels;
-using MvvmAqua.Navigation.Regions;
-using MvvmAqua.Windows;
+using MVVMAqua.Enums;
+using MVVMAqua.ViewModels;
+using MVVMAqua.Navigation.Regions;
+using MVVMAqua.Windows;
 
-namespace MvvmAqua.Interfaces
+namespace MVVMAqua.Interfaces
 {
 	/// <summary>
 	/// Менеджер навигации между представлениями.

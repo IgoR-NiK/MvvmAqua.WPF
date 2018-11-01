@@ -3,14 +3,14 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 
-using MvvmAqua.Enums;
-using MvvmAqua.Windows;
-using MvvmAqua.Interfaces;
-using MvvmAqua.ViewModels;
-using MvvmAqua.Navigation.Regions;
+using MVVMAqua.Enums;
+using MVVMAqua.Windows;
+using MVVMAqua.Interfaces;
+using MVVMAqua.ViewModels;
+using MVVMAqua.Navigation.Regions;
 using System.Windows.Controls;
 
-namespace MvvmAqua.Navigation
+namespace MVVMAqua.Navigation
 {
 	/// <summary>
 	/// Менеджер навигации между представлениями.

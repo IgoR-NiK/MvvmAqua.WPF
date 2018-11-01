@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using MvvmAqua.Interfaces;
-using MvvmAqua.Navigation.Regions;
+using MVVMAqua.Interfaces;
+using MVVMAqua.Navigation.Regions;
 
-namespace MvvmAqua.ViewModels
+namespace MVVMAqua.ViewModels
 {
 	/// <summary>
 	/// Базовый класс для создания модели представления.
