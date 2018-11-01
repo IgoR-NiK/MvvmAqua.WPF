@@ -41,6 +41,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\RelayCommand.cs" />
@@ -56,6 +57,16 @@
     <Compile Include="Interfaces\IMessenger.cs" />
     <Compile Include="Interfaces\IViewNavigator.cs" />
     <Compile Include="Interfaces\IWindowCloser.cs" />
+    <Compile Include="Messaging\Messenger.cs" />
+    <Compile Include="Messaging\SubscriberWrapper.cs" />
+    <Compile Include="Navigation\NavigationHelper.cs" />
+    <Compile Include="Navigation\Regions\Region.xaml.cs">
+      <DependentUpon>Region.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\Regions\RegionsCollection.cs" />
+    <Compile Include="Navigation\Regions\RegionWrapper.cs" />
+    <Compile Include="Navigation\ViewNavigator.cs" />
+    <Compile Include="Navigation\ViewWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +74,12 @@
     <Resource Include="Images\error.png" />
     <Resource Include="Images\information.png" />
     <Resource Include="Images\question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Navigation\Regions\Region.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
