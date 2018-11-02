@@ -14,6 +14,17 @@
 
 Уже скоро... ;)
 
-## License
+
+## Поддерживаемые версии .Net Framework
+
+.NET Framework 4.7
+
+
+## Ссылки
+
+NuGet: https://www.nuget.org/packages/MvvmAqua/
+
+
+## Лицензия
 
 Распространяется под лицензией [MIT License](https://github.com/IgoR-NiK/MVVMAqua/blob/master/LICENSE).
