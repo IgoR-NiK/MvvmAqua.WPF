@@ -103,38 +103,66 @@ namespace MVVMAqua.Navigation
 			Window.Close();
 		}
 
+		public void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<IViewNavigator, bool> windowClosing = null) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(viewModel, initialization, windowClosing);
+		}
+
+		public void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<IViewNavigator, bool> windowClosing = null)
+			where TViewModel : BaseVM
+			where TWindow : BaseWindow, new()
+		{
+			Bootstrapper.OpenNewWindow<TViewModel, TWindow>(viewModel, initialization, windowClosing);
+		}
+
 		/// <summary>
 		/// Отображает модальное диалоговое окно с указанным текстом.
 		/// </summary>
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		public bool ShowModalWindow(string text, string caption = "", ModalButtons buttonType = ModalButtons.Ok,
-									string btnOkText = "Ок", string btnCancelText = "Отмена",
-									Action okResult = null, Action cancelResult = null, ModalIcon icon = ModalIcon.None)
+		public bool ShowModalWindow(string text, string caption = "", ModalButtons buttonType = ModalButtons.Ok, string btnOkText = "Ок", string btnCancelText = "Отмена", Action okResult = null, Action cancelResult = null, ModalIcon icon = ModalIcon.None)
 		{
-			return Bootstrapper.ShowModalWindow(Window, text, caption, buttonType, btnOkText, btnCancelText, okResult, cancelResult, icon);
+			var viewModel = new ModalMessageVM(text, icon);
+			return ShowModalWindow(viewModel, caption, buttonType, btnOkText, btnCancelText, _ => okResult?.Invoke(), _ => cancelResult?.Invoke());
 		}
 
 		/// <summary>
 		/// Отображает модальное диалоговое окно с указанным представлением.
 		/// </summary>
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		public bool ShowModalWindow<T>(T viewModel, string caption = "", ModalButtons buttonType = ModalButtons.Ok,
-									string btnOkText = "Ок", string btnCancelText = "Отмена",
-									Action<T> okResult = null, Action<T> cancelResult = null, Action<T> initialization = null) where T : BaseVM
+		public bool ShowModalWindow<T>(T viewModel, string caption = "", ModalButtons buttonType = ModalButtons.Ok, string btnOkText = "Ок", string btnCancelText = "Отмена", Action<T> okResult = null, Action<T> cancelResult = null, Action<T> initialization = null) where T : BaseVM
 		{
-			return Bootstrapper.ShowModalWindow(Window, viewModel, caption, buttonType, btnOkText, btnCancelText, okResult, cancelResult, initialization);
+			var result = false;
+
+			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+			{
+				initialization?.Invoke(viewModel);
+				var view = Activator.CreateInstance(viewType) as ContentControl;
+				view.DataContext = viewModel;
+
+				var modalWindow = new ModalWindow() { Owner = Window };
+				var x = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText);
+				modalWindow.DataContext = x;
+
+				var navigator = new ViewNavigator(Bootstrapper, modalWindow, ViewModelToViewMap);
+				x.ViewNavigator = navigator;
+				x.ViewNavigatorInitialization();
+
+				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
+				{
+					x.AddRegion(region.Name, region);
+				}
+
+				result = modalWindow.ShowDialog() ?? false;
+
+				if (result)
+					okResult?.Invoke(viewModel);
+				else
+					cancelResult?.Invoke(viewModel);
+			}
+
+			return result;
 		}
 
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<bool> windowClosing = null) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel, initialization, Window => windowClosing?.Invoke() ?? true);
-		}
 
-		public void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<bool> windowClosing = null)
-			where TViewModel : BaseVM
-			where TWindow : BaseWindow, new()
-		{
-			Bootstrapper.OpenNewWindow<TViewModel, TWindow>(viewModel, initialization, Window => windowClosing?.Invoke() ?? true);
-		}
 	}
 }
