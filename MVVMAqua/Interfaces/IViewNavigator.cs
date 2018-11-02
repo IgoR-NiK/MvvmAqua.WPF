@@ -45,10 +45,10 @@ namespace MVVMAqua.Interfaces
 									string btnOkText = "Ок", string btnCancelText = "Отмена",
 									Action<T> okResult = null, Action<T> cancelResult = null, Action<T> initialization = null) where T : BaseVM;
 
-		void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<bool> windowClosing = null) 
+		void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<IViewNavigator, bool> windowClosing = null) 
 			where T : BaseVM;
 
-		void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<bool> windowClosing = null)
+		void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<IViewNavigator, bool> windowClosing = null)
 			where TViewModel : BaseVM
 			where TWindow : BaseWindow, new();
 
