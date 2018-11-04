@@ -16,7 +16,7 @@ namespace MainWPF.ViewModels
 		public string Title
 		{
 			get => title;
-			set { title = value; OnPropertyChanged(); }
+			set => SetProperty(ref title, value);
 		}
 
 		public ICommand Next { get; }
