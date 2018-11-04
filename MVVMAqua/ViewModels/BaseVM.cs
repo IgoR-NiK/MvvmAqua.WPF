@@ -23,10 +23,30 @@ namespace MVVMAqua.ViewModels
 		public string WindowTitle
 		{
 			get => windowTitle;
-			set { windowTitle = value; OnPropertyChanged(); }
+			set => SetProperty(ref windowTitle, value);
 		}
 
 		protected internal virtual void ViewNavigatorInitialization() { }
+		
+
+		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = null)
+		{
+			if (!EqualityComparer<T>.Default.Equals(property, value))
+			{
+				property = value;
+				OnPropertyChanged(propertyName);
+			}
+		}
+
+		protected void SetProperty<T>(ref T property, T value, Action onChanged, [CallerMemberName]string propertyName = null)
+		{
+			if (!EqualityComparer<T>.Default.Equals(property, value))
+			{
+				property = value;
+				onChanged?.Invoke();
+				OnPropertyChanged(propertyName);
+			}
+		}
 
 
 		public event PropertyChangedEventHandler PropertyChanged;
