@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 using MVVMAqua.Enums;
 using MVVMAqua.ViewModels;
@@ -45,12 +46,14 @@ namespace MVVMAqua.Interfaces
 									string btnOkText = "Ок", string btnCancelText = "Отмена",
 									Action<T> okResult = null, Action<T> cancelResult = null, Action<T> initialization = null) where T : BaseVM;
 
-		void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<IViewNavigator, bool> windowClosing = null) 
-			where T : BaseVM;
-
-		void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<IViewNavigator, bool> windowClosing = null)
-			where TViewModel : BaseVM
-			where TWindow : BaseWindow, new();
+		void OpenNewWindow<T>(T viewModel) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
+		void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM;
+		void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM;
+		void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
+		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 
 		RegionsCollection Regions { get; }
 	}
