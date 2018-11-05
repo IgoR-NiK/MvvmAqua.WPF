@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 using System.Windows.Controls;
 using MVVMAqua.Interfaces;
-using MVVMAqua.Messaging;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;
@@ -15,36 +15,44 @@ using MVVMAqua.Navigation;
 
 namespace MVVMAqua
 {
-	public class Bootstrapper : IBootstrapper
+	public sealed class Bootstrapper
 	{
-		Dictionary<BaseWindow, ViewNavigator> Windows { get; } = new Dictionary<BaseWindow, ViewNavigator>();
-		
-		/// <summary>
-		/// Установка соответствия ViewModel к View.
-		/// </summary>
-		Dictionary<Type, Type> ViewModelToViewMap { get; } = new Dictionary<Type, Type>()
+		private Dictionary<Window, ViewNavigator> Windows { get; } = new Dictionary<Window, ViewNavigator>();
+				
+		internal Dictionary<Type, Type> ViewModelToViewMap { get; } = new Dictionary<Type, Type>()
 		{
 			[typeof(ModalMessageVM)] = typeof(ModalMessageView)
 		};
 
-		internal IMessenger Messenger { get; } = new Messenger();
-		
+				
 		public Bootstrapper()
 		{
-			/// <summary>
-			/// Автоматическая привязка VM к View.
-			/// VM должна иметь следующие названия: Name, NameVM или NameViewModel.
-			/// View должна иметь следующие названия: Name или NameView.
-			/// Регистр значения не имеет.
-			/// </summary>
 			var callingAssembly = Assembly.GetCallingAssembly();
+			AutoMappingViewModelToView(callingAssembly);
+		}
 
-			var viewModels = callingAssembly.GetTypes().Where(x => typeof(BaseVM).IsAssignableFrom(x)).ToList();
-			var views = callingAssembly.GetTypes().Where(x => typeof(ContentControl).IsAssignableFrom(x)).ToList();	// Здесь отбрасывать без пустого конструктора
+		/// <summary>
+		/// Автоматическая привязка VM к View. 
+		/// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
+		/// View должна иметь следующие названия: Name или NameView. 
+		/// Регистр значения не имеет.
+		/// </summary>
+		/// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
+		private void AutoMappingViewModelToView(Assembly assembly)
+		{
+			var viewModels = assembly
+				.GetTypes()
+				.Where(x => typeof(BaseVM).IsAssignableFrom(x))
+				.ToList();
 
-			viewModels.ForEach(x =>
+			var views = assembly
+				.GetTypes()
+				.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null)
+				.ToList();				
+
+			viewModels.ForEach(vm =>
 			{
-				var viewModelName = x.Name.ToLower();
+				var viewModelName = vm.Name.ToLower();
 				if (viewModelName.EndsWith("vm"))
 				{
 					viewModelName = viewModelName.Remove(viewModelName.Length - "vm".Length);
@@ -56,59 +64,88 @@ namespace MVVMAqua
 
 				var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
 
-				if (view != null)
+				if (view != null && !ViewModelToViewMap.ContainsKey(vm))
 				{
-					ViewModelToViewMap[x] = view;
+					ViewModelToViewMap.Add(vm, view);
 				}
 			});
 		}
 
-		private Type baseWindowType = typeof(MainWindow);
 
-		public void SetTypeWindow<TWindow>() where TWindow : BaseWindow, new()
-		{
-			baseWindowType = typeof(TWindow);
-		}
-		
 		private Type tempVM;
 
 		public Bootstrapper Bind<T>() where T : BaseVM
 		{
+			if (ViewModelToViewMap.ContainsKey(typeof(T)))
+			{
+				throw new ArgumentException("Для указанного типа ViewModel представление уже зарегистрировано.");
+			}
+
 			tempVM = typeof(T);
 			return this;
 		}
 
 		public void To<T>() where T : ContentControl, new()
 		{
-			ViewModelToViewMap.Add(tempVM, typeof(T));
-			tempVM = null;
-		}
-		
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<IViewNavigator, bool> windowClosing = null) where T : BaseVM
-		{
-			var window = Activator.CreateInstance(baseWindowType) as BaseWindow;
-			window.Closed += (sender, e) => Windows.Remove(window);
-
-			var navigator = new ViewNavigator(this, window, ViewModelToViewMap);
-			window.WindowClosing = () => windowClosing?.Invoke(navigator) ?? true;
-			viewModel.ViewNavigator = navigator;
-			navigator.NavigateTo(viewModel, initialization);
-
-			Windows.Add(window, navigator);
-			window.Show();		
+			if (tempVM != null)
+			{
+				ViewModelToViewMap.Add(tempVM, typeof(T));
+				tempVM = null;
+			}
 		}
 
-		public void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<IViewNavigator, bool> windowClosing = null)
-			where TViewModel : BaseVM
-			where TWindow : BaseWindow, new()
+
+		private Type windowType = typeof(MainWindow);
+
+		public void SetWindowType<T>() where T : Window, new()
 		{
-			var typeWindow = typeof(TWindow);
-			var window = Activator.CreateInstance(typeWindow) as TWindow;
+			windowType = typeof(T);
+		}
+
+
+		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
+		{
+			OpenNewWindow(viewModel, null, null);
+		}
+		public void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			OpenNewWindow(viewModel, initialization, null);
+		}
+		public void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			OpenNewWindow(viewModel, null, windowClosing);
+		}	 
+		public void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			var window = Activator.CreateInstance(windowType) as Window;
+			OpenNewWindowPrivate(window, viewModel, initialization, windowClosing);
+		}
+		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
+		{
+			OpenNewWindowPrivate(window, viewModel, null, null);
+		}
+		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			OpenNewWindowPrivate(window, viewModel, initialization, null);
+		}
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			OpenNewWindowPrivate(window, viewModel, null, windowClosing);
+		}
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			OpenNewWindowPrivate(window, viewModel, initialization, windowClosing);
+		}
+
+		private void OpenNewWindowPrivate<T>(Window window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
 			window.Closed += (sender, e) => Windows.Remove(window);
 
-			var navigator = new ViewNavigator(this, window, ViewModelToViewMap);
-			window.WindowClosing = () => windowClosing?.Invoke(navigator) ?? true;
-			viewModel.ViewNavigator = navigator;
+			var navigator = new ViewNavigator(this, window);
+			if (window is BaseWindow baseWindow)
+			{
+				baseWindow.WindowClosing = () => windowClosing?.Invoke(navigator) ?? true;
+			}
 			navigator.NavigateTo(viewModel, initialization);
 
 			Windows.Add(window, navigator);

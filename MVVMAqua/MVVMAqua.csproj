@@ -55,7 +55,6 @@
     <Compile Include="Converters\InvertedBoolToVisibilityHiddenConverter.cs" />
     <Compile Include="Enums\ModalButtons.cs" />
     <Compile Include="Enums\ModalIcon.cs" />
-    <Compile Include="Interfaces\IBootstrapper.cs" />
     <Compile Include="Interfaces\IMessenger.cs" />
     <Compile Include="Interfaces\IViewNavigator.cs" />
     <Compile Include="Interfaces\IWindowCloser.cs" />

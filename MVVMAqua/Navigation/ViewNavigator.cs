@@ -17,8 +17,7 @@ namespace MVVMAqua.Navigation
 	/// </summary>
 	class ViewNavigator : IViewNavigator
 	{
-		IBootstrapper Bootstrapper { get; }
-		Dictionary<Type, Type> ViewModelToViewMap { get; }
+		Bootstrapper Bootstrapper { get; }
 
 		/// <summary>
 		/// Стек представлений.
@@ -28,17 +27,16 @@ namespace MVVMAqua.Navigation
 		/// <summary>
 		/// Окно для отображения представлений.
 		/// </summary>
-		BaseWindow Window { get;  }
+		Window Window { get; }
 		
 		public RegionsCollection Regions { get; }
 		
-		public ViewNavigator(IBootstrapper bootstrapper, BaseWindow window, Dictionary<Type, Type> viewModelToViewMap)
+		public ViewNavigator(Bootstrapper bootstrapper, Window window)
 		{
 			Bootstrapper = bootstrapper;
 			Window = window;
-			ViewModelToViewMap = viewModelToViewMap;
 
-			Regions = new RegionsCollection(ViewModelToViewMap);
+			Regions = new RegionsCollection(Bootstrapper.ViewModelToViewMap);
 		}
 
 		/// <summary>
@@ -47,7 +45,7 @@ namespace MVVMAqua.Navigation
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
 		public void NavigateTo<T>(T viewModel, Action<T> initialization = null, Func<T, bool> afterViewClosed = null) where T : BaseVM
 		{
-			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
 				initialization?.Invoke(viewModel);
 				viewModel.ViewNavigator = this;
@@ -103,16 +101,45 @@ namespace MVVMAqua.Navigation
 			Window.Close();
 		}
 
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization = null, Func<IViewNavigator, bool> windowClosing = null) where T : BaseVM
+
+		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(viewModel);
+		}
+
+		public void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(viewModel, initialization);
+		}
+
+		public void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(viewModel, windowClosing);
+		}
+
+		public void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
 			Bootstrapper.OpenNewWindow(viewModel, initialization, windowClosing);
 		}
 
-		public void OpenNewWindow<TViewModel, TWindow>(TViewModel viewModel, Action<TViewModel> initialization = null, Func<IViewNavigator, bool> windowClosing = null)
-			where TViewModel : BaseVM
-			where TWindow : BaseWindow, new()
+		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
 		{
-			Bootstrapper.OpenNewWindow<TViewModel, TWindow>(viewModel, initialization, windowClosing);
+			Bootstrapper.OpenNewWindow(window, viewModel);
+		}
+
+		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(window, viewModel, initialization);
+		}
+
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(window, viewModel, windowClosing);
+		}
+
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(window, viewModel, initialization, windowClosing);
 		}
 
 		/// <summary>
@@ -133,7 +160,7 @@ namespace MVVMAqua.Navigation
 		{
 			var result = false;
 
-			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
 				initialization?.Invoke(viewModel);
 				var view = Activator.CreateInstance(viewType) as ContentControl;
@@ -143,7 +170,7 @@ namespace MVVMAqua.Navigation
 				var x = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText);
 				modalWindow.DataContext = x;
 
-				var navigator = new ViewNavigator(Bootstrapper, modalWindow, ViewModelToViewMap);
+				var navigator = new ViewNavigator(Bootstrapper, modalWindow);
 				x.ViewNavigator = navigator;
 				x.ViewNavigatorInitialization();
 
@@ -162,7 +189,5 @@ namespace MVVMAqua.Navigation
 
 			return result;
 		}
-
-
 	}
 }
