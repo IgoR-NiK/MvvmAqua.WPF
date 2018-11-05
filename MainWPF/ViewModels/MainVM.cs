@@ -23,7 +23,7 @@ namespace MainWPF.ViewModels
 
 		public MainVM()
 		{
-			Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(), null, navigator => navigator.ShowModalWindow("Привет")));
+			Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(), navigator => navigator.ShowModalWindow("Привет")));
 		}
 	}
 }
