@@ -6,7 +6,7 @@ using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
 using MVVMAqua.Windows;
 
-namespace MVVMAqua.Interfaces
+namespace MVVMAqua.Navigation
 {
 	/// <summary>
 	/// Менеджер навигации между представлениями.

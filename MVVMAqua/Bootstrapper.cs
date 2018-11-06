@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using System.Windows.Controls;
-using MVVMAqua.Interfaces;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;

@@ -5,7 +5,6 @@ using System.Linq;
 
 using MVVMAqua.Enums;
 using MVVMAqua.Windows;
-using MVVMAqua.Interfaces;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
 using System.Windows.Controls;
