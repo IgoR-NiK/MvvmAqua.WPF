@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MVVMAqua.Interfaces
+namespace MVVMAqua.Messaging
 {
 	public interface IMessenger
 	{

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
-using MVVMAqua.Interfaces;
+using MVVMAqua.Navigation;
 
 namespace MVVMAqua.Windows
 {

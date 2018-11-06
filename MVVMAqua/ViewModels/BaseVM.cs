@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using MVVMAqua.Interfaces;
+using MVVMAqua.Navigation;
 using MVVMAqua.Navigation.Regions;
 
 namespace MVVMAqua.ViewModels
@@ -11,7 +11,7 @@ namespace MVVMAqua.ViewModels
 	/// <summary>
 	/// Базовый класс для создания модели представления.
 	/// </summary>
-	public abstract class BaseVM : INotifyPropertyChanged
+	public abstract class BaseVM : BindableObject
 	{
 		protected internal IViewNavigator ViewNavigator { get; internal set; }
 
@@ -27,34 +27,6 @@ namespace MVVMAqua.ViewModels
 		}
 
 		protected internal virtual void ViewNavigatorInitialization() { }
-		
-
-		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = null)
-		{
-			if (!EqualityComparer<T>.Default.Equals(property, value))
-			{
-				property = value;
-				OnPropertyChanged(propertyName);
-			}
-		}
-
-		protected void SetProperty<T>(ref T property, T value, Action onChanged, [CallerMemberName]string propertyName = null)
-		{
-			if (!EqualityComparer<T>.Default.Equals(property, value))
-			{
-				property = value;
-				onChanged?.Invoke();
-				OnPropertyChanged(propertyName);
-			}
-		}
-
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 
 
 		Dictionary<string, RegionWrapper> Regions { get; } = new Dictionary<string, RegionWrapper>();

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-using MVVMAqua.Interfaces;
 using MVVMAqua.ViewModels;
 
 namespace MVVMAqua.Navigation.Regions
