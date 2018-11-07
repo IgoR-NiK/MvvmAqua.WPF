@@ -14,12 +14,14 @@ namespace MainWPF.ViewModels
 	class MainVM : BaseVM
 	{
 		public ValidatableProperty<string> Title { get; } = new ValidatableProperty<string>(true);
-
+		public ValidatableProperty<string> Password { get; } = new ValidatableProperty<string>(true);
+		
 		public ICommand Next { get; }
 
 		public MainVM()
 		{
-			Title.AddValidationRule(value => new ValidationResult(value.Contains('f')));
+			Title.AddValidationRule(value => value.Contains('f'));
+			Password.AddValidationRule(value => value.Length > 8);
 			
 			Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(), navigator => navigator.ShowModalWindow("Привет")));
 		}

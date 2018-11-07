@@ -10,6 +10,10 @@
         <TextBox Text="{Binding Title.Value, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Text="{Binding Title.Value}" />
         <TextBlock Text="{Binding Title.IsValid}" />
+
+        <TextBox Text="{Binding Password.Value, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock Text="{Binding Password.Value}" />
+        <TextBlock Text="{Binding Password.IsValid}" />
         <Button Content="Новое окно" Command="{Binding Next}" />
     </StackPanel>
 </UserControl>
