@@ -11,6 +11,7 @@ using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;
 using MVVMAqua.Navigation;
+using System.Windows.Media;
 
 namespace MVVMAqua
 {
@@ -93,6 +94,7 @@ namespace MVVMAqua
 			}
 		}
 
+		public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
 
 		private Type windowType = typeof(MainWindow);
 
@@ -100,8 +102,7 @@ namespace MVVMAqua
 		{
 			windowType = typeof(T);
 		}
-
-
+			   
 		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
 		{
 			OpenNewWindow(viewModel, null, null);

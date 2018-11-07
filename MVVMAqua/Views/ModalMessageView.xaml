@@ -31,7 +31,8 @@
                        FontSize="20" 
                        FontWeight="Regular"
                        HorizontalAlignment="Center"
-                       Margin="15"
+                       VerticalAlignment="Center"
+                       Margin="15 0"
                        TextWrapping="Wrap" />
         </ScrollViewer>
     </Grid>

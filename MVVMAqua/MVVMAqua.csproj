@@ -91,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Close.png" />
-    <Resource Include="Images\error.png" />
-    <Resource Include="Images\information.png" />
-    <Resource Include="Images\question.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Navigation\Regions\Region.xaml">
@@ -113,6 +110,11 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Error.png" />
+    <Resource Include="Images\Information.png" />
+    <Resource Include="Images\Question.png" />
+    <Resource Include="Images\Warning.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
