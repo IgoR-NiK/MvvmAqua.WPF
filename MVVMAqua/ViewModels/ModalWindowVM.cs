@@ -1,4 +1,5 @@
 ﻿using MVVMAqua.Enums;
+using System.Windows.Media;
 
 namespace MVVMAqua.ViewModels
 {
@@ -32,15 +33,23 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref btnCancelText, value);
 		}
 
+		private Color themeColor;
+		public Color ThemeColor
+		{
+			get => themeColor;
+			set => SetProperty(ref themeColor, value);
+		}
+
 		BaseVM ContentVM { get; }
 
-		public ModalWindowVM(BaseVM contentVM, string caption, ModalButtons buttonType, string btnOkText, string btnCancelText)
+		public ModalWindowVM(BaseVM contentVM, string caption, ModalButtons buttonType, string btnOkText, string btnCancelText, Color themeColor)
 		{
 			WindowTitle = caption;
 			BtnVisible = buttonType != ModalButtons.None;
 			BtnCancelVisible = buttonType == ModalButtons.OkCancel;
 			BtnOkText = btnOkText;
 			BtnCancelText = btnCancelText;
+			ThemeColor = themeColor;
 
 			ContentVM = contentVM;
 		}

@@ -47,6 +47,9 @@ namespace MVVMAqua.ViewModels
 				case ModalIcon.Question:
 					IconPath = $"{Path}Question.png";
 					break;
+				case ModalIcon.Warning:
+					IconPath = $"{Path}Warning.png";
+					break;
 				default:
 					throw new NotImplementedException("Для данной иконки нет реализации.");
 			}

@@ -23,6 +23,11 @@
 		/// <summary>
 		/// Вопрос.
 		/// </summary>
-		Question
+		Question,
+
+		/// <summary>
+		/// Предупреждение.
+		/// </summary>
+		Warning
 	}
 }

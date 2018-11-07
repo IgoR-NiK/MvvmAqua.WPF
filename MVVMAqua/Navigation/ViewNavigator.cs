@@ -166,7 +166,7 @@ namespace MVVMAqua.Navigation
 				view.DataContext = viewModel;
 
 				var modalWindow = new ModalWindow() { Owner = Window };
-				var x = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText);
+				var x = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 				modalWindow.DataContext = x;
 
 				var navigator = new ViewNavigator(Bootstrapper, modalWindow);
