@@ -24,5 +24,8 @@ namespace MVVMAqua.Validation
 
 		public override string ToString() => Message;
 		public override bool Equals(object obj) => Id == ((ValidationResult)obj).Id;
+
+		public static implicit operator ValidationResult(bool result) => new ValidationResult(result);
+		public static implicit operator bool(ValidationResult result) => result.IsValid;
 	}
 }
