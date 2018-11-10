@@ -13,7 +13,16 @@ namespace MVVMAqua.ViewModels
 	/// </summary>
 	public abstract class BaseVM : BindableObject
 	{
-		protected internal IViewNavigator ViewNavigator { get; internal set; }
+		private IViewNavigator viewNavigator;
+		protected internal IViewNavigator ViewNavigator
+		{
+			get => viewNavigator;
+			internal set
+			{
+				viewNavigator = value;
+				ViewNavigatorInitialization();
+			}
+		}
 
 		private string windowTitle;
 
@@ -26,7 +35,7 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref windowTitle, value);
 		}
 
-		protected internal virtual void ViewNavigatorInitialization() { }
+		protected virtual void ViewNavigatorInitialization() { }
 
 
 		Dictionary<string, RegionWrapper> Regions { get; } = new Dictionary<string, RegionWrapper>();
@@ -39,7 +48,6 @@ namespace MVVMAqua.ViewModels
 			}
 
 			Regions[regionName].Region = region;
-			Regions[regionName].Initialization();
 		}
 
 		internal RegionWrapper GetRegionWrapper(string regionName)

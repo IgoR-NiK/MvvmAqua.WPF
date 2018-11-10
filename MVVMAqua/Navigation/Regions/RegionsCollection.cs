@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MVVMAqua.Navigation.Regions
 {
-	public class RegionsCollection
+	public sealed class RegionsCollection
 	{
 		Dictionary<Type, Type> ViewModelToViewMap { get; }
 
-		public RegionsCollection(Dictionary<Type, Type> viewModelToViewMap)
+		internal RegionsCollection(Dictionary<Type, Type> viewModelToViewMap)
 		{
 			ViewModelToViewMap = viewModelToViewMap;
 		}

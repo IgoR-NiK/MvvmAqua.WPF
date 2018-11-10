@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MVVMAqua.Messaging
 {
-	public class Messenger : IMessenger
+	public sealed class Messenger : IMessenger
 	{
 		Dictionary<Type, List<SubscriberWrapper>> Subscribers { get; } = new Dictionary<Type, List<SubscriberWrapper>>();
 
 		public void Send<TMessage>(object sender, TMessage message)
 		{
-			RefreshSubscribers();
 			Subscribers[typeof(TMessage)]?.ForEach(s => s.Action(sender, message));
+			RefreshSubscribers();
 		}
 
 		public void Subscribe<TMessage>(object subscriber, Action<object, TMessage> action)
@@ -32,8 +32,8 @@ namespace MVVMAqua.Messaging
 
 		public void Unsubscribe<TMessage>(object subscriber)
 		{
-			RefreshSubscribers();
 			Subscribers[typeof(TMessage)]?.RemoveAll(s => s.Subscriber.Target == subscriber);
+			RefreshSubscribers();
 		}
 		
 		public void ClearSubscribes()

@@ -54,7 +54,7 @@ namespace MVVMAqua.ViewModels
 			ContentVM = contentVM;
 		}
 
-		protected internal override void ViewNavigatorInitialization()
+		protected override void ViewNavigatorInitialization()
 		{
 			ViewNavigator.Regions[this, "ModalContentView"].NavigateTo(ContentVM);
 		}

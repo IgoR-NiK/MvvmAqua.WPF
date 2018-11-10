@@ -10,17 +10,17 @@ namespace MVVMAqua.Validation
 {
 	public class ValidatableProperty<T> : BindableObject, IValidity
 	{
-		private Action OnChanged { get; }
+		private Action OnValueChanged { get; }
 
 		public ValidatableProperty() : this(null, false) { }
 		public ValidatableProperty(Action onChanged) : this(onChanged, false) { }
 		public ValidatableProperty(bool isValidateWhenPropertyChange) : this(null, isValidateWhenPropertyChange) { }
-		public ValidatableProperty(Action onChanged, bool isValidateWhenPropertyChange) 
+		public ValidatableProperty(Action onValueChanged, bool isValidateWhenPropertyChange) 
 		{
-			OnChanged += onChanged;
+			OnValueChanged += onValueChanged;
 			if (isValidateWhenPropertyChange)
 			{
-				OnChanged += () => Validate();
+				OnValueChanged += () => Validate();
 			}
 
 			Errors.CollectionChanged += (sender, e) =>
@@ -53,7 +53,7 @@ namespace MVVMAqua.Validation
 		public T Value
 		{
 			get => _value;
-			set => SetProperty(ref _value, value, OnChanged);
+			set => SetProperty(ref _value, value, OnValueChanged);
 		}
 
 		public bool IsValid => Errors.Count == 0;

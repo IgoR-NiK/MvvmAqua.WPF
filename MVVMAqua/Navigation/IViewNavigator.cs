@@ -13,38 +13,59 @@ namespace MVVMAqua.Navigation
 	/// </summary>
 	public interface IViewNavigator
 	{
+		void NavigateTo<T>(T viewModel) where T : BaseVM;
+		void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM;
+		void NavigateTo<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM;
+
 		/// <summary>
 		/// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
 		/// </summary>
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
-		void NavigateTo<T>(T viewModel, Action<T> initialization = null, Func<T, bool> afterViewClosed = null) where T : BaseVM;
+		void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM;
+
+
+		void CloseLastView();
 
 		/// <summary>
 		/// Закрывает последнее представление и выполняет действие закрытия представления при необходимости.
 		/// </summary>
 		/// <param name="isCallbackCloseViewHandler">Флаг, указывающий нужно ли выполнять действие закрытия представления.</param>
-		void CloseLastView(bool isCallbackCloseViewHandler = true);
+		void CloseLastView(bool isCallbackCloseViewHandler);
 
 		/// <summary>
 		/// Закрывает все представления и выходит из главного окна.
 		/// </summary>
 		void CloseAllViews();
 
-		/// <summary>
-		/// Отображает модальное диалоговое окно с указанным текстом.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		bool ShowModalWindow(string text, string caption = "", ModalButtons buttonType = ModalButtons.Ok,
-									string btnOkText = "Ок", string btnCancelText = "Отмена",
-									Action okResult = null, Action cancelResult = null, ModalIcon icon = ModalIcon.None);
 
-		/// <summary>
-		/// Отображает модальное диалоговое окно с указанным представлением.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		bool ShowModalWindow<T>(T viewModel, string caption = "", ModalButtons buttonType = ModalButtons.Ok,
-									string btnOkText = "Ок", string btnCancelText = "Отмена",
-									Action<T> okResult = null, Action<T> cancelResult = null, Action<T> initialization = null) where T : BaseVM;
+		bool ShowModalWindow(string text);
+		bool ShowModalWindow(string text, string caption);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, Action okResult);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult);
+		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult, Action cancelResult);
+
+		bool ShowModalWindow<T>(T viewModel) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
+
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
+		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
+
 
 		void OpenNewWindow<T>(T viewModel) where T : BaseVM;
 		void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
