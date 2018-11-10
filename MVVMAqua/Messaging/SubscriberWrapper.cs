@@ -21,7 +21,7 @@ namespace MVVMAqua.Messaging
 
 		public void SetAction<TMessage>(Action<object, TMessage> action)
 		{
-			this.action = () => action(sender, (TMessage)message);
+			this.action = () => action?.Invoke(sender, (TMessage)message);
 		}
 
 		public void Action<TMessage>(object sender, TMessage message)

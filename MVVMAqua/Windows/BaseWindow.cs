@@ -6,7 +6,7 @@ using MVVMAqua.Navigation;
 
 namespace MVVMAqua.Windows
 {
-	public class BaseWindow : Window
+	public abstract class BaseWindow : Window
 	{
 		internal Func<bool> WindowClosing { get; set; }
 		

@@ -9,15 +9,26 @@ using MVVMAqua.ViewModels;
 
 namespace MVVMAqua.Navigation.Regions
 {
-	public class RegionWrapper
+	public sealed class RegionWrapper
 	{
 		internal Dictionary<Type, Type> ViewModelToViewMap { get; set; }
-		internal Region Region { get; set; }
+
+		private Region region;
+		internal Region Region
+		{
+			get => region;
+			set
+			{
+				region = value;
+				Initialization();
+			}
+		}
+
 		private readonly Stack<ViewWrapper> viewWrappers = new Stack<ViewWrapper>();
 
 		private IViewNavigator ViewNavigator { get; }
 		
-		internal void Initialization()
+		private void Initialization()
 		{
 			if (viewWrappers.Count != 0)
 			{
@@ -31,18 +42,33 @@ namespace MVVMAqua.Navigation.Regions
 			ViewNavigator = viewNavigator;
 		}
 
-
-		public void NavigateTo<T>(T viewModel, Action<T> initialization = null, Func<T, bool> afterViewClosed = null) where T : BaseVM
+		public void NavigateTo<T>(T viewModel) where T : BaseVM
+		{
+			NavigateTo(viewModel, null, null);
+		}
+		public void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			NavigateTo(viewModel, initialization, null);
+		}
+		public void NavigateTo<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM
+		{
+			NavigateTo(viewModel, null, afterViewClosed);
+		}
+		public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
 			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
 				initialization?.Invoke(viewModel);
 				viewModel.ViewNavigator = ViewNavigator;
-				viewModel.ViewNavigatorInitialization();
 				var viewWrapper = new ViewWrapper() { AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true };
 
 				viewWrapper.View = Activator.CreateInstance(viewType) as ContentControl;
 				viewWrapper.ViewModel = viewModel;
+
+				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+				{
+					viewWrapper.ViewModel.AddRegion(region.Name, region);
+				}
 
 				viewWrappers.Push(viewWrapper);
 
@@ -54,7 +80,11 @@ namespace MVVMAqua.Navigation.Regions
 			}
 		}
 
-		public void CloseLastView(bool isCallbackCloseViewHandler = true)
+		public void CloseLastView()
+		{
+			CloseLastView(true);
+		}
+		public void CloseLastView(bool isCallbackCloseViewHandler)
 		{
 			var lastViewWrapper = viewWrappers.Pop();
 			if (isCallbackCloseViewHandler)
@@ -81,24 +111,41 @@ namespace MVVMAqua.Navigation.Regions
 
 		public void CloseAllViews()
 		{
+			viewWrappers.Clear();
+
 			if (Region != null)
 			{
 				Region.Content = null;
 				Region.DataContext = null;
 			}
 		}
-
-		public void UpdateRegion<T>(T viewModel, Action<T> initialization = null, Func<T, bool> afterViewClosed = null) where T : BaseVM
+		public void UpdateRegion<T>(T viewModel) where T : BaseVM
+		{
+			UpdateRegion(viewModel, null, null);
+		}
+		public void UpdateRegion<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			UpdateRegion(viewModel, initialization, null);
+		}
+		public void UpdateRegion<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM
+		{
+			UpdateRegion(viewModel, null, afterViewClosed);
+		}
+		public void UpdateRegion<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
 			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
 				initialization?.Invoke(viewModel);
 				viewModel.ViewNavigator = ViewNavigator;
-				viewModel.ViewNavigatorInitialization();
 				var viewWrapper = new ViewWrapper() { AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true };
 
 				viewWrapper.View = Activator.CreateInstance(viewType) as ContentControl;
 				viewWrapper.ViewModel = viewModel;
+
+				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+				{
+					viewWrapper.ViewModel.AddRegion(region.Name, region);
+				}
 
 				viewWrappers.Clear();
 				viewWrappers.Push(viewWrapper);
