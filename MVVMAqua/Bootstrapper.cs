@@ -17,14 +17,11 @@ namespace MVVMAqua
 {
 	public sealed class Bootstrapper
 	{
-		private Dictionary<Window, ViewNavigator> Windows { get; } = new Dictionary<Window, ViewNavigator>();
-				
 		internal Dictionary<Type, Type> ViewModelToViewMap { get; } = new Dictionary<Type, Type>()
 		{
 			[typeof(ModalMessageVM)] = typeof(ModalMessageView)
 		};
 
-				
 		public Bootstrapper()
 		{
 			var callingAssembly = Assembly.GetCallingAssembly();
@@ -94,7 +91,12 @@ namespace MVVMAqua
 			}
 		}
 
+
+		/// <summary>
+		/// Цвет темы модального окна.
+		/// </summary>
 		public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
+
 
 		private Type windowType = typeof(MainWindow);
 
@@ -102,7 +104,8 @@ namespace MVVMAqua
 		{
 			windowType = typeof(T);
 		}
-			   
+
+
 		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
 		{
 			OpenNewWindow(viewModel, null, null);
@@ -139,8 +142,6 @@ namespace MVVMAqua
 
 		private void OpenNewWindowPrivate<T>(Window window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
-			window.Closed += (sender, e) => Windows.Remove(window);
-
 			var navigator = new ViewNavigator(this, window);
 			if (window is BaseWindow baseWindow)
 			{
@@ -148,7 +149,6 @@ namespace MVVMAqua
 			}
 			navigator.NavigateTo(viewModel, initialization);
 
-			Windows.Add(window, navigator);
 			window.Show();
 		}
 	}
