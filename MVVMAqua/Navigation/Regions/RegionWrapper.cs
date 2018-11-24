@@ -50,10 +50,6 @@ namespace MVVMAqua.Navigation.Regions
 		{
 			NavigateTo(viewModel, initialization, null);
 		}
-		public void NavigateTo<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM
-		{
-			NavigateTo(viewModel, null, afterViewClosed);
-		}
 		public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
 			if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
@@ -126,10 +122,6 @@ namespace MVVMAqua.Navigation.Regions
 		public void UpdateRegion<T>(T viewModel, Action<T> initialization) where T : BaseVM
 		{
 			UpdateRegion(viewModel, initialization, null);
-		}
-		public void UpdateRegion<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM
-		{
-			UpdateRegion(viewModel, null, afterViewClosed);
 		}
 		public void UpdateRegion<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{

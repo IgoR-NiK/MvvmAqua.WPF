@@ -46,10 +46,6 @@ namespace MVVMAqua.Navigation
 		{
 			NavigateTo(viewModel, initialization, null);
 		}
-		public void NavigateTo<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM
-		{
-			NavigateTo(viewModel, null, afterViewClosed);
-		}
 
 		/// <summary>
 		/// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
@@ -128,11 +124,6 @@ namespace MVVMAqua.Navigation
 			Bootstrapper.OpenNewWindow(viewModel, initialization);
 		}
 
-		public void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel, windowClosing);
-		}
-
 		public void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
 			Bootstrapper.OpenNewWindow(viewModel, initialization, windowClosing);
@@ -148,11 +139,6 @@ namespace MVVMAqua.Navigation
 			Bootstrapper.OpenNewWindow(window, viewModel, initialization);
 		}
 
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(window, viewModel, windowClosing);
-		}
-
 		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
 			Bootstrapper.OpenNewWindow(window, viewModel, initialization, windowClosing);
@@ -162,9 +148,9 @@ namespace MVVMAqua.Navigation
 		{
 			return ShowModalWindow(text, ModalIcon.None, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
-		public bool ShowModalWindow(string text, string caption)
+		public bool ShowModalWindow(string text, ModalIcon icon)
 		{
-			return ShowModalWindow(text, ModalIcon.None, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowModalWindow(text, icon, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption)
 		{
