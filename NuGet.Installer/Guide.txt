@@ -1,0 +1,2 @@
+cd "C:\Users\igor_\Desktop\Новая папка"
+.\nuget.exe pack src\MvvmAqua.nuspec
