@@ -106,9 +106,20 @@ namespace MVVMAqua.Navigation
 		}
 
 		/// <summary>
-		/// Закрывает все представления и выходит из главного окна.
+		/// Закрывает все представления.
 		/// </summary>
 		public void CloseAllViews()
+		{
+			Views.Clear();
+
+			Window.Content = null;
+			Window.DataContext = null;
+		}
+
+		/// <summary>
+		/// Закрывает все представления и выходит из главного окна.
+		/// </summary>
+		public void CloseWindow()
 		{
 			Window.Close();
 		}
