@@ -19,7 +19,7 @@ namespace MVVMAqua.Windows
 		private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
 			if (e.LeftButton == MouseButtonState.Pressed && 
-				!(e.OriginalSource is ButtonBase || e.OriginalSource is Thumb))
+				!(e.OriginalSource is ButtonBase || e.OriginalSource is Thumb || e.OriginalSource is TextBoxBase))
 			{
 				var deltaPos = e.GetPosition(this) - moveStart;
 				Left += deltaPos.X;

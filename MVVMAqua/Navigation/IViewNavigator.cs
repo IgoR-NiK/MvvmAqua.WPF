@@ -15,7 +15,6 @@ namespace MVVMAqua.Navigation
 	{
 		void NavigateTo<T>(T viewModel) where T : BaseVM;
 		void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM;
-		void NavigateTo<T>(T viewModel, Func<T, bool> afterViewClosed) where T : BaseVM;
 
 		/// <summary>
 		/// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
@@ -39,7 +38,7 @@ namespace MVVMAqua.Navigation
 
 
 		bool ShowModalWindow(string text);
-		bool ShowModalWindow(string text, string caption);
+		bool ShowModalWindow(string text, ModalIcon icon);
 		bool ShowModalWindow(string text, ModalIcon icon, string caption);
 		bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType);
 		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText);
@@ -69,11 +68,9 @@ namespace MVVMAqua.Navigation
 
 		void OpenNewWindow<T>(T viewModel) where T : BaseVM;
 		void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 		void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 		void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM;
 		void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM;
-		void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 
 		RegionsCollection Regions { get; }
