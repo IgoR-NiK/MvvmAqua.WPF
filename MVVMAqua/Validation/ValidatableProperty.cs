@@ -8,7 +8,7 @@ using System.Collections.Specialized;
 
 namespace MVVMAqua.Validation
 {
-	public class ValidatableProperty<T> : BindableObject, IValidity
+	public class ValidatableProperty<T> : NotifyObject, IValidity
 	{
 		private Action OnValueChanged { get; }
 

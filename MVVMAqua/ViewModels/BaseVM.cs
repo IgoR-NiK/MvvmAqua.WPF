@@ -11,7 +11,7 @@ namespace MVVMAqua.ViewModels
 	/// <summary>
 	/// Базовый класс для создания модели представления.
 	/// </summary>
-	public abstract class BaseVM : BindableObject
+	public abstract class BaseVM : NotifyObject
 	{
 		private IViewNavigator viewNavigator;
 		protected internal IViewNavigator ViewNavigator

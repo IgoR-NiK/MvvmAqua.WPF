@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace MVVMAqua
 {
-	public abstract class BindableObject : INotifyPropertyChanged
+	public abstract class NotifyObject : INotifyPropertyChanged
 	{
 		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = null)
 		{
