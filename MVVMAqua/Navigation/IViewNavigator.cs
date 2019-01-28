@@ -74,6 +74,7 @@ namespace MVVMAqua.Navigation
 		void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM;
 		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 
+		Window Window { get; }
 		RegionsCollection Regions { get; }
 	}
 }
