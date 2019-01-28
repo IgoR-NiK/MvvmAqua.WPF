@@ -67,11 +67,12 @@ namespace MVVMAqua.Navigation
 
 
 		void OpenNewWindow<T>(T viewModel) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM;
+		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 		void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM;
-		void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM;
-		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
+		void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM;
+		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
 
 		RegionsCollection Regions { get; }
 	}
