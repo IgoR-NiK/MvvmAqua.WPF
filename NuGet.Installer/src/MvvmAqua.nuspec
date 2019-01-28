@@ -2,7 +2,7 @@
 <package  xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>MvvmAqua</id>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <title>MVVM Aqua Framework for WPF</title>
     <authors>Igor Nikolaev</authors>
     <owners>Igor Nikolaev</owners>
@@ -15,7 +15,8 @@
     <copyright>Copyright (c) 2018 Igor Nikolaev</copyright>
     <tags>csharp wpf mvvm messaging-service navigation-service validations regions</tags>
     <dependencies>
-		<group targetFramework="net47" />
+		<group targetFramework="net45" />
+		<group targetFramework="net40" />
 	</dependencies>
     <summary></summary>
   </metadata>
