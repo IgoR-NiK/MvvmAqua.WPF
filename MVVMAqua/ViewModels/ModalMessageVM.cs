@@ -12,21 +12,21 @@ namespace MVVMAqua.ViewModels
 		public string IconPath
 		{
 			get => iconPath;
-			set => SetProperty(ref iconPath, value);
+			set => SetProperty(ref iconPath, value, "IconPath");
 		}
 		
 		private bool iconVisible = true;
 		public bool IconVisible
 		{
 			get => iconVisible;
-			set => SetProperty(ref iconVisible, value);
+			set => SetProperty(ref iconVisible, value, "IconVisible");
 		}
 
 		private string message;
 		public string Message
 		{
 			get => message;
-			set => SetProperty(ref message, value);
+			set => SetProperty(ref message, value, "Message");
 		}
 
 		public ModalMessageVM(string message, ModalIcon icon)

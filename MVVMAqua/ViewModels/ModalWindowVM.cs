@@ -9,35 +9,35 @@ namespace MVVMAqua.ViewModels
 		public bool BtnVisible
 		{
 			get => btnVisible;
-			set => SetProperty(ref btnVisible, value);
+			set => SetProperty(ref btnVisible, value, "BtnVisible");
 		}
 
 		private bool btnCancelVisible;
 		public bool BtnCancelVisible
 		{
 			get => btnCancelVisible;
-			set => SetProperty(ref btnCancelVisible, value);
+			set => SetProperty(ref btnCancelVisible, value, "BtnCancelVisible");
 		}
 
 		private string btnOkText;
 		public string BtnOkText
 		{
 			get => btnOkText;
-			set => SetProperty(ref btnOkText, value);
+			set => SetProperty(ref btnOkText, value, "BtnOkText");
 		}
 
 		private string btnCancelText;
 		public string BtnCancelText
 		{
 			get => btnCancelText;
-			set => SetProperty(ref btnCancelText, value);
+			set => SetProperty(ref btnCancelText, value, "BtnCancelText");
 		}
 
 		private Color themeColor;
 		public Color ThemeColor
 		{
 			get => themeColor;
-			set => SetProperty(ref themeColor, value);
+			set => SetProperty(ref themeColor, value, "ThemeColor");
 		}
 
 		BaseVM ContentVM { get; }

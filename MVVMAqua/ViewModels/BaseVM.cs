@@ -32,7 +32,7 @@ namespace MVVMAqua.ViewModels
 		public string WindowTitle
 		{
 			get => windowTitle;
-			set => SetProperty(ref windowTitle, value);
+			set => SetProperty(ref windowTitle, value, "WindowTitle");
 		}
 
 		protected virtual void ViewNavigatorInitialization() { }
