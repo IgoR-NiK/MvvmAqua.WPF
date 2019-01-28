@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace MVVMAqua.Converters
 {
-	class InvertedBoolConverter : IValueConverter
+	public class InvertedBoolConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

@@ -108,46 +108,43 @@ namespace MVVMAqua
 
 		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
 		{
-			OpenNewWindow(viewModel, null, null);
+			OpenNewWindow(viewModel, null, null, null);
 		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM
 		{
-			OpenNewWindow(viewModel, initialization, null);
+			OpenNewWindow(viewModel, viewModelInitialization, null, null);
 		}
-		public void OpenNewWindow<T>(T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM
 		{
-			OpenNewWindow(viewModel, null, windowClosing);
-		}	 
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+			OpenNewWindow(viewModel, viewModelInitialization, windowInitialization, null);
+		}
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
 			var window = Activator.CreateInstance(windowType) as Window;
-			OpenNewWindowPrivate(window, viewModel, initialization, windowClosing);
+			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, windowInitialization, windowClosing);
 		}
 		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
 		{
-			OpenNewWindowPrivate(window, viewModel, null, null);
+			OpenNewWindowPrivate(window, viewModel, null, null, null);
 		}
-		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM
+		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM
 		{
-			OpenNewWindowPrivate(window, viewModel, initialization, null);
+			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, null, null);
 		}
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
-			OpenNewWindowPrivate(window, viewModel, null, windowClosing);
-		}
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			OpenNewWindowPrivate(window, viewModel, initialization, windowClosing);
+			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, null, windowClosing);
 		}
 
-		private void OpenNewWindowPrivate<T>(Window window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		private void OpenNewWindowPrivate<T>(Window window, T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
+			windowInitialization?.Invoke(window);
 			var navigator = new ViewNavigator(this, window);
 			if (window is BaseWindow baseWindow)
 			{
 				baseWindow.WindowClosing = () => windowClosing?.Invoke(navigator) ?? true;
 			}
-			navigator.NavigateTo(viewModel, initialization);
+			navigator.NavigateTo(viewModel, viewModelInitialization);
 
 			window.Show();
 		}

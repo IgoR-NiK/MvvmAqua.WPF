@@ -26,7 +26,7 @@ namespace MVVMAqua.Navigation
 		/// <summary>
 		/// Окно для отображения представлений.
 		/// </summary>
-		Window Window { get; }
+		public Window Window { get; }
 
 		public RegionsCollection Regions { get; }
 
@@ -129,30 +129,29 @@ namespace MVVMAqua.Navigation
 		{
 			Bootstrapper.OpenNewWindow(viewModel);
 		}
-
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM
 		{
-			Bootstrapper.OpenNewWindow(viewModel, initialization);
+			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization);
 		}
-
-		public void OpenNewWindow<T>(T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM
 		{
-			Bootstrapper.OpenNewWindow(viewModel, initialization, windowClosing);
+			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, windowInitialization);
 		}
-
+		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		{
+			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, windowInitialization, windowClosing);
+		}
 		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
 		{
 			Bootstrapper.OpenNewWindow(window, viewModel);
 		}
-
-		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> initialization) where T : BaseVM
+		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM
 		{
-			Bootstrapper.OpenNewWindow(window, viewModel, initialization);
+			Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization);
 		}
-
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> initialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
+		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
 		{
-			Bootstrapper.OpenNewWindow(window, viewModel, initialization, windowClosing);
+			Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, windowClosing);
 		}
 
 		public bool ShowModalWindow(string text)

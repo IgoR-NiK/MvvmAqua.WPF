@@ -19,7 +19,7 @@
 
 ## Поддерживаемые версии .Net Framework
 
-.NET Framework 4.7
+.NET Framework 4.0 и выше
 
 
 ## Ссылки
