@@ -16,13 +16,13 @@ namespace MVVMAqua.Navigation.Regions
 			ViewModelToViewMap = viewModelToViewMap;
 		}
 
-		public RegionWrapper GetRegion(BaseVM viewModel, string regionName)
+		public RegionNavigator GetRegionNavigator(BaseVM viewModel, string regionName)
 		{
-			var regionWrapper = viewModel.GetRegionWrapper(regionName);
+			var regionNavigator = viewModel.GetRegionNavigator(regionName);
 			regionWrapper.ViewModelToViewMap = ViewModelToViewMap;
-			return regionWrapper;
+			return regionNavigator;
 		}
 
-		public RegionWrapper this[BaseVM viewModel, string regionName] => GetRegion(viewModel, regionName);
+		public RegionNavigator this[BaseVM viewModel, string regionName] => GetRegionNavigator(viewModel, regionName);
 	}
 }

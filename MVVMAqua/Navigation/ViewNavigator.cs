@@ -21,7 +21,7 @@ namespace MVVMAqua.Navigation
 		/// <summary>
 		/// Стек представлений.
 		/// </summary>
-		Stack<ViewWrapper> Views { get; } = new Stack<ViewWrapper>();
+		LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
 
 		/// <summary>
 		/// Окно для отображения представлений.
@@ -67,7 +67,7 @@ namespace MVVMAqua.Navigation
 					viewWrapper.ViewModel.AddRegion(region.Name, region);
 				}
 
-				Views.Push(viewWrapper);
+				Views.AddLast(viewWrapper);
 
 				Window.Content = viewWrapper.View;
 				Window.DataContext = viewWrapper.ViewModel;
@@ -85,24 +85,26 @@ namespace MVVMAqua.Navigation
 		/// <param name="isCallbackCloseViewHandler">Флаг, указывающий нужно ли выполнять действие закрытия представления.</param>
 		public void CloseLastView(bool isCallbackCloseViewHandler)
 		{
-			var lastViewWrapper = Views.Pop();
+			var lastViewWrapper = Views.Last();
 			if (isCallbackCloseViewHandler)
 			{
 				if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
 				{
-					Views.Push(lastViewWrapper);
 					return;
 				}
 			}
 
+			Views.Remove(lastViewWrapper);
 			if (Views.Count == 0)
 			{
-				CloseAllViews();
-				return;
+				Window.Content = null;
+				Window.DataContext = null;
 			}
-
-			Window.Content = Views.Peek().View;
-			Window.DataContext = Views.Peek().ViewModel;
+			else
+			{
+				Window.Content = Views.Last().View;
+				Window.DataContext = Views.Last().ViewModel;
+			}
 		}
 
 		/// <summary>

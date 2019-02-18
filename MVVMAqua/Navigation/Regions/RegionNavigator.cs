@@ -9,7 +9,7 @@ using MVVMAqua.ViewModels;
 
 namespace MVVMAqua.Navigation.Regions
 {
-	public sealed class RegionWrapper
+	public sealed class RegionNavigator
 	{
 		internal Dictionary<Type, Type> ViewModelToViewMap { get; set; }
 
@@ -37,7 +37,7 @@ namespace MVVMAqua.Navigation.Regions
 			}
 		}
 
-		internal RegionWrapper(IViewNavigator viewNavigator)
+		internal RegionNavigator(IViewNavigator viewNavigator)
 		{
 			ViewNavigator = viewNavigator;
 		}

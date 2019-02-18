@@ -14,7 +14,7 @@ namespace MVVMAqua.ViewModels
 	public abstract class BaseVM : NotifyObject
 	{
 		private IViewNavigator viewNavigator;
-		protected internal IViewNavigator ViewNavigator
+		public IViewNavigator ViewNavigator
 		{
 			get => viewNavigator;
 			internal set
@@ -38,23 +38,23 @@ namespace MVVMAqua.ViewModels
 		protected virtual void ViewNavigatorInitialization() { }
 
 
-		Dictionary<string, RegionWrapper> Regions { get; } = new Dictionary<string, RegionWrapper>();
+		Dictionary<string, RegionNavigator> Regions { get; } = new Dictionary<string, RegionNavigator>();
 		
 		internal void AddRegion(string regionName, Region region)
 		{
 			if (!Regions.ContainsKey(regionName))
 			{
-				Regions.Add(regionName, new RegionWrapper(ViewNavigator));
+				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
 			}
 
 			Regions[regionName].Region = region;
 		}
 
-		internal RegionWrapper GetRegionWrapper(string regionName)
+		internal RegionNavigator GetRegionNavigator(string regionName)
 		{
 			if (!Regions.ContainsKey(regionName))
 			{
-				Regions.Add(regionName, new RegionWrapper(ViewNavigator));
+				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
 			}
 
 			return Regions[regionName];
