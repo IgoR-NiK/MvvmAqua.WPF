@@ -69,7 +69,7 @@
       <DependentUpon>Region.xaml</DependentUpon>
     </Compile>
     <Compile Include="Navigation\Regions\RegionsCollection.cs" />
-    <Compile Include="Navigation\Regions\RegionWrapper.cs" />
+    <Compile Include="Navigation\Regions\RegionNavigator.cs" />
     <Compile Include="Navigation\ViewNavigator.cs" />
     <Compile Include="Navigation\ViewWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
