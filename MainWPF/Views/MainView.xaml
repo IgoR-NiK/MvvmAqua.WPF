@@ -15,5 +15,7 @@
         <TextBlock Text="{Binding Password.Value}" />
         <TextBlock Text="{Binding Password.IsValid}" />
         <Button Content="Новое окно" Command="{Binding Next}" />
+        <Button Content="Вперёд" Command="{Binding Navigate}" />
+        <Button Content="Закрыть" Command="{Binding Close}" />
     </StackPanel>
 </UserControl>
