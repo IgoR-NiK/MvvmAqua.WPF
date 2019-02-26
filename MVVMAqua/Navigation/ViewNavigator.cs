@@ -127,133 +127,222 @@ namespace MVVMAqua.Navigation
 		}
 
 
-		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, windowInitialization);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, windowInitialization, windowClosing);
-		}
-		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(window, viewModel);
-		}
-		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization);
-		}
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, windowClosing);
-		}
+        #region Открытие нового окна
 
-		public bool ShowModalWindow(string text)
+        public void OpenNewWindow<T>(T viewModel)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM
+        {
+            Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        #endregion
+
+        #region ShowModalWindow
+
+        public bool ShowModalWindow(string text)
 		{
 			return ShowModalWindow(text, ModalIcon.None, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon)
 		{
 			return ShowModalWindow(text, icon, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType)
 		{
 			return ShowModalWindow(text, icon, caption, buttonType, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, Action okResult)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
+
 		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
 		{
 			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 
+
 		public bool ShowModalWindow<T>(T viewModel) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, buttonType, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, buttonType, "Ок", "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
+
 		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
 			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
@@ -307,5 +396,7 @@ namespace MVVMAqua.Navigation
 
 			return result;
 		}
-	}
+
+        #endregion
+    }
 }
