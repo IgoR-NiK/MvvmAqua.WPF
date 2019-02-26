@@ -13,7 +13,10 @@ namespace MVVMAqua.Navigation
 	/// </summary>
 	public interface IViewNavigator
 	{
-		void NavigateTo<T>(T viewModel) where T : BaseVM;
+        Window Window { get; }
+        RegionsCollection Regions { get; }
+
+        void NavigateTo<T>(T viewModel) where T : BaseVM;
 		void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM;
 
 		/// <summary>
@@ -36,8 +39,61 @@ namespace MVVMAqua.Navigation
 		/// </summary>
 		void CloseAllViews();
 
+        void CloseWindow();
 
-		bool ShowModalWindow(string text);
+        #region Открытие нового окна
+
+        void OpenNewWindow<T>(T viewModel)
+           where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization)
+           where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed)
+          where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed)
+           where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM;
+
+        void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM;
+
+        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window;
+
+        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window;
+
+        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window;
+
+        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window;
+
+        #endregion
+               
+        #region ShowModalWindow
+
+        bool ShowModalWindow(string text);
 		bool ShowModalWindow(string text, ModalIcon icon);
 		bool ShowModalWindow(string text, ModalIcon icon, string caption);
 		bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType);
@@ -65,16 +121,6 @@ namespace MVVMAqua.Navigation
 		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
 		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
 
-
-		void OpenNewWindow<T>(T viewModel) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM;
-		void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
-		void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM;
-		void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM;
-		void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM;
-
-		Window Window { get; }
-		RegionsCollection Regions { get; }
+        #endregion
 	}
 }
