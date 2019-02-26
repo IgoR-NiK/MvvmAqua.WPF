@@ -28,14 +28,16 @@ namespace MVVMAqua
 			AutoMappingViewModelToView(callingAssembly);
 		}
 
-		/// <summary>
-		/// Автоматическая привязка VM к View. 
-		/// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
-		/// View должна иметь следующие названия: Name или NameView. 
-		/// Регистр значения не имеет.
-		/// </summary>
-		/// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
-		private void AutoMappingViewModelToView(Assembly assembly)
+        #region Привязка View к ViewModel
+
+        /// <summary>
+        /// Автоматическая привязка VM к View. 
+        /// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
+        /// View должна иметь следующие названия: Name или NameView. 
+        /// Регистр значения не имеет.
+        /// </summary>
+        /// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
+        private void AutoMappingViewModelToView(Assembly assembly)
 		{
 			var viewModels = assembly
 				.GetTypes()
@@ -91,11 +93,14 @@ namespace MVVMAqua
 			}
 		}
 
+        #endregion
 
-		/// <summary>
-		/// Цвет темы модального окна.
-		/// </summary>
-		public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
+        #region Настройка модального и обычного окон
+
+        /// <summary>
+        /// Цвет темы модального окна.
+        /// </summary>
+        public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
 
 
 		private Type windowType = typeof(MainWindow);
@@ -105,48 +110,107 @@ namespace MVVMAqua
 			windowType = typeof(T);
 		}
 
+        #endregion
 
-		public void OpenNewWindow<T>(T viewModel) where T : BaseVM
-		{
-			OpenNewWindow(viewModel, null, null, null);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization) where T : BaseVM
-		{
-			OpenNewWindow(viewModel, viewModelInitialization, null, null);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization) where T : BaseVM
-		{
-			OpenNewWindow(viewModel, viewModelInitialization, windowInitialization, null);
-		}
-		public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			var window = Activator.CreateInstance(windowType) as Window;
-			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, windowInitialization, windowClosing);
-		}
-		public void OpenNewWindow<T>(Window window, T viewModel) where T : BaseVM
-		{
-			OpenNewWindowPrivate(window, viewModel, null, null, null);
-		}
-		public void OpenNewWindow<T>(Window window, T viewModel, Action<T> viewModelInitialization) where T : BaseVM
-		{
-			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, null, null);
-		}
-		public void OpenNewWindow<T>(BaseWindow window, T viewModel, Action<T> viewModelInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			OpenNewWindowPrivate(window, viewModel, viewModelInitialization, null, windowClosing);
-		}
+        #region OpenNewWindow
 
-		private void OpenNewWindowPrivate<T>(Window window, T viewModel, Action<T> viewModelInitialization, Action<Window> windowInitialization, Func<IViewNavigator, bool> windowClosing) where T : BaseVM
-		{
-			windowInitialization?.Invoke(window);
-			var navigator = new ViewNavigator(this, window);
-			if (window is BaseWindow baseWindow)
-			{
-				baseWindow.WindowClosing = () => windowClosing?.Invoke(navigator) ?? true;
-			}
-			navigator.NavigateTo(viewModel, viewModelInitialization);
+        public void OpenNewWindow<T>(T viewModel)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, null, null, null, null);
+        }
 
-			window.Show();
-		}
-	}
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, null, null, null);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, null, null);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, null, null);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, windowInitialization, null);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization)
+           where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, null);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, windowInitialization, vm => { windowClosing?.Invoke(vm); return true; });
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+            where T : BaseVM
+        {
+            OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, vm => { windowClosing?.Invoke(vm); return true; });
+        }
+
+        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+            where T : BaseVM
+        {
+            var window = Activator.CreateInstance(windowType) as Window;
+            OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            OpenNewWindow(window, viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, windowInitialization, vm => { windowClosing?.Invoke(vm); return true; });
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            OpenNewWindow(window, viewModel, viewModelInitialization, vm => { afterViewClosed?.Invoke(vm); return true; }, windowInitialization, windowClosing);
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
+            where ViewModelType : BaseVM
+            where WindowType : Window
+        {
+            OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, vm => { windowClosing?.Invoke(vm); return true; });
+        }
+
+        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed,  Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
+            where ViewModelType : BaseVM 
+            where WindowType : Window
+        {
+            windowInitialization?.Invoke(window);
+            var navigator = new ViewNavigator(this, window);
+            if (window is BaseWindow baseWindow)
+            {
+                baseWindow.WindowClosing = () => windowClosing?.Invoke(viewModel) ?? true;
+            }
+            navigator.NavigateTo(viewModel, viewModelInitialization, afterViewClosed);
+
+            window.Show();
+        }
+
+        #endregion
+    }
 }
