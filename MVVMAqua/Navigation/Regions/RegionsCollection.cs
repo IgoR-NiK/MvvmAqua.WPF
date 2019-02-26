@@ -19,7 +19,7 @@ namespace MVVMAqua.Navigation.Regions
 		public RegionNavigator GetRegionNavigator(BaseVM viewModel, string regionName)
 		{
 			var regionNavigator = viewModel.GetRegionNavigator(regionName);
-			regionWrapper.ViewModelToViewMap = ViewModelToViewMap;
+            regionNavigator.ViewModelToViewMap = ViewModelToViewMap;
 			return regionNavigator;
 		}
 
