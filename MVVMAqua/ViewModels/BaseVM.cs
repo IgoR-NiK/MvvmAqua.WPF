@@ -14,7 +14,18 @@ namespace MVVMAqua.ViewModels
 	/// </summary>
 	public abstract class BaseVM : NotifyObject
 	{
-		private IViewNavigator viewNavigator;
+        private string windowTitle;
+
+        /// <summary>
+        /// Заголовок окна.
+        /// </summary>
+        public string WindowTitle
+        {
+            get => windowTitle;
+            set => SetProperty(ref windowTitle, value);
+        }
+
+        private IViewNavigator viewNavigator;
 		public IViewNavigator ViewNavigator
 		{
 			get => viewNavigator;
@@ -23,42 +34,10 @@ namespace MVVMAqua.ViewModels
 				viewNavigator = value;
 				ViewNavigatorInitialization();
 			}
-		}
-
-		private string windowTitle;
-
-		/// <summary>
-		/// Заголовок окна.
-		/// </summary>
-		public string WindowTitle
-		{
-			get => windowTitle;
-			set => SetProperty(ref windowTitle, value);
-		}
+		}		
 
 		protected virtual void ViewNavigatorInitialization() { }
 
-
-		Dictionary<string, ViewNavigator> Regions { get; } = new Dictionary<string, ViewNavigator>();
-		
-		internal void AddRegion(string regionName, Region region, Bootstrapper bootstrapper)
-		{
-			if (!Regions.ContainsKey(regionName))
-			{
-				Regions.Add(regionName, new ViewNavigator(bootstrapper, region, ViewNavigator.Window));
-			}
-
-			Regions[regionName].Container = region;
-		}
-
-		internal ViewNavigator GetRegionNavigator(string regionName, Bootstrapper bootstrapper)
-		{
-			if (!Regions.ContainsKey(regionName))
-			{
-				Regions.Add(regionName, new ViewNavigator(bootstrapper, null, ViewNavigator.Window));
-			}
-
-			return Regions[regionName];
-		}
+		internal Dictionary<string, INavigator> RegionNavigators { get; } = new Dictionary<string, INavigator>();
 	}
 }
