@@ -28,7 +28,8 @@ namespace MainWPF.ViewModels
 			Title.AddValidationRule(value => value.Contains('f'));
 			Password.AddValidationRule(value => value.Length > 8);
 
-			//	Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(), navigator => navigator.ShowModalWindow("Привет")));
+				Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(),null,null, null,
+                    vm => vm.ViewNavigator.ShowModalWindow(new MainVM())));
 			Navigate = new RelayCommand(() => ViewNavigator.NavigateTo(new MainVM(), vm => vm.Title.Value = "2", vm =>
 			{
 				vm.ViewNavigator.NavigateTo(new MainVM(), vm2 => vm2.Title.Value = "3");
