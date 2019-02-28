@@ -15,41 +15,20 @@ namespace MVVMAqua.Navigation
 	/// <summary>
 	/// Менеджер навигации между представлениями.
 	/// </summary>
-	class ViewNavigator : IViewNavigator
+	internal class ViewNavigator : IViewNavigator
 	{
-		internal Bootstrapper Bootstrapper { get; }
+		Bootstrapper Bootstrapper { get; }
 
-		/// <summary>
-		/// Стек представлений.
-		/// </summary>
-		LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
-               
-        private ContentControl container;
-        internal ContentControl Container
-        {
-            get => container;
-            set
-            {
-                container = value;
-                InitializationСontainer();
-            }
-        }
+        ContentControl Container { get; }
 
-        private void InitializationСontainer()
-        {
-            if (Views.Count != 0)
-            {
-                Container.Content = Views.Last().View;
-                Container.DataContext = Views.Last().ViewModel;
-            }
-        }
-
-        /// <summary>
-        /// Окно для отображения представлений.
-        /// </summary>
         public Window Window { get; }
 
-		public RegionsCollection Regions { get; }
+        public RegionsCollection Regions { get; } = new RegionsCollection();
+
+        /// <summary>
+        /// Стек представлений.
+        /// </summary>
+        LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();     		
 
         public INavigator Parent => throw new NotImplementedException();
 
@@ -60,8 +39,6 @@ namespace MVVMAqua.Navigation
 			Bootstrapper = bootstrapper;
             Container = container;            
             Window = window;
-
-			Regions = new RegionsCollection(Bootstrapper);
 		}
 
 
@@ -158,25 +135,25 @@ namespace MVVMAqua.Navigation
 		{
 			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
-				initialization?.Invoke(viewModel);
-				viewModel.ViewNavigator = this;
-				var viewWrapper = new ViewWrapper() { AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true };
+                var viewWrapper = new ViewWrapper()
+                {
+                    View = Activator.CreateInstance(viewType) as ContentControl,
+                    ViewModel = viewModel,
+                    AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true
+                };
 
-				viewWrapper.View = Activator.CreateInstance(viewType) as ContentControl;
-				viewWrapper.ViewModel = viewModel;
+                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+                {
+                    viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window));
+                }
 
-				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
-				{
-					viewWrapper.ViewModel.AddRegion(region.Name, region, Bootstrapper);
-				}
+                viewModel.ViewNavigator = this;
+                initialization?.Invoke(viewModel);
 
 				Views.AddLast(viewWrapper);
 
-                if (Container != null)
-                {
-                    Container.Content = viewWrapper.View;
-                    Container.DataContext = viewWrapper.ViewModel;
-                }
+                Container.Content = viewWrapper.View;
+                Container.DataContext = viewWrapper.ViewModel;
 			}
 		}
 
@@ -203,19 +180,13 @@ namespace MVVMAqua.Navigation
 			Views.Remove(lastViewWrapper);
 			if (Views.Count == 0)
 			{
-                if (Container != null)
-                {
-                    Container.Content = null;
-                    Container.DataContext = null;
-                }
+                Container.Content = null;
+                Container.DataContext = null;
 			}
 			else
 			{
-                if (Container != null)
-                {
-                    Container.Content = Views.Last().View;
-                    Container.DataContext = Views.Last().ViewModel;
-                }
+                Container.Content = Views.Last().View;
+                Container.DataContext = Views.Last().ViewModel;
 			}
 		}
 
@@ -226,11 +197,8 @@ namespace MVVMAqua.Navigation
 		{
 			Views.Clear();
 
-            if (Container != null)
-            {
-                Container.Content = null;
-                Container.DataContext = null;
-            }
+            Container.Content = null;
+            Container.DataContext = null;
 		}
 
 		/// <summary>
@@ -485,23 +453,18 @@ namespace MVVMAqua.Navigation
 
 			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
-				initialization?.Invoke(viewModel);
-				var view = Activator.CreateInstance(viewType) as ContentControl;
-				view.DataContext = viewModel;
-
 				var modalWindow = new ModalWindow() { Owner = Window };
 				var modalVm = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 				modalWindow.DataContext = modalVm;
 
-				var navigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow);
-				modalVm.ViewNavigator = navigator;
-
 				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
 				{
-					modalVm.AddRegion(region.Name, region, Bootstrapper);
+					modalVm.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, modalWindow));
 				}
+                modalVm.ViewNavigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow);
+                initialization?.Invoke(viewModel);
 
-				result = modalWindow.ShowDialog() ?? false;
+                result = modalWindow.ShowDialog() ?? false;
 
 				if (result)
 					okResult?.Invoke(viewModel);
