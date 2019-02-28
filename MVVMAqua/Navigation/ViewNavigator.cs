@@ -7,6 +7,7 @@ using MVVMAqua.Enums;
 using MVVMAqua.Windows;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
+using MVVMAqua.Navigation.Interfaces;
 using System.Windows.Controls;
 
 namespace MVVMAqua.Navigation
@@ -16,29 +17,126 @@ namespace MVVMAqua.Navigation
 	/// </summary>
 	class ViewNavigator : IViewNavigator
 	{
-		Bootstrapper Bootstrapper { get; }
+		internal Bootstrapper Bootstrapper { get; }
 
 		/// <summary>
 		/// Стек представлений.
 		/// </summary>
 		LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
+               
+        private ContentControl container;
+        internal ContentControl Container
+        {
+            get => container;
+            set
+            {
+                container = value;
+                InitializationСontainer();
+            }
+        }
 
-		/// <summary>
-		/// Окно для отображения представлений.
-		/// </summary>
-		public Window Window { get; }
+        private void InitializationСontainer()
+        {
+            if (Views.Count != 0)
+            {
+                Container.Content = Views.Last().View;
+                Container.DataContext = Views.Last().ViewModel;
+            }
+        }
+
+        /// <summary>
+        /// Окно для отображения представлений.
+        /// </summary>
+        public Window Window { get; }
 
 		public RegionsCollection Regions { get; }
 
-		public ViewNavigator(Bootstrapper bootstrapper, Window window)
+        public INavigator Parent => throw new NotImplementedException();
+
+        public BaseVM ViewModel => throw new NotImplementedException();
+
+        public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window)
 		{
 			Bootstrapper = bootstrapper;
-			Window = window;
+            Container = container;            
+            Window = window;
 
-			Regions = new RegionsCollection(Bootstrapper.ViewModelToViewMap);
+			Regions = new RegionsCollection(Bootstrapper);
 		}
 
-		public void NavigateTo<T>(T viewModel) where T : BaseVM
+
+        public void OpenFirstView()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenFirstView<T>(T viewModel) where T : BaseVM
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization) where T : BaseVM
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
+        {
+            throw new NotImplementedException();
+        }
+
+        /*
+        public void UpdateRegion<T>(T viewModel) where T : BaseVM
+        {
+            UpdateRegion(viewModel, null, null);
+        }
+        public void UpdateRegion<T>(T viewModel, Action<T> initialization) where T : BaseVM
+        {
+            UpdateRegion(viewModel, initialization, null);
+        }
+        public void UpdateRegion<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
+        {
+            if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            {
+                initialization?.Invoke(viewModel);
+                viewModel.ViewNavigator = ViewNavigator;
+                var viewWrapper = new ViewWrapper() { AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true };
+
+                viewWrapper.View = Activator.CreateInstance(viewType) as ContentControl;
+                viewWrapper.ViewModel = viewModel;
+
+                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+                {
+                    viewWrapper.ViewModel.AddRegion(region.Name, region);
+                }
+
+                viewWrappers.Clear();
+                viewWrappers.Push(viewWrapper);
+
+                if (Region != null)
+                {
+                    Region.Content = viewWrapper.View;
+                    Region.DataContext = viewWrapper.ViewModel;
+                }
+            }
+        }
+*/
+
+
+
+
+
+
+
+
+
+
+        public void NavigateTo<T>(T viewModel) where T : BaseVM
 		{
 			NavigateTo(viewModel, null, null);
 		}
@@ -47,11 +145,16 @@ namespace MVVMAqua.Navigation
 			NavigateTo(viewModel, initialization, null);
 		}
 
-		/// <summary>
-		/// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
-		public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
+        public void NavigateTo<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
+        /// </summary>
+        /// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
+        public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
 			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
@@ -64,13 +167,16 @@ namespace MVVMAqua.Navigation
 
 				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
 				{
-					viewWrapper.ViewModel.AddRegion(region.Name, region);
+					viewWrapper.ViewModel.AddRegion(region.Name, region, Bootstrapper);
 				}
 
 				Views.AddLast(viewWrapper);
 
-				Window.Content = viewWrapper.View;
-				Window.DataContext = viewWrapper.ViewModel;
+                if (Container != null)
+                {
+                    Container.Content = viewWrapper.View;
+                    Container.DataContext = viewWrapper.ViewModel;
+                }
 			}
 		}
 
@@ -97,13 +203,19 @@ namespace MVVMAqua.Navigation
 			Views.Remove(lastViewWrapper);
 			if (Views.Count == 0)
 			{
-				Window.Content = null;
-				Window.DataContext = null;
+                if (Container != null)
+                {
+                    Container.Content = null;
+                    Container.DataContext = null;
+                }
 			}
 			else
 			{
-				Window.Content = Views.Last().View;
-				Window.DataContext = Views.Last().ViewModel;
+                if (Container != null)
+                {
+                    Container.Content = Views.Last().View;
+                    Container.DataContext = Views.Last().ViewModel;
+                }
 			}
 		}
 
@@ -114,8 +226,11 @@ namespace MVVMAqua.Navigation
 		{
 			Views.Clear();
 
-			Window.Content = null;
-			Window.DataContext = null;
+            if (Container != null)
+            {
+                Container.Content = null;
+                Container.DataContext = null;
+            }
 		}
 
 		/// <summary>
@@ -378,12 +493,12 @@ namespace MVVMAqua.Navigation
 				var modalVm = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 				modalWindow.DataContext = modalVm;
 
-				var navigator = new ViewNavigator(Bootstrapper, modalWindow);
+				var navigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow);
 				modalVm.ViewNavigator = navigator;
 
 				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
 				{
-					modalVm.AddRegion(region.Name, region);
+					modalVm.AddRegion(region.Name, region, Bootstrapper);
 				}
 
 				result = modalWindow.ShowDialog() ?? false;

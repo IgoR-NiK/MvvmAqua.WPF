@@ -1,4 +1,5 @@
-﻿using MVVMAqua.ViewModels;
+﻿using MVVMAqua.Navigation.Interfaces;
+using MVVMAqua.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +10,15 @@ namespace MVVMAqua.Navigation.Regions
 {
 	public sealed class RegionsCollection
 	{
-		Dictionary<Type, Type> ViewModelToViewMap { get; }
+        Bootstrapper Bootstrapper { get; }
 
-		internal RegionsCollection(Dictionary<Type, Type> viewModelToViewMap)
-		{
-			ViewModelToViewMap = viewModelToViewMap;
-		}
+        internal RegionsCollection(Bootstrapper bootstrapper)
+        {
+            Bootstrapper = bootstrapper;
+        }
 
-		public RegionNavigator GetRegionNavigator(BaseVM viewModel, string regionName)
-		{
-			var regionNavigator = viewModel.GetRegionNavigator(regionName);
-            regionNavigator.ViewModelToViewMap = ViewModelToViewMap;
-			return regionNavigator;
-		}
+        public INavigator GetRegionNavigator(BaseVM viewModel, string regionName) => viewModel.GetRegionNavigator(regionName, Bootstrapper);
 
-		public RegionNavigator this[BaseVM viewModel, string regionName] => GetRegionNavigator(viewModel, regionName);
+		public INavigator this[BaseVM viewModel, string regionName] => viewModel.GetRegionNavigator(regionName, Bootstrapper);
 	}
 }

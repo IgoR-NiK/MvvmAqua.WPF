@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMAqua", "MVVMAqua\MVVMAqua.csproj", "{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainWPF", "MainWPF\MainWPF.csproj", "{FBDC0AA1-2A66-4493-8FB9-F0FBE7FE2EBD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1} = {CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDC0AA1-2A66-4493-8FB9-F0FBE7FE2EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDC0AA1-2A66-4493-8FB9-F0FBE7FE2EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDC0AA1-2A66-4493-8FB9-F0FBE7FE2EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDC0AA1-2A66-4493-8FB9-F0FBE7FE2EBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

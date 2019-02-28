@@ -1,4 +1,4 @@
-﻿namespace MVVMAqua.Navigation
+﻿namespace MVVMAqua.Navigation.Interfaces
 {
 	public interface IWindowCloser
 	{
