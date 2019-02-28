@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using MVVMAqua.Navigation;
+using MVVMAqua.Navigation.Interfaces;
 using MVVMAqua.Navigation.Regions;
 
 namespace MVVMAqua.ViewModels
@@ -38,23 +39,23 @@ namespace MVVMAqua.ViewModels
 		protected virtual void ViewNavigatorInitialization() { }
 
 
-		Dictionary<string, RegionNavigator> Regions { get; } = new Dictionary<string, RegionNavigator>();
+		Dictionary<string, ViewNavigator> Regions { get; } = new Dictionary<string, ViewNavigator>();
 		
-		internal void AddRegion(string regionName, Region region)
+		internal void AddRegion(string regionName, Region region, Bootstrapper bootstrapper)
 		{
 			if (!Regions.ContainsKey(regionName))
 			{
-				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
+				Regions.Add(regionName, new ViewNavigator(bootstrapper, region, ViewNavigator.Window));
 			}
 
-			Regions[regionName].Region = region;
+			Regions[regionName].Container = region;
 		}
 
-		internal RegionNavigator GetRegionNavigator(string regionName)
+		internal ViewNavigator GetRegionNavigator(string regionName, Bootstrapper bootstrapper)
 		{
 			if (!Regions.ContainsKey(regionName))
 			{
-				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
+				Regions.Add(regionName, new ViewNavigator(bootstrapper, null, ViewNavigator.Window));
 			}
 
 			return Regions[regionName];
