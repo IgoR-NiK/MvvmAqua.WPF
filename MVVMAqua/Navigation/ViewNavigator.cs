@@ -454,7 +454,7 @@ namespace MVVMAqua.Navigation
 			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
 				var modalWindow = new ModalWindow() { Owner = Window };
-				var modalVm = new ModalWindowVM(viewModel, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
+				var modalVm = new ModalWindowVM<T>(viewModel, initialization, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 				modalWindow.DataContext = modalVm;
 
 				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
@@ -462,7 +462,6 @@ namespace MVVMAqua.Navigation
 					modalVm.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, modalWindow));
 				}
                 modalVm.ViewNavigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow);
-                initialization?.Invoke(viewModel);
 
                 result = modalWindow.ShowDialog() ?? false;
 
