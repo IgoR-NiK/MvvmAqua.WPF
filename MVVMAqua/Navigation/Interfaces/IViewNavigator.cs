@@ -4,40 +4,18 @@ using System.Windows;
 using MVVMAqua.Enums;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
-using MVVMAqua.Windows;
 
-namespace MVVMAqua.Navigation
+namespace MVVMAqua.Navigation.Interfaces
 {
 	/// <summary>
 	/// Менеджер навигации между представлениями.
 	/// </summary>
-	public interface IViewNavigator
+	public interface IViewNavigator : INavigator
 	{
         Window Window { get; }
-        RegionsCollection Regions { get; }
 
-        void NavigateTo<T>(T viewModel) where T : BaseVM;
-		void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM;
-
-		/// <summary>
-		/// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
-		void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM;
-
-
-		void CloseLastView();
-
-		/// <summary>
-		/// Закрывает последнее представление и выполняет действие закрытия представления при необходимости.
-		/// </summary>
-		/// <param name="isCallbackCloseViewHandler">Флаг, указывающий нужно ли выполнять действие закрытия представления.</param>
-		void CloseLastView(bool isCallbackCloseViewHandler);
-
-		/// <summary>
-		/// Закрывает все представления и выходит из главного окна.
-		/// </summary>
-		void CloseAllViews();
+        INavigator Parent { get; }
+        RegionsCollection Regions { get; }  		
 
         void CloseWindow();
 

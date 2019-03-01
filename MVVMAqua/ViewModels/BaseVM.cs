@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using MVVMAqua.Navigation;
+using MVVMAqua.Navigation.Interfaces;
 using MVVMAqua.Navigation.Regions;
 
 namespace MVVMAqua.ViewModels
@@ -13,17 +14,6 @@ namespace MVVMAqua.ViewModels
 	/// </summary>
 	public abstract class BaseVM : NotifyObject
 	{
-		private IViewNavigator viewNavigator;
-		public IViewNavigator ViewNavigator
-		{
-			get => viewNavigator;
-			internal set
-			{
-				viewNavigator = value;
-				ViewNavigatorInitialization();
-			}
-		}
-
 		private string windowTitle;
 
 		/// <summary>
@@ -35,29 +25,22 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref windowTitle, value, "WindowTitle");
 		}
 
+	
+		private IViewNavigator viewNavigator;
+		public IViewNavigator ViewNavigator
+		{
+			get => viewNavigator;
+			internal set
+			{
+				viewNavigator = value;
+				ViewNavigatorInitialization();
+			}
+		}
+
+
+
 		protected virtual void ViewNavigatorInitialization() { }
 
-
-		Dictionary<string, RegionNavigator> Regions { get; } = new Dictionary<string, RegionNavigator>();
-		
-		internal void AddRegion(string regionName, Region region)
-		{
-			if (!Regions.ContainsKey(regionName))
-			{
-				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
-			}
-
-			Regions[regionName].Region = region;
-		}
-
-		internal RegionNavigator GetRegionNavigator(string regionName)
-		{
-			if (!Regions.ContainsKey(regionName))
-			{
-				Regions.Add(regionName, new RegionNavigator(ViewNavigator));
-			}
-
-			return Regions[regionName];
-		}
+		internal Dictionary<string, INavigator> RegionNavigators { get; } = new Dictionary<string, INavigator>();
 	}
 }
