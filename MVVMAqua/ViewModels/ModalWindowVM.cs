@@ -1,9 +1,11 @@
-﻿using MVVMAqua.Enums;
+﻿using System;
 using System.Windows.Media;
+
+using MVVMAqua.Enums;
 
 namespace MVVMAqua.ViewModels
 {
-	class ModalWindowVM : BaseVM
+	class ModalWindowVM<T> : BaseVM where T : BaseVM
 	{
 		private bool btnVisible;
 		public bool BtnVisible
@@ -40,9 +42,10 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref themeColor, value);
 		}
 
-		BaseVM ContentVM { get; }
+		T ContentVM { get; }
+        Action<T> Initialization { get; }
 
-		public ModalWindowVM(BaseVM contentVM, string caption, ModalButtons buttonType, string btnOkText, string btnCancelText, Color themeColor)
+        public ModalWindowVM(T contentVM, Action<T> initialization, string caption, ModalButtons buttonType, string btnOkText, string btnCancelText, Color themeColor)
 		{
 			WindowTitle = caption;
 			BtnVisible = buttonType != ModalButtons.None;
@@ -52,11 +55,12 @@ namespace MVVMAqua.ViewModels
 			ThemeColor = themeColor;
 
 			ContentVM = contentVM;
+            Initialization = initialization;
 		}
 
 		protected override void ViewNavigatorInitialization()
 		{
-			ViewNavigator.Regions[this, "ModalContentView"].NavigateTo(ContentVM);
+			ViewNavigator.Regions[this, "ModalContentView"].NavigateTo(ContentVM, Initialization);
 		}
 	}
 }
