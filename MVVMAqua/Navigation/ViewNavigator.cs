@@ -51,65 +51,109 @@ namespace MVVMAqua.Navigation
 
         public void OpenFirstView()
         {
-            throw new NotImplementedException();
+            OpenFirstView<BaseVM>(null, null, null, true);
+        }
+
+        public void OpenFirstView(bool isCallbackCloseViewHandler)
+        {
+            OpenFirstView<BaseVM>(null, null, null, isCallbackCloseViewHandler);
         }
 
         public void OpenFirstView<T>(T viewModel) where T : BaseVM
         {
-            throw new NotImplementedException();
+            OpenFirstView(viewModel, null, null, true);
+        }
+
+        public void OpenFirstView<T>(T viewModel, bool isCallbackCloseViewHandler) where T : BaseVM
+        {
+            OpenFirstView(viewModel, null, null, isCallbackCloseViewHandler);
         }
 
         public void OpenFirstView<T>(T viewModel, Action<T> initialization) where T : BaseVM
         {
-            throw new NotImplementedException();
+            OpenFirstView(viewModel, initialization, null, true);
+        }
+
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization, bool isCallbackCloseViewHandler) where T : BaseVM
+        {
+            OpenFirstView(viewModel, initialization, null, isCallbackCloseViewHandler);
         }
 
         public void OpenFirstView<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
         {
-            throw new NotImplementedException();
+            OpenFirstView(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; }, true);
+        }
+
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
+        {
+            OpenFirstView(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; }, isCallbackCloseViewHandler);
         }
 
         public void OpenFirstView<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
         {
-            throw new NotImplementedException();
+            OpenFirstView(viewModel, initialization, afterViewClosed, true);
         }
 
-        /*
-        public void UpdateRegion<T>(T viewModel) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
         {
-            UpdateRegion(viewModel, null, null);
-        }
-        public void UpdateRegion<T>(T viewModel, Action<T> initialization) where T : BaseVM
-        {
-            UpdateRegion(viewModel, initialization, null);
-        }
-        public void UpdateRegion<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
-        {
-            if (ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            if (viewModel == null)
             {
-                initialization?.Invoke(viewModel);
-                viewModel.ViewNavigator = ViewNavigator;
-                var viewWrapper = new ViewWrapper() { AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true };
+                if (!IsEmpty)
+                {                    
+                    if (isCallbackCloseViewHandler)
+                    {
+                        var lastViewWrapper = Views.Last();
+                        if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
+                        {
+                            return;
+                        }
+                    }
 
-                viewWrapper.View = Activator.CreateInstance(viewType) as ContentControl;
-                viewWrapper.ViewModel = viewModel;
+                    for (var i = CountViews; i > 1; i--)
+                    {
+                        Views.RemoveLast();
+                    }
 
-                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
-                {
-                    viewWrapper.ViewModel.AddRegion(region.Name, region);
+                    Container.Content = Views.Last().View;
+                    Container.DataContext = Views.Last().ViewModel;
                 }
-
-                viewWrappers.Clear();
-                viewWrappers.Push(viewWrapper);
-
-                if (Region != null)
+            }
+            else
+            {
+                if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
                 {
-                    Region.Content = viewWrapper.View;
-                    Region.DataContext = viewWrapper.ViewModel;
+                    if (!IsEmpty && isCallbackCloseViewHandler)
+                    {
+                        var lastViewWrapper = Views.Last();
+                        if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
+                        {
+                            return;
+                        }
+                    }
+
+                    var viewWrapper = new ViewWrapper()
+                    {
+                        View = Activator.CreateInstance(viewType) as ContentControl,
+                        ViewModel = viewModel,
+                        AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true
+                    };
+
+                    foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+                    {
+                        viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window, this));
+                    }
+
+                    viewModel.ViewNavigator = this;
+                    initialization?.Invoke(viewModel);
+                    
+                    Views.Clear();
+                    Views.AddLast(viewWrapper);
+
+                    Container.Content = viewWrapper.View;
+                    Container.DataContext = viewWrapper.ViewModel;
                 }
             }
         }
-*/
 
         #endregion
 
@@ -126,7 +170,7 @@ namespace MVVMAqua.Navigation
 
         public void NavigateTo<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
         {
-            throw new NotImplementedException();
+            NavigateTo(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; });
         }
 
         /// <summary>
@@ -135,7 +179,7 @@ namespace MVVMAqua.Navigation
         /// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
         public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
-			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
 			{
                 var viewWrapper = new ViewWrapper()
                 {
@@ -216,9 +260,9 @@ namespace MVVMAqua.Navigation
         {
             if (!IsEmpty)
             {
-                var lastViewWrapper = Views.Last();
                 if (isCallbackCloseViewHandler)
                 {
+                    var lastViewWrapper = Views.Last();
                     if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
                     {
                         return;
@@ -519,7 +563,7 @@ namespace MVVMAqua.Navigation
 			}
 
 			return result;
-		}
+		}        
 
         #endregion
     }
