@@ -15,10 +15,10 @@ namespace MVVMAqua.Navigation.Interfaces
         Window Window { get; }
 
         INavigator Parent { get; }
-        RegionsCollection Regions { get; }  		
+        RegionsCollection Regions { get; }
 
         void CloseWindow();
-        void CloseWindow(bool isCallbackCloseViewHandler);
+        void CloseWindow(bool isCallbackCloseWindowHandler);
 
         #region Открытие нового окна
 

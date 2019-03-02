@@ -244,8 +244,13 @@ namespace MVVMAqua.Navigation
             CloseWindow(true);
         }
 
-        public void CloseWindow(bool isCallbackCloseViewHandler)
+        public void CloseWindow(bool isCallbackCloseWindowHandler)
         {
+            if (Window is BaseWindow baseWindow)
+            {
+                baseWindow.IsCallbackCloseWindowHandler = isCallbackCloseWindowHandler;
+            }
+
             Window.Close();
         }
 
