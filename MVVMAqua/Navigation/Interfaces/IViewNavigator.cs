@@ -18,6 +18,7 @@ namespace MVVMAqua.Navigation.Interfaces
         RegionsCollection Regions { get; }  		
 
         void CloseWindow();
+        void CloseWindow(bool isCallbackCloseViewHandler);
 
         #region Открытие нового окна
 

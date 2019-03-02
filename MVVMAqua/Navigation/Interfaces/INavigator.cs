@@ -30,5 +30,6 @@ namespace MVVMAqua.Navigation.Interfaces
         void CloseLastView(bool isCallbackCloseViewHandler);
 
         void CloseAllViews();
+        void CloseAllViews(bool isCallbackCloseViewHandler);
     }
 }
