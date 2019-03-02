@@ -38,9 +38,6 @@ namespace MVVMAqua.Navigation
 
         public int CountViews => Views.Count;
 
-        public event Action<bool> IsEmptyChanged;
-        public event Action<int, int> CountViewsChanged;
-
         public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
 		{
 			Bootstrapper = bootstrapper;
@@ -160,9 +157,6 @@ namespace MVVMAqua.Navigation
 
 				Views.AddLast(viewWrapper);
 
-                IsEmptyChanged?.Invoke(IsEmpty);
-                CountViewsChanged?.Invoke(CountViews - 1, CountViews);
-
                 Container.Content = viewWrapper.View;
                 Container.DataContext = viewWrapper.ViewModel;
 			}
@@ -179,30 +173,30 @@ namespace MVVMAqua.Navigation
 		/// <param name="isCallbackCloseViewHandler">Флаг, указывающий нужно ли выполнять действие закрытия представления.</param>
 		public void CloseLastView(bool isCallbackCloseViewHandler)
 		{
-			var lastViewWrapper = Views.Last();
-			if (isCallbackCloseViewHandler)
-			{
-				if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
-				{
-					return;
-				}
-			}
+            if (!IsEmpty)
+            {
+                var lastViewWrapper = Views.Last();
+                if (isCallbackCloseViewHandler)
+                {
+                    if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
+                    {
+                        return;
+                    }
+                }
 
-			Views.Remove(lastViewWrapper);
+                Views.Remove(lastViewWrapper);
 
-            IsEmptyChanged?.Invoke(IsEmpty);
-            CountViewsChanged?.Invoke(CountViews - 1, CountViews);
-
-            if (Views.Count == 0)
-			{
-                Container.Content = null;
-                Container.DataContext = null;
-			}
-			else
-			{
-                Container.Content = Views.Last().View;
-                Container.DataContext = Views.Last().ViewModel;
-			}
+                if (IsEmpty)
+                {
+                    Container.Content = null;
+                    Container.DataContext = null;
+                }
+                else
+                {
+                    Container.Content = Views.Last().View;
+                    Container.DataContext = Views.Last().ViewModel;
+                }
+            }
 		}
 
 		/// <summary>
@@ -210,13 +204,13 @@ namespace MVVMAqua.Navigation
 		/// </summary>
 		public void CloseAllViews()
 		{
-			Views.Clear();
+            if (!IsEmpty)
+            {
+                Views.Clear();
 
-            IsEmptyChanged?.Invoke(IsEmpty);
-            CountViewsChanged?.Invoke(CountViews - 1, CountViews);
-
-            Container.Content = null;
-            Container.DataContext = null;
+                Container.Content = null;
+                Container.DataContext = null;
+            }
 		}
 
 		/// <summary>
