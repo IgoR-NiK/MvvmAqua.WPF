@@ -24,8 +24,7 @@ namespace MVVMAqua.ViewModels
 			get => windowTitle;
 			set => SetProperty(ref windowTitle, value, "WindowTitle");
 		}
-
-	
+        
 		private IViewNavigator viewNavigator;
 		public IViewNavigator ViewNavigator
 		{
@@ -36,8 +35,6 @@ namespace MVVMAqua.ViewModels
 				ViewNavigatorInitialization();
 			}
 		}
-
-
 
 		protected virtual void ViewNavigatorInitialization() { }
 
