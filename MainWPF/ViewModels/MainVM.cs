@@ -28,7 +28,7 @@ namespace MainWPF.ViewModels
 			Title.AddValidationRule(value => value.Contains('f'));
 			Password.AddValidationRule(value => value.Length > 8);
 
-				Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(),null,null, null,
+			Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(new MainVM(),null,null, null,
                     vm => vm.ViewNavigator.ShowModalWindow(new MainVM())));
 			Navigate = new RelayCommand(() => ViewNavigator.NavigateTo(new MainVM(), vm => vm.Title.Value = "2", vm =>
 			{
@@ -37,7 +37,7 @@ namespace MainWPF.ViewModels
 				return false;
 			}));
 
-			Close = new RelayCommand(() => ViewNavigator.CloseLastView());
+			Close = new RelayCommand(() => ViewNavigator.CloseAllViews(false));
 		}
 	}
 }
