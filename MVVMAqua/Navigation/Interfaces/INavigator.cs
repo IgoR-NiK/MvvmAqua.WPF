@@ -12,6 +12,12 @@ namespace MVVMAqua.Navigation.Interfaces
     {        
         BaseVM ViewModel { get; }
 
+        bool IsEmpty { get; }
+        int CountViews { get; }
+
+        event Action<bool> IsEmptyChanged;
+        event Action<int, int> CountViewsChanged;
+
         void OpenFirstView();
         void OpenFirstView<T>(T viewModel) where T : BaseVM;
         void OpenFirstView<T>(T viewModel, Action<T> initialization) where T : BaseVM;

@@ -34,6 +34,13 @@ namespace MVVMAqua.Navigation
 
         public BaseVM ViewModel => Views.Count > 0 ? Views.Last().ViewModel : null;
 
+        public bool IsEmpty => Views.Count == 0;
+
+        public int CountViews => Views.Count;
+
+        public event Action<bool> IsEmptyChanged;
+        public event Action<int, int> CountViewsChanged;
+
         public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
 		{
 			Bootstrapper = bootstrapper;
@@ -153,6 +160,9 @@ namespace MVVMAqua.Navigation
 
 				Views.AddLast(viewWrapper);
 
+                IsEmptyChanged?.Invoke(IsEmpty);
+                CountViewsChanged?.Invoke(CountViews - 1, CountViews);
+
                 Container.Content = viewWrapper.View;
                 Container.DataContext = viewWrapper.ViewModel;
 			}
@@ -179,7 +189,11 @@ namespace MVVMAqua.Navigation
 			}
 
 			Views.Remove(lastViewWrapper);
-			if (Views.Count == 0)
+
+            IsEmptyChanged?.Invoke(IsEmpty);
+            CountViewsChanged?.Invoke(CountViews - 1, CountViews);
+
+            if (Views.Count == 0)
 			{
                 Container.Content = null;
                 Container.DataContext = null;
@@ -197,6 +211,9 @@ namespace MVVMAqua.Navigation
 		public void CloseAllViews()
 		{
 			Views.Clear();
+
+            IsEmptyChanged?.Invoke(IsEmpty);
+            CountViewsChanged?.Invoke(CountViews - 1, CountViews);
 
             Container.Content = null;
             Container.DataContext = null;
