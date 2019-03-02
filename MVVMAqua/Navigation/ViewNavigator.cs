@@ -30,15 +30,16 @@ namespace MVVMAqua.Navigation
         /// </summary>
         LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();     		
 
-        public INavigator Parent => throw new NotImplementedException();
+        public INavigator Parent { get; }
 
         public BaseVM ViewModel => Views.Count > 0 ? Views.Last().ViewModel : null;
 
-        public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window)
+        public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
 		{
 			Bootstrapper = bootstrapper;
             Container = container;            
             Window = window;
+            Parent = parent;
 		}
 
 
@@ -144,7 +145,7 @@ namespace MVVMAqua.Navigation
 
                 foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
                 {
-                    viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window));
+                    viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window, this));
                 }
 
                 viewModel.ViewNavigator = this;
@@ -457,11 +458,12 @@ namespace MVVMAqua.Navigation
 				var modalVm = new ModalWindowVM<T>(viewModel, initialization, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 				modalWindow.DataContext = modalVm;
 
-				foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
+                var modalViewNavigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow, null);
+                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
 				{
-					modalVm.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, modalWindow));
+					modalVm.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, modalWindow, modalViewNavigator));
 				}
-                modalVm.ViewNavigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow);
+                modalVm.ViewNavigator = modalViewNavigator;
 
                 result = modalWindow.ShowDialog() ?? false;
 

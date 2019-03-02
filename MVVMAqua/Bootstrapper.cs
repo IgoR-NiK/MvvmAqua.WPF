@@ -201,7 +201,7 @@ namespace MVVMAqua
             where WindowType : Window
         {
             windowInitialization?.Invoke(window);
-            var navigator = new ViewNavigator(this, window, window);
+            var navigator = new ViewNavigator(this, window, window, null);
             if (window is BaseWindow baseWindow)
             {
                 baseWindow.WindowClosing = () => windowClosing?.Invoke(viewModel) ?? true;
