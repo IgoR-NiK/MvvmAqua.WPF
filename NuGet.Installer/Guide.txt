@@ -1,2 +1,0 @@
-cd "C:\Users\igor_\Desktop\NuGet.Installer"
-.\nuget.exe pack src\MvvmAqua.nuspec
