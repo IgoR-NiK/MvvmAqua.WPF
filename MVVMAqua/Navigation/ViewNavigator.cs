@@ -17,18 +17,13 @@ namespace MVVMAqua.Navigation
 	/// </summary>
 	internal class ViewNavigator : IViewNavigator
 	{
-		Bootstrapper Bootstrapper { get; }
+        #region Свойства
+
+        Bootstrapper Bootstrapper { get; }
 
         ContentControl Container { get; }
 
         public Window Window { get; }
-
-        public RegionsCollection Regions { get; } = new RegionsCollection();
-
-        /// <summary>
-        /// Стек представлений.
-        /// </summary>
-        LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();     		
 
         public INavigator Parent { get; }
 
@@ -38,6 +33,12 @@ namespace MVVMAqua.Navigation
 
         public int CountViews => Views.Count;
 
+        public RegionsCollection Regions { get; } = new RegionsCollection();
+
+        LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
+
+        #endregion
+
         public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
 		{
 			Bootstrapper = bootstrapper;
@@ -46,6 +47,7 @@ namespace MVVMAqua.Navigation
             Parent = parent;
 		}
 
+        #region OpenFirstView
 
         public void OpenFirstView()
         {
@@ -109,14 +111,9 @@ namespace MVVMAqua.Navigation
         }
 */
 
+        #endregion
 
-
-
-
-
-
-
-
+        #region NavigateTo
 
         public void NavigateTo<T>(T viewModel) where T : BaseVM
 		{
@@ -162,7 +159,11 @@ namespace MVVMAqua.Navigation
 			}
 		}
 
-		public void CloseLastView()
+        #endregion
+
+        #region CloseLastView
+
+        public void CloseLastView()
 		{
 			CloseLastView(true);
 		}
@@ -199,30 +200,58 @@ namespace MVVMAqua.Navigation
             }
 		}
 
-		/// <summary>
-		/// Закрывает все представления.
-		/// </summary>
-		public void CloseAllViews()
+        #endregion
+
+        #region CloseAllViews
+
+        /// <summary>
+        /// Закрывает все представления.
+        /// </summary>
+        public void CloseAllViews()
 		{
+            CloseAllViews(true);
+		}
+
+        public void CloseAllViews(bool isCallbackCloseViewHandler)
+        {
             if (!IsEmpty)
             {
+                var lastViewWrapper = Views.Last();
+                if (isCallbackCloseViewHandler)
+                {
+                    if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
+                    {
+                        return;
+                    }
+                }
+
                 Views.Clear();
 
                 Container.Content = null;
                 Container.DataContext = null;
             }
-		}
+        }
 
-		/// <summary>
-		/// Закрывает все представления и выходит из главного окна.
-		/// </summary>
-		public void CloseWindow()
+        #endregion
+
+        #region CloseWindow
+
+        /// <summary>
+        /// Закрывает все представления и выходит из главного окна.
+        /// </summary>
+        public void CloseWindow()
 		{
-			Window.Close();
-		}
+            CloseWindow(true);
+        }
 
+        public void CloseWindow(bool isCallbackCloseViewHandler)
+        {
+            Window.Close();
+        }
 
-        #region Открытие нового окна
+        #endregion
+
+        #region OpenNewWindow
 
         public void OpenNewWindow<T>(T viewModel)
            where T : BaseVM
