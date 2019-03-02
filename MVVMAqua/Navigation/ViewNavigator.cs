@@ -32,7 +32,7 @@ namespace MVVMAqua.Navigation
 
         public INavigator Parent => throw new NotImplementedException();
 
-        public BaseVM ViewModel => throw new NotImplementedException();
+        public BaseVM ViewModel => Views.Count > 0 ? Views.Last().ViewModel : null;
 
         public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window)
 		{
