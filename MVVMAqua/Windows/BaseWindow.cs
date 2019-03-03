@@ -8,7 +8,7 @@ namespace MVVMAqua.Windows
 {
 	public abstract class BaseWindow : Window
 	{
-        internal bool IsCallbackCloseWindowHandler { get; set; }
+        internal bool IsCallbackCloseWindowHandler { get; set; } = true;
         internal Func<bool> WindowClosing { get; set; }
 		
 		protected override void OnClosing(CancelEventArgs e)
