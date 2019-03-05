@@ -539,7 +539,7 @@ namespace MVVMAqua.Navigation
 		private bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType,
 								string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
-            var modalWindow = new ModalWindow() { Owner = Window };
+            var modalWindow = new ModalWindow();
             var modalVm = new ModalWindowVM(viewModel, vm => initialization?.Invoke((T)vm), caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 
             return ShowDialog(modalWindow, modalVm, null, _ => okResult?.Invoke(viewModel), _ => cancelResult?.Invoke(viewModel));                          
@@ -573,13 +573,11 @@ namespace MVVMAqua.Navigation
             var result = false;
 
             if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
-            {                
+            {
+                window.Owner = Window;
                 var navigator = new ViewNavigator(Bootstrapper, window, window, null);                
 
-                viewModel.CloseDialog += (sender, e) =>
-                {
-                    window.DialogResult = e.DialogResult;
-                };
+                viewModel.CloseDialog += (sender, e) => window.DialogResult = e.DialogResult;
 
                 navigator.NavigateTo(viewModel, viewModelInitialization);
 

@@ -8,6 +8,7 @@ using System.Windows;
 
 using MVVMAqua;
 using MainWPF.ViewModels;
+using MainWPF.Views;
 
 namespace MainWPF
 {
@@ -19,7 +20,13 @@ namespace MainWPF
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			var bootstrapper = new Bootstrapper();
-			bootstrapper.OpenNewWindow(new MainVM(), vm => vm.Title.Value = "1", null, null, vm => vm.ViewNavigator.ShowDialog(new MainVM(), x => x.Title.Value = "title", "", MVVMAqua.Enums.ModalButtons.OkCancel));		
+
+            bootstrapper.Bind<MyVM<MainVM>>().To<MyView>();
+
+            bootstrapper.OpenNewWindow(new MainVM(), vm => vm.Title.Value = "1", null, null,
+                y => y.ViewNavigator.ShowDialog(
+                    new MyModalWindow(),
+                    new MyVM<MainVM>(new MainVM(), x => x.Title.Value = "title", "Уведомление", MVVMAqua.Enums.ModalButtons.OkCancel, "Ок", "Отмена", System.Windows.Media.Color.FromRgb(0x4A, 0x76, 0xC9))));		
 		}
 	}
 }
