@@ -34,15 +34,5 @@ namespace MVVMAqua.Windows
 				moveStart = e.GetPosition(this);
 			}
 		}
-
-		private void btnOk_Click(object sender, RoutedEventArgs e)
-		{
-			DialogResult = true;
-		}
-
-		private void btnClose_Click(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
 	}
 }
