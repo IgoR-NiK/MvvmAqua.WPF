@@ -392,178 +392,205 @@ namespace MVVMAqua.Navigation
 
         #endregion
 
-        #region ShowModalWindow
+        #region ShowDialog
 
-        public bool ShowModalWindow(string text)
+        public bool ShowDialog(string text)
 		{
-			return ShowModalWindow(text, ModalIcon.None, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowDialog(text, ModalIcon.None, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon)
+		public bool ShowDialog(string text, ModalIcon icon)
 		{
-			return ShowModalWindow(text, icon, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowDialog(text, icon, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption)
+		public bool ShowDialog(string text, ModalIcon icon, string caption)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowDialog(text, icon, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, ModalButtons buttonType)
 		{
-			return ShowModalWindow(text, icon, caption, buttonType, "Ок", "Отмена", null, null);
+			return ShowDialog(text, icon, caption, buttonType, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
+			return ShowDialog(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, Action okResult)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
+			return ShowDialog(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
+			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
+			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
 
-		public bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
 		{
-			return ShowModalWindow(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
-		}
-
-
-		public bool ShowModalWindow<T>(T viewModel) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, buttonType, "Ок", "Отмена", null, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
-		}
-
-		public bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
-		{
-			return ShowModalWindow(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
+			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowDialog(viewModel, null, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
+			return ShowDialog(viewModel, null, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, buttonType, "Ок", "Отмена", null, null);
+			return ShowDialog(viewModel, null, caption, buttonType, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
+			return ShowDialog(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
+			return ShowDialog(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
+			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
+			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
 
-		public bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
-			return ShowModalWindow(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
+			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
+		}
+
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, buttonType, "Ок", "Отмена", null, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
+		}
+
+		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
+		{
+			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 
 		/// <summary>
 		/// Отображает модальное диалоговое окно с указанным текстом.
 		/// </summary>
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		private bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType,
+		private bool ShowDialog(string text, ModalIcon icon, string caption, ModalButtons buttonType,
 								string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
 		{
 			var viewModel = new ModalMessageVM(text, icon);
-			return ShowModalWindow(viewModel, null, caption, buttonType, btnOkText, btnCancelText, _ => okResult?.Invoke(), _ => cancelResult?.Invoke());
+			return ShowDialog(viewModel, null, caption, buttonType, btnOkText, btnCancelText, _ => okResult?.Invoke(), _ => cancelResult?.Invoke());
 		}
 
 		/// <summary>
 		/// Отображает модальное диалоговое окно с указанным представлением.
 		/// </summary>
 		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
-		private bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType,
+		private bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType,
 								string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
-			var result = false;
+            var modalWindow = new ModalWindow();
+            var modalVm = new ModalWindowVM(viewModel, vm => initialization?.Invoke((T)vm), caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
 
-			if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
-			{
-				var modalWindow = new ModalWindow() { Owner = Window };
-				var modalVm = new ModalWindowVM<T>(viewModel, initialization, caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
-				modalWindow.DataContext = modalVm;
+            return ShowDialog(modalWindow, modalVm, null, _ => okResult?.Invoke(viewModel), _ => cancelResult?.Invoke(viewModel));                          
+		}
 
-                var modalViewNavigator = new ViewNavigator(Bootstrapper, modalWindow, modalWindow, null);
-                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(modalWindow))
-				{
-					modalVm.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, modalWindow, modalViewNavigator));
-				}
-                modalVm.ViewNavigator = modalViewNavigator;
+        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window
+        {
+            return ShowDialog(window, viewModel, null, null, null);
+        }
 
-                result = modalWindow.ShowDialog() ?? false;
+        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window
+        {
+            return ShowDialog(window, viewModel, viewModelInitialization, null, null);
+        }
 
-				if (result)
-					okResult?.Invoke(viewModel);
-				else
-					cancelResult?.Invoke(viewModel);
-			}
+        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window
+        {
+            return ShowDialog(window, viewModel, viewModelInitialization, okResult, null);
+        }
 
-			return result;
-		}        
+        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult, Action<ViewModelType> cancelResult)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window
+        {
+            var result = false;
+
+            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            {
+                window.Owner = Window;
+                var navigator = new ViewNavigator(Bootstrapper, window, window, null);                
+
+                viewModel.CloseDialog += (sender, e) => window.DialogResult = e.DialogResult;
+
+                navigator.NavigateTo(viewModel, viewModelInitialization);
+
+                result = window.ShowDialog() ?? false;
+
+                if (result)
+                    okResult?.Invoke(viewModel);
+                else
+                    cancelResult?.Invoke(viewModel);
+            }
+
+            return result;
+        }
 
         #endregion
     }

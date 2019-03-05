@@ -17,7 +17,7 @@ namespace MVVMAqua.Windows
             
             if (IsCallbackCloseWindowHandler)
             {
-                e.Cancel = DataContext is IWindowCloser windowCloser ? !windowCloser.CloseWindow() : !WindowClosing?.Invoke() ?? false;
+                e.Cancel = DataContext is IWindowClosing windowClosing ? !windowClosing.WindowClosingAction() : !WindowClosing?.Invoke() ?? false;
             }
 		}
 	}
