@@ -70,35 +70,51 @@ namespace MVVMAqua.Navigation.Interfaces
 
         #endregion
                
-        #region ShowModalWindow
+        #region ShowDialog
 
-        bool ShowModalWindow(string text);
-		bool ShowModalWindow(string text, ModalIcon icon);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, ModalButtons buttonType);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText, Action okResult);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult);
-		bool ShowModalWindow(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult, Action cancelResult);
+        bool ShowDialog(string text);
+		bool ShowDialog(string text, ModalIcon icon);
+		bool ShowDialog(string text, ModalIcon icon, string caption);
+		bool ShowDialog(string text, ModalIcon icon, string caption, ModalButtons buttonType);
+		bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText);
+		bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, Action okResult);
+		bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText);
+		bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult);
+		bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult, Action cancelResult);
 
-		bool ShowModalWindow<T>(T viewModel) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, ModalButtons buttonType) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, string btnOkText) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
 
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
-		bool ShowModalWindow<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
+		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
+
+        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window;
+
+        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window;
+
+        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window;
+
+        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult, Action<ViewModelType> cancelResult)
+            where ViewModelType : BaseVM, IDialogClosing
+            where WindowType : Window;
 
         #endregion
 	}

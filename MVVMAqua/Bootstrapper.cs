@@ -19,7 +19,8 @@ namespace MVVMAqua
 	{
 		internal Dictionary<Type, Type> ViewModelToViewMap { get; } = new Dictionary<Type, Type>()
 		{
-			[typeof(ModalMessageVM)] = typeof(ModalMessageView)
+			[typeof(ModalMessageVM)] = typeof(ModalMessageView),
+            [typeof(ModalWindowVM)] = typeof(ModalWindowView)
 		};
 
 		public Bootstrapper()
