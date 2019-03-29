@@ -21,26 +21,7 @@ namespace MVVMAqua
 			}
 		}
 
-		protected void SetProperty<T>(ref T property, T value, Expression<Func<T>> propertyName)
-		{
-			if (!EqualityComparer<T>.Default.Equals(property, value))
-			{
-				property = value;
-				OnPropertyChanged(propertyName);
-			}
-		}
-
 		protected void SetProperty<T>(ref T property, T value, Action onValueChanged, [CallerMemberName]string propertyName = null)
-		{
-			if (!EqualityComparer<T>.Default.Equals(property, value))
-			{
-				property = value;
-				onValueChanged?.Invoke();
-				OnPropertyChanged(propertyName);
-			}
-		}
-		
-		protected void SetProperty<T>(ref T property, T value, Action onValueChanged, Expression<Func<T>> propertyName)
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
@@ -56,17 +37,6 @@ namespace MVVMAqua
 		protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		protected void OnPropertyChanged<T>(Expression<Func<T>> property)
-		{
-			if (PropertyChanged != null)
-			{
-				if (property.Body is MemberExpression expression)
-				{
-					PropertyChanged(this, new PropertyChangedEventArgs(expression.Member.Name));
-				}
-			}
 		}
 	}
 }
