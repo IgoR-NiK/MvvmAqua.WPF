@@ -6,16 +6,45 @@
              xmlns:local="clr-namespace:MainWPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <TextBox Text="{Binding Title.Value, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Text="{Binding Title.Value}" />
-        <TextBlock Text="{Binding Title.IsValid}" />
+	<Border>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"></ColumnDefinition>
+				<ColumnDefinition Width="3*"></ColumnDefinition>
+				<ColumnDefinition Width="*"></ColumnDefinition>
+			</Grid.ColumnDefinitions>
 
-        <TextBox Text="{Binding Password.Value, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Text="{Binding Password.Value}" />
-        <TextBlock Text="{Binding Password.IsValid}" />
-        <Button Content="Новое окно" Command="{Binding Next}" />
-        <Button Content="Вперёд" Command="{Binding Navigate}" />
-        <Button Content="Закрыть" Command="{Binding Close}" />
-    </StackPanel>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="70"></RowDefinition>
+				<RowDefinition></RowDefinition>
+			</Grid.RowDefinitions>
+
+			<TextBlock Text="Имя:" 
+					   FontSize="25"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center" />
+			<TextBox Text="{Binding Password.Value, UpdateSourceTrigger=PropertyChanged}"
+					 Grid.Column="1"
+					 Margin="15" 
+					 FontSize="25" />
+			<Button Content="Проверить" 
+					Command="{Binding CheckCommand}"
+					Grid.Column="2"
+					Margin="15" />
+
+			<TextBlock Text="{Binding Password.IsValid}"
+					   Grid.Row="1" />
+
+			<ListView ItemsSource="{Binding Password.Errors}"
+					  Grid.Row="1"
+					  Grid.Column="1"
+					  Margin="15"/>
+
+			<CheckBox IsChecked="{Binding IsCheck}"
+					  Content="Включить проверку"
+					  Grid.Row="1"
+					  Grid.Column="2" />
+
+		</Grid>       
+    </Border>
 </UserControl>

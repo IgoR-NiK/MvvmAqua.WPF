@@ -13,35 +13,27 @@ namespace MainWPF.ViewModels
 {
 	class MainVM : BaseVM
 	{
-		public ValidatableProperty<string> Title { get; } = new ValidatableProperty<string>(true);
-
-		public ValidatableProperty<string> Password { get; } = new ValidatableProperty<string>(true);
-		
-		public ICommand Next { get; }
-
-		public ICommand Navigate { get; }
-
-		public ICommand Close { get; }
-
-		public MainVM()
+		private bool isCheck;
+		public bool IsCheck
 		{
-			Title.AddValidationRule(value => value.Contains('f'));
-			Password.AddValidationRule(value => value.Length > 8);
-
-            Next = new RelayCommand(() => ViewNavigator.OpenNewWindow(
-                new MainVM(), 
-                null, 
-                null, 
-                null,
-                vm => vm.ViewNavigator.ShowDialog(new MainVM())));
-            Navigate = new RelayCommand(() => ViewNavigator.NavigateTo(new MainVM(), vm => vm.Title.Value = "2", vm =>
-            {
-                vm.ViewNavigator.NavigateTo(new MainVM(), vm2 => vm2.Title.Value = "3");
-                vm.ViewNavigator.NavigateTo(new MainVM(), vm2 => vm2.Title.Value = "4");
-                return false;
-            }));
-
-			Close = new RelayCommand(() => ViewNavigator.CloseLastView());
+			get => isCheck;
+			set => SetProperty(ref isCheck, value, () => Password.Validate());
 		}
+
+		public ValidatableProperty<string> Password { get; } = new ValidatableProperty<string>();
+
+        public RelayCommand CheckCommand { get; }
+	
+		public MainVM()
+		{           
+            Password.AddRule(x => !IsCheck || x?.Length > 5, "> 5");
+
+			Password.AddRule(x => x?.Length > 5, "> 5");
+
+			Password.AddRule(x => x?.Length > 10, "> 10");
+            Password.AddRule(x => !String.IsNullOrWhiteSpace(x), "Введите значение");
+
+            CheckCommand = new RelayCommand(() => Password.Validate());
+        }
 	}
 }

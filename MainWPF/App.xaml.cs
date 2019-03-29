@@ -19,7 +19,7 @@ namespace MainWPF
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			var bootstrapper = new Bootstrapper();
-			bootstrapper.OpenNewWindow(new MainVM(), vm => vm.Title.Value = "1");		
+			bootstrapper.OpenNewWindow(new MainVM());		
 		}
 	}
 }
