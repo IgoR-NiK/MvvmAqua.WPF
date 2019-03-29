@@ -39,12 +39,6 @@
 					  Grid.Row="1"
 					  Grid.Column="1"
 					  Margin="15"/>
-
-			<CheckBox IsChecked="{Binding IsCheck}"
-					  Content="Включить проверку"
-					  Grid.Row="1"
-					  Grid.Column="2" />
-
 		</Grid>       
     </Border>
 </UserControl>

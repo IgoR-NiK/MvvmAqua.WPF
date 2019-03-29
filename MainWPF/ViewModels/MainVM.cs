@@ -13,23 +13,14 @@ namespace MainWPF.ViewModels
 {
 	class MainVM : BaseVM
 	{
-		private bool isCheck;
-		public bool IsCheck
-		{
-			get => isCheck;
-			set => SetProperty(ref isCheck, value, () => Password.Validate());
-		}
-
-		public ValidatableProperty<string> Password { get; } = new ValidatableProperty<string>();
+		public ValidatableProperty<string> Password { get; } = new ValidatableProperty<string>(default, null, true);
 
         public RelayCommand CheckCommand { get; }
 	
 		public MainVM()
 		{           
-            Password.AddRule(x => !IsCheck || x?.Length > 5, "> 5");
 
-			Password.AddRule(x => x?.Length > 5, "> 5");
-
+			Password.AddRule(x => x?.Length > 5, "> 5", false);
 			Password.AddRule(x => x?.Length > 10, "> 10");
             Password.AddRule(x => !String.IsNullOrWhiteSpace(x), "Введите значение");
 
