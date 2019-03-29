@@ -9,6 +9,7 @@ namespace MVVMAqua.Validation
 	internal interface IValidity
 	{
 		bool IsValid { get; }
+
 		bool Validate();
 	}
 }

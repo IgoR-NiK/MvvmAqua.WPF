@@ -8,13 +8,15 @@ namespace MVVMAqua.Validation
 {
 	internal class ValidationRuleWrapper<T>
 	{
-		public Guid Id { get; }
 		public Func<T, ValidationResult> ValidationRule { get; }
 
-		public ValidationRuleWrapper(Func<T, ValidationResult> validationRule)
+		public bool IsValidateWhenPropertyChange { get; }
+
+
+		public ValidationRuleWrapper(Func<T, ValidationResult> validationRule, bool isValidateWhenPropertyChange)
 		{
-			Id = Guid.NewGuid();
 			ValidationRule = validationRule;
+			IsValidateWhenPropertyChange = isValidateWhenPropertyChange;
 		}
 	}
 }
