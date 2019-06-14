@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\ModalMessageVM.cs" />
     <Compile Include="ViewModels\ModalWindowVM.cs" />
+    <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\ModalWindowView.xaml.cs">
       <DependentUpon>ModalWindowView.xaml</DependentUpon>
     </Compile>
