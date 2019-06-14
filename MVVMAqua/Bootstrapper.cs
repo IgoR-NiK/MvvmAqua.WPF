@@ -29,16 +29,25 @@ namespace MVVMAqua
 			AutoMappingViewModelToView(callingAssembly);
 		}
 
-        #region Привязка View к ViewModel
+		public Bootstrapper(bool isAutoMappingViewModelToView)
+		{
+			if (isAutoMappingViewModelToView)
+			{
+				var callingAssembly = Assembly.GetCallingAssembly();
+				AutoMappingViewModelToView(callingAssembly);
+			}			
+		}
 
-        /// <summary>
-        /// Автоматическая привязка VM к View. 
-        /// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
-        /// View должна иметь следующие названия: Name или NameView. 
-        /// Регистр значения не имеет.
-        /// </summary>
-        /// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
-        private void AutoMappingViewModelToView(Assembly assembly)
+		#region Привязка View к ViewModel
+
+		/// <summary>
+		/// Автоматическая привязка VM к View. 
+		/// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
+		/// View должна иметь следующие названия: Name или NameView. 
+		/// Регистр значения не имеет.
+		/// </summary>
+		/// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
+		private void AutoMappingViewModelToView(Assembly assembly)
 		{
 			var viewModels = assembly
 				.GetTypes()
