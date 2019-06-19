@@ -77,8 +77,10 @@
     <Compile Include="Navigation\ViewNavigator.cs" />
     <Compile Include="Navigation\ViewWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\IValidationResult.cs" />
     <Compile Include="Validation\IValidationRule.cs" />
-    <Compile Include="Validation\IValidity.cs" />
+    <Compile Include="Validation\IValidatable.cs" />
+    <Compile Include="Validation\ValidatablePropertyUniversal.cs" />
     <Compile Include="Validation\ValidatableProperty.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="Validation\ValidationRuleWrapper.cs" />

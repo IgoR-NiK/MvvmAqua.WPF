@@ -4,7 +4,8 @@ using MVVMAqua.ViewModels;
 
 namespace MVVMAqua.Views
 {
-	class BaseView<T> : UserControl where T : BaseVM
+	public class BaseView<T> : UserControl 
+		where T : BaseVM
 	{
 		protected T ViewModel => DataContext as T;
 	}
