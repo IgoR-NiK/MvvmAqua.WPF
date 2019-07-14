@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 using System.Windows.Controls;
@@ -12,6 +10,7 @@ using MVVMAqua.Views;
 using MVVMAqua.Windows;
 using MVVMAqua.Navigation;
 using System.Windows.Media;
+using MVVMAqua.Helpers;
 
 namespace MVVMAqua
 {
@@ -49,14 +48,12 @@ namespace MVVMAqua
 			if (isAutoMappingViewModelToView)
 			{
 				var viewModels = assemblies.SelectMany(assembly => assembly
-				.GetTypes()
-				.Where(x => typeof(BaseVM).IsAssignableFrom(x)))
-				.ToList();
+					.GetTypes()
+					.Where(x => typeof(BaseVM).IsAssignableFrom(x)));
 
 				var views = assemblies.SelectMany(assembly => assembly
 					.GetTypes()
-					.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null))
-					.ToList();
+					.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null));
 
 				viewModels.ForEach(vm =>
 				{
