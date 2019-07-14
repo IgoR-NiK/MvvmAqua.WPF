@@ -24,18 +24,14 @@ namespace MVVMAqua
 		};
 
 		public Bootstrapper()
-		{
-			var callingAssembly = Assembly.GetCallingAssembly();
-			AutoMappingViewModelToView(callingAssembly);
-		}
+			: this(true, new List<Assembly> { Assembly.GetCallingAssembly() }) { }
 
 		public Bootstrapper(bool isAutoMappingViewModelToView)
+			: this(isAutoMappingViewModelToView, new List<Assembly> { Assembly.GetCallingAssembly() }) { }
+
+		public Bootstrapper(bool isAutoMappingViewModelToView, List<Assembly> assemblies)
 		{
-			if (isAutoMappingViewModelToView)
-			{
-				var callingAssembly = Assembly.GetCallingAssembly();
-				AutoMappingViewModelToView(callingAssembly);
-			}			
+			AutoMappingViewModelToView(isAutoMappingViewModelToView, assemblies);
 		}
 
 		#region Привязка View к ViewModel
@@ -46,38 +42,42 @@ namespace MVVMAqua
 		/// View должна иметь следующие названия: Name или NameView. 
 		/// Регистр значения не имеет.
 		/// </summary>
-		/// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
-		private void AutoMappingViewModelToView(Assembly assembly)
+		/// <param name="isAutoMappingViewModelToView">Указывает, необходимо ли привязывать ViewModel и View автоматически.</param>
+		/// <param name="assemblies">Сборки, в которых производится поиск ViewModel и View.</param>
+		private void AutoMappingViewModelToView(bool isAutoMappingViewModelToView, List<Assembly> assemblies)
 		{
-			var viewModels = assembly
+			if (isAutoMappingViewModelToView)
+			{
+				var viewModels = assemblies.SelectMany(assembly => assembly
 				.GetTypes()
-				.Where(x => typeof(BaseVM).IsAssignableFrom(x))
+				.Where(x => typeof(BaseVM).IsAssignableFrom(x)))
 				.ToList();
 
-			var views = assembly
-				.GetTypes()
-				.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null)
-				.ToList();				
+				var views = assemblies.SelectMany(assembly => assembly
+					.GetTypes()
+					.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null))
+					.ToList();
 
-			viewModels.ForEach(vm =>
-			{
-				var viewModelName = vm.Name.ToLower();
-				if (viewModelName.EndsWith("vm"))
+				viewModels.ForEach(vm =>
 				{
-					viewModelName = viewModelName.Remove(viewModelName.Length - "vm".Length);
-				}
-				else if (viewModelName.EndsWith("viewmodel"))
-				{
-					viewModelName = viewModelName.Remove(viewModelName.Length - "viewmodel".Length);
-				}
+					var viewModelName = vm.Name.ToLower();
+					if (viewModelName.EndsWith("vm"))
+					{
+						viewModelName = viewModelName.Remove(viewModelName.Length - "vm".Length);
+					}
+					else if (viewModelName.EndsWith("viewmodel"))
+					{
+						viewModelName = viewModelName.Remove(viewModelName.Length - "viewmodel".Length);
+					}
 
-				var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
+					var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
 
-				if (view != null && !ViewModelToViewMap.ContainsKey(vm))
-				{
-					ViewModelToViewMap.Add(vm, view);
-				}
-			});
+					if (view != null && !ViewModelToViewMap.ContainsKey(vm))
+					{
+						ViewModelToViewMap.Add(vm, view);
+					}
+				});
+			}
 		}
 
 
