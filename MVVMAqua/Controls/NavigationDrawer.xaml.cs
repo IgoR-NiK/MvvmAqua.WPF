@@ -12,7 +12,8 @@ namespace MVVMAqua.Controls
 
 		public readonly static DependencyProperty TopBarProperty;
 		public readonly static DependencyProperty MenuHeaderProperty;
-		public readonly static DependencyProperty MenuProperty;		
+		public readonly static DependencyProperty MenuProperty;
+		public readonly static DependencyProperty MenuFooterProperty;
 		public readonly static DependencyProperty ContentProperty;
 		
 		public readonly static DependencyProperty TopBarBackgroundProperty;
@@ -24,8 +25,9 @@ namespace MVVMAqua.Controls
 		public readonly static DependencyProperty IsMenuOpenProperty;
 
 		public readonly static DependencyProperty MinMenuWidthProperty;
-		public readonly static DependencyProperty MaxMenuWidthProperty;				
+		public readonly static DependencyProperty MaxMenuWidthProperty;
 		public readonly static DependencyProperty MenuHeaderVisibilityProperty;
+		public readonly static DependencyProperty MenuFooterVisibilityProperty;
 
 		#endregion
 
@@ -58,6 +60,15 @@ namespace MVVMAqua.Controls
 				new PropertyMetadata()
 				{
 					PropertyChangedCallback = OnMenuChanged
+				});
+
+			MenuFooterProperty = DependencyProperty.Register(
+				"MenuFooter",
+				typeof(object),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuFooterChanged
 				});
 
 			ContentProperty = DependencyProperty.Register(
@@ -145,6 +156,15 @@ namespace MVVMAqua.Controls
 				{
 					PropertyChangedCallback = OnMenuHeaderVisibilityChanged
 				});
+
+			MenuFooterVisibilityProperty = DependencyProperty.Register(
+				"MenuFooterVisibility",
+				typeof(Visibility),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuFooterVisibilityChanged
+				});
 		}
 
 		#endregion
@@ -164,7 +184,7 @@ namespace MVVMAqua.Controls
 			ButtonMenu.Click += OpenMenuButton_Click;
 			ShadowArea.MouseDown += Shadow_MouseDown;
 			ShadowArea.Visibility = Visibility.Collapsed;
-		}		
+		}
 
 		#region Свойства-обертки
 
@@ -184,7 +204,13 @@ namespace MVVMAqua.Controls
 		{
 			get => GetValue(MenuProperty);
 			set => SetValue(MenuProperty, value);
-		}		
+		}
+		
+		public object MenuFooter
+		{
+			get => GetValue(MenuFooterProperty);
+			set => SetValue(MenuFooterProperty, value);
+		}
 
 		public object Content
 		{
@@ -246,6 +272,12 @@ namespace MVVMAqua.Controls
 			set => SetValue(MenuHeaderVisibilityProperty, value);
 		}
 
+		public Visibility MenuFooterVisibility
+		{
+			get => (Visibility)GetValue(MenuFooterVisibilityProperty);
+			set => SetValue(MenuFooterVisibilityProperty, value);
+		}
+
 		#endregion
 
 		#region Методы изменения свойств зависимости
@@ -271,6 +303,14 @@ namespace MVVMAqua.Controls
 			if (sender is NavigationDrawer navigationDrawer)
 			{
 				navigationDrawer.MenuArea.Content = navigationDrawer.Menu;
+			}
+		}
+
+		static void OnMenuFooterChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuFooterArea.Content = navigationDrawer.MenuFooter;
 			}
 		}
 
@@ -360,9 +400,17 @@ namespace MVVMAqua.Controls
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
-				navigationDrawer.MenuHeaderArea.Visibility = navigationDrawer.MenuHeaderVisibility;				
+				navigationDrawer.MenuHeaderArea.Visibility = navigationDrawer.MenuHeaderVisibility;
 			}
-		}		
+		}
+
+		static void OnMenuFooterVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuFooterArea.Visibility = navigationDrawer.MenuFooterVisibility;
+			}
+		}
 
 		#endregion
 
