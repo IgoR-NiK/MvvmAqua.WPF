@@ -3,42 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:controls="clr-namespace:MVVMAqua.Controls;assembly=MVVMAqua"
              xmlns:local="clr-namespace:MainWPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<Border>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"></ColumnDefinition>
-				<ColumnDefinition Width="3*"></ColumnDefinition>
-				<ColumnDefinition Width="*"></ColumnDefinition>
-			</Grid.ColumnDefinitions>
 
-			<Grid.RowDefinitions>
-				<RowDefinition Height="70"></RowDefinition>
-				<RowDefinition></RowDefinition>
-			</Grid.RowDefinitions>
-
-			<TextBlock Text="Имя:" 
-					   FontSize="25"
-					   VerticalAlignment="Center"
-					   HorizontalAlignment="Center" />
-			<TextBox Text="{Binding Password.Value, UpdateSourceTrigger=PropertyChanged}"
-					 Grid.Column="1"
-					 Margin="15" 
-					 FontSize="25" />
-			<Button Content="Проверить" 
-					Command="{Binding CheckCommand}"
-					Grid.Column="2"
-					Margin="15" />
-
-			<TextBlock Text="{Binding Password.IsValid}"
-					   Grid.Row="1" />
-
-			<ListView ItemsSource="{Binding Password.Errors}"
-					  Grid.Row="1"
-					  Grid.Column="1"
-					  Margin="15"/>
-		</Grid>       
-    </Border>
-</UserControl>
+	<Grid>
+		<controls:NavigationDrawer MinMenuWidth="100" 
+								   IsMenuOpen="True" 
+								   MaxMenuWidth="300" 
+								   ShadowColor="#55f37684"
+								   MenuBackground="DeepSkyBlue"
+								   TopBarBackground="DarkGreen" 
+								   ButtonMenuHoverColor="Black" 
+								   ButtonMenuColor="MediumVioletRed">
+			<controls:NavigationDrawer.TopBar>
+				<StackPanel>
+					<TextBox Width="100" Height="150" HorizontalAlignment="Left">hrrr</TextBox>
+				</StackPanel>				
+			</controls:NavigationDrawer.TopBar>
+			<controls:NavigationDrawer.Content>
+				<StackPanel>
+					<TextBox Width="500">hrrr</TextBox>
+					<TextBox Width="500">hrrr</TextBox>
+					<TextBox Width="500">hrrr</TextBox>
+					<Button Width="500" Height="100">hfhhf</Button>
+				</StackPanel>
+			</controls:NavigationDrawer.Content>
+			<controls:NavigationDrawer.MenuHeader>
+				<Label>Это MenuHeader</Label>				
+			</controls:NavigationDrawer.MenuHeader>
+			<controls:NavigationDrawer.Menu>
+				<Label>Это Menu</Label>
+			</controls:NavigationDrawer.Menu>
+		</controls:NavigationDrawer>
+	</Grid>
+</UserControl>	

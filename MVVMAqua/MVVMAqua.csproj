@@ -50,6 +50,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\NavigationDrawer.xaml.cs">
+      <DependentUpon>NavigationDrawer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\IEnumerableHelper.cs" />
     <Compile Include="Navigation\Interfaces\IDialogClosing.cs" />
     <Compile Include="Navigation\Interfaces\INavigator.cs" />
@@ -106,6 +109,10 @@
     <Resource Include="Images\Close.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\NavigationDrawer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Navigation\Regions\Region.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
