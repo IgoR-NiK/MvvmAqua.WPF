@@ -37,7 +37,7 @@
 
 				<Button x:Name="ButtonMenu"
 						Grid.Row="0"
-						Grid.Column="0"						
+						Grid.Column="0"
 						MinWidth="40">
 					<Button.Template>
 						<ControlTemplate>
@@ -77,7 +77,7 @@
 								</Storyboard>
 							</BeginStoryboard>
 						</EventTrigger>
-					</Button.Triggers>					
+					</Button.Triggers>
 				</Button>
 				
 				<ContentPresenter Grid.Row="0"
@@ -94,9 +94,9 @@
 		</Border>
 
 		<!-- Shadow -->
-		<Border x:Name="ShadowArea"						
-				Grid.Row="1" 
-				Grid.Column="1"				
+		<Border x:Name="ShadowArea"
+				Grid.Row="1"
+				Grid.Column="1"
 				Panel.ZIndex="1" />
 
 		<!-- Menu -->
@@ -108,8 +108,9 @@
 				HorizontalAlignment="Left">
 			<Grid>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto" />
 					<RowDefinition Height="*" />
+					<RowDefinition Height="auto" />
 				</Grid.RowDefinitions>
 
 				<!-- Menu header -->
@@ -119,6 +120,10 @@
 				<!-- Menu items -->
 				<ContentPresenter x:Name="MenuArea"
 								  Grid.Row="1" />
+
+				<!-- Menu footer -->
+				<ContentPresenter x:Name="MenuFooterArea"
+								  Grid.Row="2" />
 			</Grid>
 		</Border>
 	</Grid>
