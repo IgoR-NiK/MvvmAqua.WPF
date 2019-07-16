@@ -1,0 +1,379 @@
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace MVVMAqua.Controls
+{
+	public partial class NavigationDrawer : UserControl
+	{
+		#region Свойства зависимости
+
+		public readonly static DependencyProperty TopBarProperty;
+		public readonly static DependencyProperty MenuHeaderProperty;
+		public readonly static DependencyProperty MenuProperty;		
+		public readonly static DependencyProperty ContentProperty;
+		
+		public readonly static DependencyProperty TopBarBackgroundProperty;
+		public readonly static DependencyProperty MenuBackgroundProperty;
+		public readonly static DependencyProperty ShadowColorProperty;
+		public readonly static DependencyProperty ButtonMenuColorProperty;
+		public readonly static DependencyProperty ButtonMenuHoverColorProperty;
+
+		public readonly static DependencyProperty IsMenuOpenProperty;
+
+		public readonly static DependencyProperty MinMenuWidthProperty;
+		public readonly static DependencyProperty MaxMenuWidthProperty;				
+		public readonly static DependencyProperty MenuHeaderVisibilityProperty;
+
+		#endregion
+
+		#region Регистрация свойств зависимости
+
+		static NavigationDrawer()
+		{
+			TopBarProperty = DependencyProperty.Register(
+				"TopBar",
+				typeof(object),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnTopBarChanged
+				});
+
+			MenuHeaderProperty = DependencyProperty.Register(
+				"MenuHeader",
+				typeof(object),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuHeaderChanged
+				});
+
+			MenuProperty = DependencyProperty.Register(
+				"Menu",
+				typeof(object),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuChanged
+				});
+
+			ContentProperty = DependencyProperty.Register(
+				"Content",
+				typeof(object),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnContentChanged
+				});
+
+			TopBarBackgroundProperty = DependencyProperty.Register(
+				"TopBarBackground",
+				typeof(Brush),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnTopBarBackgroundChanged
+				});
+
+			MenuBackgroundProperty = DependencyProperty.Register(
+				"MenuBackground",
+				typeof(Brush),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuBackgroundChanged
+				});
+
+			ShadowColorProperty = DependencyProperty.Register(
+				"ShadowColor",
+				typeof(Color),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnShadowColorChanged
+				});
+
+			ButtonMenuColorProperty = DependencyProperty.Register(
+				"ButtonMenuColor",
+				typeof(Color),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnButtonMenuColorChanged
+				});
+
+			ButtonMenuHoverColorProperty = DependencyProperty.Register(
+				"ButtonMenuHoverColor",
+				typeof(Color),
+				typeof(NavigationDrawer));
+
+			IsMenuOpenProperty = DependencyProperty.Register(
+				"IsMenuOpen",
+				typeof(bool),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnIsMenuOpenChanged
+				});
+
+			MinMenuWidthProperty = DependencyProperty.Register(
+				"MinMenuWidth",
+				typeof(double),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMinMenuWidthChanged
+				});
+
+			MaxMenuWidthProperty = DependencyProperty.Register(
+				"MaxMenuWidth",
+				typeof(double),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMaxMenuWidthChanged
+				});
+
+			MenuHeaderVisibilityProperty = DependencyProperty.Register(
+				"MenuHeaderVisibility",
+				typeof(Visibility),
+				typeof(NavigationDrawer),
+				new PropertyMetadata()
+				{
+					PropertyChangedCallback = OnMenuHeaderVisibilityChanged
+				});
+		}
+
+		#endregion
+
+		public NavigationDrawer()
+		{
+			InitializeComponent();
+						
+			TopBarBackground = new SolidColorBrush(Color.FromArgb(0xff, 0x4a, 0x76, 0xc9));
+			MenuBackground = new SolidColorBrush(Color.FromArgb(0xff, 0x4a, 0x76, 0xc9));
+			ShadowColor = Color.FromArgb(0x7f, 0x22, 0x22, 0x22);
+			ButtonMenuColor = Color.FromArgb(0xff, 0x4a, 0x76, 0xc9);
+			ButtonMenuHoverColor = Colors.DeepSkyBlue;
+			MinMenuWidth = 0;
+			MaxMenuWidth = Double.NaN;
+
+			ButtonMenu.Click += OpenMenuButton_Click;
+			ShadowArea.MouseDown += Shadow_MouseDown;
+			ShadowArea.Visibility = Visibility.Collapsed;
+		}		
+
+		#region Свойства-обертки
+
+		public object TopBar
+		{
+			get => GetValue(TopBarProperty);
+			set => SetValue(TopBarProperty, value);
+		}
+
+		public object MenuHeader
+		{
+			get => GetValue(MenuHeaderProperty);
+			set => SetValue(MenuHeaderProperty, value);
+		}
+
+		public object Menu
+		{
+			get => GetValue(MenuProperty);
+			set => SetValue(MenuProperty, value);
+		}		
+
+		public object Content
+		{
+			get => GetValue(ContentProperty);
+			set => SetValue(ContentProperty, value);
+		}
+
+		public Brush TopBarBackground
+		{
+			get => (Brush)GetValue(TopBarBackgroundProperty);
+			set => SetValue(TopBarBackgroundProperty, value);
+		}
+
+		public Brush MenuBackground
+		{
+			get => (Brush)GetValue(MenuBackgroundProperty);
+			set => SetValue(MenuBackgroundProperty, value);
+		}
+
+		public Color ShadowColor
+		{
+			get => (Color)GetValue(ShadowColorProperty);
+			set => SetValue(ShadowColorProperty, value);
+		}
+
+		public Color ButtonMenuColor
+		{
+			get => (Color)GetValue(ButtonMenuColorProperty);
+			set => SetValue(ButtonMenuColorProperty, value);
+		}
+
+		public Color ButtonMenuHoverColor
+		{
+			get => (Color)GetValue(ButtonMenuHoverColorProperty);
+			set => SetValue(ButtonMenuHoverColorProperty, value);
+		}
+
+		public bool IsMenuOpen
+		{
+			get => (bool)GetValue(IsMenuOpenProperty);
+			set => SetValue(IsMenuOpenProperty, value);
+		}
+
+		public double MinMenuWidth
+		{
+			get => (double)GetValue(MinMenuWidthProperty);
+			set => SetValue(MinMenuWidthProperty, value);
+		}
+
+		public double MaxMenuWidth
+		{
+			get => (double)GetValue(MaxMenuWidthProperty);
+			set => SetValue(MaxMenuWidthProperty, value);
+		}
+
+		public Visibility MenuHeaderVisibility
+		{
+			get => (Visibility)GetValue(MenuHeaderVisibilityProperty);
+			set => SetValue(MenuHeaderVisibilityProperty, value);
+		}
+
+		#endregion
+
+		#region Методы изменения свойств зависимости
+
+		static void OnTopBarChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.TopBarArea.Content = navigationDrawer.TopBar;
+			}
+		}
+
+		static void OnMenuHeaderChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuHeaderArea.Content = navigationDrawer.MenuHeader;
+			}
+		}
+
+		static void OnMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuArea.Content = navigationDrawer.Menu;
+			}
+		}
+
+		static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.ContentArea.Content = navigationDrawer.Content;
+			}
+		}
+
+		static void OnTopBarBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.TopBarAreaBorder.Background = navigationDrawer.TopBarBackground;
+			}
+		}
+
+		static void OnMenuBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuAreaBorder.Background = navigationDrawer.MenuBackground;
+			}
+		}
+
+		static void OnShadowColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.ShadowArea.Background = new SolidColorBrush(navigationDrawer.ShadowColor);
+			}
+		}
+
+		static void OnButtonMenuColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.ButtonMenu.Background = new SolidColorBrush(navigationDrawer.ButtonMenuColor);
+			}
+		}
+
+		static void OnIsMenuOpenChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{		
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				if (navigationDrawer.IsMenuOpen)
+				{
+					navigationDrawer.MenuAreaBorder.Width = navigationDrawer.MaxMenuWidth;
+					navigationDrawer.ShadowArea.Visibility = Visibility.Visible;
+				}
+				else
+				{
+					navigationDrawer.MenuAreaBorder.Width = navigationDrawer.MinMenuWidth;
+					navigationDrawer.ShadowArea.Visibility = Visibility.Collapsed;
+				}
+			}			
+		}
+
+		static void OnMinMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuColumn.Width = new GridLength(navigationDrawer.MinMenuWidth);
+				navigationDrawer.ButtonMenu.Width = navigationDrawer.MinMenuWidth;
+
+				if (!navigationDrawer.IsMenuOpen)
+				{
+					navigationDrawer.MenuAreaBorder.Width = navigationDrawer.MinMenuWidth;
+				}				
+			}
+		}
+
+		static void OnMaxMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				if (navigationDrawer.IsMenuOpen)
+				{
+					navigationDrawer.MenuAreaBorder.Width = navigationDrawer.MaxMenuWidth;
+				}
+			}
+		}
+
+		static void OnMenuHeaderVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (sender is NavigationDrawer navigationDrawer)
+			{
+				navigationDrawer.MenuHeaderArea.Visibility = navigationDrawer.MenuHeaderVisibility;				
+			}
+		}		
+
+		#endregion
+
+		void OpenMenuButton_Click(object sender, RoutedEventArgs e)
+		{
+			IsMenuOpen = !IsMenuOpen;
+		}
+
+		void Shadow_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			IsMenuOpen = false;
+		}
+	}
+}
