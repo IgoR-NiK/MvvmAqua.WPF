@@ -30,10 +30,46 @@ namespace MVVMAqua
 
 		public Bootstrapper(bool isAutoMappingViewModelToView, List<Assembly> assemblies)
 		{
-			AutoMappingViewModelToView(isAutoMappingViewModelToView, assemblies);
+			var viewModels = assemblies.SelectMany(assembly => assembly
+				.GetTypes()
+				.Where(x => typeof(BaseVM).IsAssignableFrom(x)));
+
+			var views = assemblies.SelectMany(assembly => assembly
+				.GetTypes()
+				.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null));
+
+			MappingViewModelBaseView(views);
+
+			if (isAutoMappingViewModelToView)
+			{
+				AutoMappingViewModelToView(viewModels, views);
+			}
 		}
 
 		#region Привязка View к ViewModel
+
+		/// <summary>
+		/// Привязка VM к View, унаследованных от BaseView<T> where T : BaseVM.
+		/// Если представление создано с помощью BaseView привязывать вручную его не обязательно.
+		/// Представление будет привязано к ViewModel типа T.
+		/// </summary>
+		private void MappingViewModelBaseView(IEnumerable<Type> views)
+		{
+			views.ForEach(view =>
+			{
+				if (typeof(IBaseView<BaseVM>).IsAssignableFrom(view))
+				{
+					var vm = view
+						.GetProperty(nameof(IBaseView<BaseVM>.ViewModel))
+						.PropertyType;
+
+					if (!ViewModelToViewMap.ContainsKey(vm))
+					{
+						ViewModelToViewMap.Add(vm, view);
+					}
+				}
+			});
+		}
 
 		/// <summary>
 		/// Автоматическая привязка VM к View. 
@@ -41,21 +77,11 @@ namespace MVVMAqua
 		/// View должна иметь следующие названия: Name или NameView. 
 		/// Регистр значения не имеет.
 		/// </summary>
-		/// <param name="isAutoMappingViewModelToView">Указывает, необходимо ли привязывать ViewModel и View автоматически.</param>
-		/// <param name="assemblies">Сборки, в которых производится поиск ViewModel и View.</param>
-		private void AutoMappingViewModelToView(bool isAutoMappingViewModelToView, List<Assembly> assemblies)
+		private void AutoMappingViewModelToView(IEnumerable<Type> viewModels, IEnumerable<Type> views)
 		{
-			if (isAutoMappingViewModelToView)
+			viewModels.ForEach(vm =>
 			{
-				var viewModels = assemblies.SelectMany(assembly => assembly
-					.GetTypes()
-					.Where(x => typeof(BaseVM).IsAssignableFrom(x)));
-
-				var views = assemblies.SelectMany(assembly => assembly
-					.GetTypes()
-					.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null));
-
-				viewModels.ForEach(vm =>
+				if (!ViewModelToViewMap.ContainsKey(vm))
 				{
 					var viewModelName = vm.Name.ToLower();
 					if (viewModelName.EndsWith("vm"))
@@ -69,12 +95,12 @@ namespace MVVMAqua
 
 					var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
 
-					if (view != null && !ViewModelToViewMap.ContainsKey(vm))
+					if (view != null)
 					{
 						ViewModelToViewMap.Add(vm, view);
 					}
-				});
-			}
+				}
+			});
 		}
 
 
