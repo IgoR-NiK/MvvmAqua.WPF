@@ -4,6 +4,7 @@ using System.Windows;
 using MVVMAqua.Enums;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
+using System.Windows.Media;
 
 namespace MVVMAqua.Navigation.Interfaces
 {
@@ -17,7 +18,10 @@ namespace MVVMAqua.Navigation.Interfaces
         INavigator Parent { get; }
         RegionsCollection Regions { get; }
 
-        void CloseWindow();
+		Color ModalWindowColorTheme { get; set; }
+		void SetWindowType<T>() where T : Window, new();
+
+		void CloseWindow();
         void CloseWindow(bool isCallbackCloseWindowHandler);
 
         #region Открытие нового окна

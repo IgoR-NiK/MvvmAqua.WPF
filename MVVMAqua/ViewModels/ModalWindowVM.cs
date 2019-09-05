@@ -38,7 +38,6 @@ namespace MVVMAqua.ViewModels
 		}
 
 		private Color themeColor;
-
         public Color ThemeColor
 		{
 			get => themeColor;

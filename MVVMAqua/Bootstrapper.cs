@@ -11,6 +11,7 @@ using MVVMAqua.Windows;
 using MVVMAqua.Navigation;
 using System.Windows.Media;
 using MVVMAqua.Helpers;
+using System.Text.RegularExpressions;
 
 namespace MVVMAqua
 {
@@ -23,12 +24,12 @@ namespace MVVMAqua
 		};
 
 		public Bootstrapper()
-			: this(true, new List<Assembly> { Assembly.GetCallingAssembly() }) { }
+			: this(true, Assembly.GetCallingAssembly()) { }
 
 		public Bootstrapper(bool isAutoMappingViewModelToView)
-			: this(isAutoMappingViewModelToView, new List<Assembly> { Assembly.GetCallingAssembly() }) { }
+			: this(isAutoMappingViewModelToView, Assembly.GetCallingAssembly()) { }
 
-		public Bootstrapper(bool isAutoMappingViewModelToView, List<Assembly> assemblies)
+		public Bootstrapper(bool isAutoMappingViewModelToView, params Assembly[] assemblies)
 		{
 			var viewModels = assemblies.SelectMany(assembly => assembly
 				.GetTypes()
@@ -84,14 +85,8 @@ namespace MVVMAqua
 				if (!ViewModelToViewMap.ContainsKey(vm))
 				{
 					var viewModelName = vm.Name.ToLower();
-					if (viewModelName.EndsWith("vm"))
-					{
-						viewModelName = viewModelName.Remove(viewModelName.Length - "vm".Length);
-					}
-					else if (viewModelName.EndsWith("viewmodel"))
-					{
-						viewModelName = viewModelName.Remove(viewModelName.Length - "viewmodel".Length);
-					}
+					
+					viewModelName = Regex.Replace(viewModelName, "(vm|viewmodel)$", "");
 
 					var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
 

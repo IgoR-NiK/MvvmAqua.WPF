@@ -9,6 +9,7 @@ using MVVMAqua.ViewModels;
 using MVVMAqua.Navigation.Regions;
 using MVVMAqua.Navigation.Interfaces;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MVVMAqua.Navigation
 {
@@ -37,19 +38,32 @@ namespace MVVMAqua.Navigation
 
         LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
 
-        #endregion
+		#endregion
 
-        public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
+
+		public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
 		{
 			Bootstrapper = bootstrapper;
-            Container = container;            
+            Container = container;
             Window = window;
             Parent = parent;
 		}
 
-        #region OpenFirstView
 
-        public void OpenFirstView()
+		public Color ModalWindowColorTheme
+		{
+			get => Bootstrapper.ModalWindowColorTheme;
+			set => Bootstrapper.ModalWindowColorTheme = value;
+		}
+
+		public void SetWindowType<T>() where T : Window, new()
+		{
+			Bootstrapper.SetWindowType<T>();
+		}
+
+		#region OpenFirstView
+
+		public void OpenFirstView()
         {
             OpenFirstView<BaseVM>(null, null, null, true);
         }
@@ -592,6 +606,6 @@ namespace MVVMAqua.Navigation
             return result;
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }
