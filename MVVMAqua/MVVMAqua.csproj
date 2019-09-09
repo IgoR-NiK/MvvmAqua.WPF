@@ -50,6 +50,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BootstrapperBuilder.cs" />
+    <Compile Include="Controls\NavigationDrawer.xaml.cs">
+      <DependentUpon>NavigationDrawer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\IEnumerableHelper.cs" />
     <Compile Include="Navigation\Interfaces\IDialogClosing.cs" />
     <Compile Include="Navigation\Interfaces\INavigator.cs" />
@@ -77,14 +81,18 @@
     <Compile Include="Navigation\ViewNavigator.cs" />
     <Compile Include="Navigation\ViewWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\IValidationResult.cs" />
     <Compile Include="Validation\IValidationRule.cs" />
-    <Compile Include="Validation\IValidity.cs" />
+    <Compile Include="Validation\IValidatable.cs" />
+    <Compile Include="Validation\ValidatablePropertyUniversal.cs" />
     <Compile Include="Validation\ValidatableProperty.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="Validation\ValidationRuleWrapper.cs" />
     <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\ModalMessageVM.cs" />
     <Compile Include="ViewModels\ModalWindowVM.cs" />
+    <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\IBaseView.cs" />
     <Compile Include="Views\ModalWindowView.xaml.cs">
       <DependentUpon>ModalWindowView.xaml</DependentUpon>
     </Compile>
@@ -103,6 +111,10 @@
     <Resource Include="Images\Close.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\NavigationDrawer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Navigation\Regions\Region.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

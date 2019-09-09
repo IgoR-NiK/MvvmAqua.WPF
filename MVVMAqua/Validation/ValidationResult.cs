@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MVVMAqua.Validation
 {
-	public class ValidationResult
+	public class ValidationResult : IValidationResult
 	{
 		public static ValidationResult Ok { get; } = new ValidationResult();
 		

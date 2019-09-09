@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
-using System.Windows.Controls;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;
 using MVVMAqua.Navigation;
-using System.Windows.Media;
 
 namespace MVVMAqua
 {
@@ -23,90 +18,18 @@ namespace MVVMAqua
             [typeof(ModalWindowVM)] = typeof(ModalWindowView)
 		};
 
-		public Bootstrapper()
-		{
-			var callingAssembly = Assembly.GetCallingAssembly();
-			AutoMappingViewModelToView(callingAssembly);
-		}
 
-        #region Привязка View к ViewModel
+		internal Bootstrapper() { }
 
-        /// <summary>
-        /// Автоматическая привязка VM к View. 
-        /// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
-        /// View должна иметь следующие названия: Name или NameView. 
-        /// Регистр значения не имеет.
-        /// </summary>
-        /// <param name="assembly">Сборка, в которой производится поиск ViewModel и View.</param>
-        private void AutoMappingViewModelToView(Assembly assembly)
-		{
-			var viewModels = assembly
-				.GetTypes()
-				.Where(x => typeof(BaseVM).IsAssignableFrom(x))
-				.ToList();
-
-			var views = assembly
-				.GetTypes()
-				.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null)
-				.ToList();				
-
-			viewModels.ForEach(vm =>
-			{
-				var viewModelName = vm.Name.ToLower();
-				if (viewModelName.EndsWith("vm"))
-				{
-					viewModelName = viewModelName.Remove(viewModelName.Length - "vm".Length);
-				}
-				else if (viewModelName.EndsWith("viewmodel"))
-				{
-					viewModelName = viewModelName.Remove(viewModelName.Length - "viewmodel".Length);
-				}
-
-				var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
-
-				if (view != null && !ViewModelToViewMap.ContainsKey(vm))
-				{
-					ViewModelToViewMap.Add(vm, view);
-				}
-			});
-		}
-
-
-		private Type tempVM;
-
-		public Bootstrapper Bind<T>() where T : BaseVM
-		{
-			if (ViewModelToViewMap.ContainsKey(typeof(T)))
-			{
-				throw new ArgumentException("Для указанного типа ViewModel представление уже зарегистрировано.");
-			}
-
-			tempVM = typeof(T);
-			return this;
-		}
-
-		public void To<T>() where T : ContentControl, new()
-		{
-			if (tempVM != null)
-			{
-				ViewModelToViewMap.Add(tempVM, typeof(T));
-				tempVM = null;
-			}
-		}
-
-        #endregion
 
         #region Настройка модального и обычного окон
 
-        /// <summary>
-        /// Цвет темы модального окна.
-        /// </summary>
-        public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
+        internal Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
 
 
 		private Type windowType = typeof(MainWindow);
 
-		public void SetWindowType<T>() where T : Window, new()
+		internal void SetWindowType<T>() where T : Window, new()
 		{
 			windowType = typeof(T);
 		}

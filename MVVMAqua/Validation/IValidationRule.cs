@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MVVMAqua.Validation
+﻿namespace MVVMAqua.Validation
 {
-	public interface IValidationRule<in T>
+	public interface IValidationRule<in T, out TResult> 
+		where TResult : IValidationResult
 	{
-		ValidationResult Check(T value);
+		TResult Check(T value);
 	}
 }
