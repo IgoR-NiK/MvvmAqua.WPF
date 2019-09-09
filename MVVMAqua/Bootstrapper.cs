@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 
-using System.Windows.Controls;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;
 using MVVMAqua.Navigation;
-using System.Windows.Media;
-using MVVMAqua.Helpers;
-using System.Text.RegularExpressions;
 
 namespace MVVMAqua
 {
@@ -23,117 +18,18 @@ namespace MVVMAqua
             [typeof(ModalWindowVM)] = typeof(ModalWindowView)
 		};
 
-		public Bootstrapper()
-			: this(true, Assembly.GetCallingAssembly()) { }
 
-		public Bootstrapper(bool isAutoMappingViewModelToView)
-			: this(isAutoMappingViewModelToView, Assembly.GetCallingAssembly()) { }
+		internal Bootstrapper() { }
 
-		public Bootstrapper(bool isAutoMappingViewModelToView, params Assembly[] assemblies)
-		{
-			var viewModels = assemblies.SelectMany(assembly => assembly
-				.GetTypes()
-				.Where(x => typeof(BaseVM).IsAssignableFrom(x)));
-
-			var views = assemblies.SelectMany(assembly => assembly
-				.GetTypes()
-				.Where(x => typeof(ContentControl).IsAssignableFrom(x) && x.GetConstructor(Type.EmptyTypes) != null));
-
-			MappingViewModelBaseView(views);
-
-			if (isAutoMappingViewModelToView)
-			{
-				AutoMappingViewModelToView(viewModels, views);
-			}
-		}
-
-		#region Привязка View к ViewModel
-
-		/// <summary>
-		/// Привязка VM к View, унаследованных от BaseView<T> where T : BaseVM.
-		/// Если представление создано с помощью BaseView привязывать вручную его не обязательно.
-		/// Представление будет привязано к ViewModel типа T.
-		/// </summary>
-		private void MappingViewModelBaseView(IEnumerable<Type> views)
-		{
-			views.ForEach(view =>
-			{
-				if (typeof(IBaseView<BaseVM>).IsAssignableFrom(view))
-				{
-					var vm = view
-						.GetProperty(nameof(IBaseView<BaseVM>.ViewModel))
-						.PropertyType;
-
-					if (!ViewModelToViewMap.ContainsKey(vm))
-					{
-						ViewModelToViewMap.Add(vm, view);
-					}
-				}
-			});
-		}
-
-		/// <summary>
-		/// Автоматическая привязка VM к View. 
-		/// VM должна иметь следующие названия: Name, NameVM или NameViewModel. 
-		/// View должна иметь следующие названия: Name или NameView. 
-		/// Регистр значения не имеет.
-		/// </summary>
-		private void AutoMappingViewModelToView(IEnumerable<Type> viewModels, IEnumerable<Type> views)
-		{
-			viewModels.ForEach(vm =>
-			{
-				if (!ViewModelToViewMap.ContainsKey(vm))
-				{
-					var viewModelName = vm.Name.ToLower();
-					
-					viewModelName = Regex.Replace(viewModelName, "(vm|viewmodel)$", "");
-
-					var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
-
-					if (view != null)
-					{
-						ViewModelToViewMap.Add(vm, view);
-					}
-				}
-			});
-		}
-
-
-		private Type tempVM;
-
-		public Bootstrapper Bind<T>() where T : BaseVM
-		{
-			if (ViewModelToViewMap.ContainsKey(typeof(T)))
-			{
-				throw new ArgumentException("Для указанного типа ViewModel представление уже зарегистрировано.");
-			}
-
-			tempVM = typeof(T);
-			return this;
-		}
-
-		public void To<T>() where T : ContentControl, new()
-		{
-			if (tempVM != null)
-			{
-				ViewModelToViewMap.Add(tempVM, typeof(T));
-				tempVM = null;
-			}
-		}
-
-        #endregion
 
         #region Настройка модального и обычного окон
 
-        /// <summary>
-        /// Цвет темы модального окна.
-        /// </summary>
-        public Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
+        internal Color ModalWindowColorTheme { get; set; } = Color.FromRgb(0x4A, 0x76, 0xC9);
 
 
 		private Type windowType = typeof(MainWindow);
 
-		public void SetWindowType<T>() where T : Window, new()
+		internal void SetWindowType<T>() where T : Window, new()
 		{
 			windowType = typeof(T);
 		}
