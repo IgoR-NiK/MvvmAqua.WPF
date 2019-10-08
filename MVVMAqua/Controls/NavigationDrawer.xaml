@@ -65,7 +65,7 @@
 								<Storyboard>
 									<ColorAnimation Storyboard.TargetProperty="Background.Color"
 													To="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NavigationDrawer}, Path=ButtonMenuHoverColor}"
-													Duration="0:0:0.25" />
+													Duration="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NavigationDrawer}, Path=ButtonMenuColorChangeDuration}" />
 								</Storyboard>
 							</BeginStoryboard>
 						</EventTrigger>
@@ -73,7 +73,7 @@
 							<BeginStoryboard>
 								<Storyboard>
 									<ColorAnimation Storyboard.TargetProperty="Background.Color"
-													Duration="0:0:0.25" />
+													Duration="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NavigationDrawer}, Path=ButtonMenuColorChangeDuration}" />
 								</Storyboard>
 							</BeginStoryboard>
 						</EventTrigger>

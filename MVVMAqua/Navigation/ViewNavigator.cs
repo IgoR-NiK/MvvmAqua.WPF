@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
-
-using MVVMAqua.Enums;
-using MVVMAqua.Windows;
-using MVVMAqua.ViewModels;
-using MVVMAqua.Navigation.Regions;
-using MVVMAqua.Navigation.Interfaces;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using MVVMAqua.Enums;
+using MVVMAqua.Navigation.Interfaces;
+using MVVMAqua.Navigation.Regions;
+using MVVMAqua.ViewModels;
+using MVVMAqua.Windows;
 
 namespace MVVMAqua.Navigation
 {
