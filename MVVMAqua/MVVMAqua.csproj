@@ -1,147 +1,66 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CECFEC3D-0BC8-4B15-BBB2-F61166615CA1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVVMAqua</RootNamespace>
-    <AssemblyName>MVVMAqua</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	<UseWPF>true</UseWPF>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <None Remove="Images\Close.png" />
+    <None Remove="Images\Error.png" />
+    <None Remove="Images\Information.png" />
+    <None Remove="Images\Question.png" />
+    <None Remove="Images\Warning.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BootstrapperBuilder.cs" />
-    <Compile Include="Controls\NavigationDrawer.xaml.cs">
-      <DependentUpon>NavigationDrawer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\IEnumerableHelper.cs" />
-    <Compile Include="Navigation\Interfaces\IDialogClosing.cs" />
-    <Compile Include="Navigation\Interfaces\INavigator.cs" />
-    <Compile Include="NotifyObject.cs" />
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Commands\RelayCommandGeneric.cs" />
-    <Compile Include="Converters\BoolToVisibilityCollapsedConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityHiddenConverter.cs" />
-    <Compile Include="Converters\InvertedBoolConverter.cs" />
-    <Compile Include="Converters\InvertedBoolToVisibilityCollapsedConverter.cs" />
-    <Compile Include="Converters\InvertedBoolToVisibilityHiddenConverter.cs" />
-    <Compile Include="Enums\ModalButtons.cs" />
-    <Compile Include="Enums\ModalIcon.cs" />
-    <Compile Include="Messaging\IMessenger.cs" />
-    <Compile Include="Navigation\Interfaces\IViewNavigator.cs" />
-    <Compile Include="Navigation\Interfaces\IWindowClosing.cs" />
-    <Compile Include="Messaging\Messenger.cs" />
-    <Compile Include="Messaging\SubscriberWrapper.cs" />
-    <Compile Include="Navigation\NavigationHelper.cs" />
-    <Compile Include="Navigation\Regions\Region.xaml.cs">
-      <DependentUpon>Region.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Navigation\Regions\RegionsCollection.cs" />
-    <Compile Include="Navigation\ViewNavigator.cs" />
-    <Compile Include="Navigation\ViewWrapper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\IValidationResult.cs" />
-    <Compile Include="Validation\IValidationRule.cs" />
-    <Compile Include="Validation\IValidatable.cs" />
-    <Compile Include="Validation\ValidatablePropertyUniversal.cs" />
-    <Compile Include="Validation\ValidatableProperty.cs" />
-    <Compile Include="Validation\ValidationResult.cs" />
-    <Compile Include="Validation\ValidationRuleWrapper.cs" />
-    <Compile Include="ViewModels\BaseVM.cs" />
-    <Compile Include="ViewModels\ModalMessageVM.cs" />
-    <Compile Include="ViewModels\ModalWindowVM.cs" />
-    <Compile Include="Views\BaseView.cs" />
-    <Compile Include="Views\IBaseView.cs" />
-    <Compile Include="Views\ModalWindowView.xaml.cs">
-      <DependentUpon>ModalWindowView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ModalMessageView.xaml.cs">
-      <DependentUpon>ModalMessageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\BaseWindow.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ModalWindow.xaml.cs">
-      <DependentUpon>ModalWindow.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Images\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\NavigationDrawer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Navigation\Regions\Region.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ModalWindowView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ModalMessageView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\ModalWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Error.png" />
     <Resource Include="Images\Information.png" />
     <Resource Include="Images\Question.png" />
     <Resource Include="Images\Warning.png" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+    <Compile Update="Controls\NavigationDrawer.xaml.cs">
+      <DependentUpon>NavigationDrawer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Navigation\Regions\Region.xaml.cs">
+      <DependentUpon>Region.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ModalMessageView.xaml.cs">
+      <DependentUpon>ModalMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ModalWindowView.xaml.cs">
+      <DependentUpon>ModalWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\ModalWindow.xaml.cs">
+      <DependentUpon>ModalWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\NavigationDrawer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Navigation\Regions\Region.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ModalMessageView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ModalWindowView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\ModalWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
