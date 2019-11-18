@@ -14,7 +14,7 @@ namespace MVVMAqua.Controls
 		public readonly static DependencyProperty MenuHeaderProperty;
 		public readonly static DependencyProperty MenuProperty;
 		public readonly static DependencyProperty MenuFooterProperty;
-		public readonly static DependencyProperty ContentProperty;
+		public readonly static new DependencyProperty ContentProperty;
 		
 		public readonly static DependencyProperty TopBarBackgroundProperty;
 		public readonly static DependencyProperty MenuBackgroundProperty;
@@ -220,7 +220,7 @@ namespace MVVMAqua.Controls
 			set => SetValue(MenuFooterProperty, value);
 		}
 
-		public object Content
+		public new object Content
 		{
 			get => GetValue(ContentProperty);
 			set => SetValue(ContentProperty, value);
