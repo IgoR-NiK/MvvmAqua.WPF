@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
-
-using MVVMAqua.Enums;
-using MVVMAqua.Windows;
-using MVVMAqua.ViewModels;
-using MVVMAqua.Navigation.Regions;
-using MVVMAqua.Navigation.Interfaces;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using MVVMAqua.Enums;
+using MVVMAqua.Navigation.Interfaces;
+using MVVMAqua.Navigation.Regions;
+using MVVMAqua.ViewModels;
+using MVVMAqua.Windows;
 
 namespace MVVMAqua.Navigation
 {
@@ -443,7 +443,7 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult)
 		{
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}

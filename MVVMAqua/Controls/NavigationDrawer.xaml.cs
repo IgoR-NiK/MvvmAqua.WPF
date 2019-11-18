@@ -14,7 +14,7 @@ namespace MVVMAqua.Controls
 		public readonly static DependencyProperty MenuHeaderProperty;
 		public readonly static DependencyProperty MenuProperty;
 		public readonly static DependencyProperty MenuFooterProperty;
-		public readonly static DependencyProperty ContentProperty;
+		public readonly static new DependencyProperty ContentProperty;
 		
 		public readonly static DependencyProperty TopBarBackgroundProperty;
 		public readonly static DependencyProperty MenuBackgroundProperty;
@@ -23,6 +23,7 @@ namespace MVVMAqua.Controls
 		public readonly static DependencyProperty ButtonMenuHoverColorProperty;
 
 		public readonly static DependencyProperty IsMenuOpenProperty;
+		public readonly static DependencyProperty ButtonMenuColorChangeDurationProperty;
 
 		public readonly static DependencyProperty MinMenuWidthProperty;
 		public readonly static DependencyProperty MaxMenuWidthProperty;
@@ -130,6 +131,11 @@ namespace MVVMAqua.Controls
 					PropertyChangedCallback = OnIsMenuOpenChanged
 				});
 
+			ButtonMenuColorChangeDurationProperty = DependencyProperty.Register(
+				"ButtonMenuColorChangeDuration",
+				typeof(Duration),
+				typeof(NavigationDrawer));
+
 			MinMenuWidthProperty = DependencyProperty.Register(
 				"MinMenuWidth",
 				typeof(double),
@@ -178,6 +184,8 @@ namespace MVVMAqua.Controls
 			ShadowColor = Color.FromArgb(0x7f, 0x22, 0x22, 0x22);
 			ButtonMenuColor = Color.FromArgb(0xff, 0x4a, 0x76, 0xc9);
 			ButtonMenuHoverColor = Colors.DeepSkyBlue;
+
+			ButtonMenuColorChangeDuration = TimeSpan.FromMilliseconds(250);
 			MinMenuWidth = 0;
 			MaxMenuWidth = Double.NaN;
 
@@ -212,7 +220,7 @@ namespace MVVMAqua.Controls
 			set => SetValue(MenuFooterProperty, value);
 		}
 
-		public object Content
+		public new object Content
 		{
 			get => GetValue(ContentProperty);
 			set => SetValue(ContentProperty, value);
@@ -252,6 +260,12 @@ namespace MVVMAqua.Controls
 		{
 			get => (bool)GetValue(IsMenuOpenProperty);
 			set => SetValue(IsMenuOpenProperty, value);
+		}
+
+		public Duration ButtonMenuColorChangeDuration
+		{
+			get => (Duration)GetValue(ButtonMenuColorChangeDurationProperty);
+			set => SetValue(ButtonMenuColorChangeDurationProperty, value);
 		}
 
 		public double MinMenuWidth
