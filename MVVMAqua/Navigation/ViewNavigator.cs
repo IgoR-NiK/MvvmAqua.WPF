@@ -443,7 +443,7 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText,	string btnCancelText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult)
 		{
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
