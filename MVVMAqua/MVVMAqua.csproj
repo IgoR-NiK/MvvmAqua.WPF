@@ -55,6 +55,7 @@
       <DependentUpon>NavigationDrawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\IEnumerableHelper.cs" />
+    <Compile Include="Messaging\SubscriberWrapperGeneric.cs" />
     <Compile Include="Navigation\Interfaces\IDialogClosing.cs" />
     <Compile Include="Navigation\Interfaces\INavigator.cs" />
     <Compile Include="NotifyObject.cs" />

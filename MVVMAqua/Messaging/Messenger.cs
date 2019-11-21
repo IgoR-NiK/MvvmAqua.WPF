@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MVVMAqua.Messaging
 {
@@ -12,7 +10,7 @@ namespace MVVMAqua.Messaging
 
 		public void Send<TMessage>(object sender, TMessage message)
 		{
-			Subscribers[typeof(TMessage)]?.ForEach(s => s.Action(sender, message));
+			Subscribers[typeof(TMessage)]?.ForEach(s => (s as SubscriberWrapper<TMessage>)?.Action(sender, message));
 			RefreshSubscribers();
 		}
 
@@ -23,8 +21,7 @@ namespace MVVMAqua.Messaging
 				Subscribers.Add(typeof(TMessage), new List<SubscriberWrapper>());
 			}
 
-			var wrap = new SubscriberWrapper(subscriber);
-			wrap.SetAction(action);
+			var wrap = new SubscriberWrapper<TMessage>(subscriber, action);
 			Subscribers[typeof(TMessage)].Add(wrap);
 
 			RefreshSubscribers();
@@ -54,7 +51,7 @@ namespace MVVMAqua.Messaging
 			foreach (var pair in Subscribers)
 			{
 				pair.Value.RemoveAll(s => !s.IsAlive);
-				if (pair.Value.Count == 0)
+				if (!pair.Value.Any())
 				{
 					deletedKeys.Add(pair.Key);
 				}
