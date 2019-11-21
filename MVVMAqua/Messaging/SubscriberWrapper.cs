@@ -3,8 +3,7 @@
 namespace MVVMAqua.Messaging
 {
 	class SubscriberWrapper
-	{		
-
+	{
 		public WeakReference Subscriber { get; }
 
 		public bool IsAlive => Subscriber.IsAlive;
