@@ -1,11 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 
-using MVVMAqua.Navigation;
 using MVVMAqua.Navigation.Interfaces;
-using MVVMAqua.Navigation.Regions;
 
 namespace MVVMAqua.ViewModels
 {
