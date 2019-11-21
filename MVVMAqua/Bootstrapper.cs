@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
+using MVVMAqua.Navigation;
 using MVVMAqua.ViewModels;
 using MVVMAqua.Views;
 using MVVMAqua.Windows;
-using MVVMAqua.Navigation;
 
 namespace MVVMAqua
 {
