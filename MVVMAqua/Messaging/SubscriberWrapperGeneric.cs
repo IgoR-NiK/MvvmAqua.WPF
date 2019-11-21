@@ -9,7 +9,7 @@ namespace MVVMAqua.Messaging
 		public SubscriberWrapper(object subscriber, Action<object, TMessage> action)
 			: base(subscriber)
 		{
-			Action = action ?? throw new ArgumentNullException("action", "Необходимо указать действие подписки");
+			Action = action ?? throw new ArgumentNullException("action", "Action cannot be null");
 		}
 	}
 }
