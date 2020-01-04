@@ -4,13 +4,8 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:MVVMAqua.Controls"
-			 xmlns:converters="clr-namespace:MVVMAqua.Converters"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800">
-
-	<UserControl.Resources>
-		<converters:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityCollapsedConverter" />
-	</UserControl.Resources>
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -60,7 +55,7 @@
 						</ControlTemplate>
 					</Button.Template>
 					<Button.Triggers>
-						<EventTrigger RoutedEvent="MouseEnter">
+						<EventTrigger RoutedEvent="Mouse.MouseEnter">
 							<BeginStoryboard>
 								<Storyboard>
 									<ColorAnimation Storyboard.TargetProperty="Background.Color"
@@ -69,7 +64,7 @@
 								</Storyboard>
 							</BeginStoryboard>
 						</EventTrigger>
-						<EventTrigger RoutedEvent="MouseLeave">
+						<EventTrigger RoutedEvent="Mouse.MouseLeave">
 							<BeginStoryboard>
 								<Storyboard>
 									<ColorAnimation Storyboard.TargetProperty="Background.Color"
