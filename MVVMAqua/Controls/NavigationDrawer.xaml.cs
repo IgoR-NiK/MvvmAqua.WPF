@@ -10,25 +10,25 @@ namespace MVVMAqua.Controls
 	{
 		#region Свойства зависимости
 
-		public readonly static DependencyProperty TopBarProperty;
-		public readonly static DependencyProperty MenuHeaderProperty;
-		public readonly static DependencyProperty MenuProperty;
-		public readonly static DependencyProperty MenuFooterProperty;
-		public readonly static new DependencyProperty ContentProperty;
+		public static readonly DependencyProperty TopBarProperty;
+		public static readonly DependencyProperty MenuHeaderProperty;
+		public static readonly DependencyProperty MenuProperty;
+		public static readonly DependencyProperty MenuFooterProperty;
+		public new static readonly DependencyProperty ContentProperty;
 		
-		public readonly static DependencyProperty TopBarBackgroundProperty;
-		public readonly static DependencyProperty MenuBackgroundProperty;
-		public readonly static DependencyProperty ShadowColorProperty;
-		public readonly static DependencyProperty ButtonMenuColorProperty;
-		public readonly static DependencyProperty ButtonMenuHoverColorProperty;
+		public static readonly DependencyProperty TopBarBackgroundProperty;
+		public static readonly DependencyProperty MenuBackgroundProperty;
+		public static readonly DependencyProperty ShadowColorProperty;
+		public static readonly DependencyProperty ButtonMenuColorProperty;
+		public static readonly DependencyProperty ButtonMenuHoverColorProperty;
 
-		public readonly static DependencyProperty IsMenuOpenProperty;
-		public readonly static DependencyProperty ButtonMenuColorChangeDurationProperty;
+		public static readonly DependencyProperty IsMenuOpenProperty;
+		public static readonly DependencyProperty ButtonMenuColorChangeDurationProperty;
 
-		public readonly static DependencyProperty MinMenuWidthProperty;
-		public readonly static DependencyProperty MaxMenuWidthProperty;
-		public readonly static DependencyProperty MenuHeaderVisibilityProperty;
-		public readonly static DependencyProperty MenuFooterVisibilityProperty;
+		public static readonly DependencyProperty MinMenuWidthProperty;
+		public static readonly DependencyProperty MaxMenuWidthProperty;
+		public static readonly DependencyProperty MenuHeaderVisibilityProperty;
+		public static readonly DependencyProperty MenuFooterVisibilityProperty;
 
 		#endregion
 
