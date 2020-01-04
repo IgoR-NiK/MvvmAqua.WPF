@@ -13,8 +13,6 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +32,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -109,9 +109,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Controls\NavigationDrawer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +135,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Close.png" />
     <Resource Include="Images\Error.png" />
     <Resource Include="Images\Information.png" />
     <Resource Include="Images\Question.png" />
