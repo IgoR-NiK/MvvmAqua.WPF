@@ -5,33 +5,34 @@ namespace MVVMAqua.Commands
 {
 	public class RelayCommand<T> : ICommand
 	{
-		readonly Action<T> execute;
-		readonly Func<T, bool> canExecute;
+		private readonly Action<T> _execute;
+		private readonly Func<T, bool>? _canExecute;
 
 		public event EventHandler CanExecuteChanged
 		{
-			add { CommandManager.RequerySuggested += value; }
-			remove { CommandManager.RequerySuggested -= value; }
+			add => CommandManager.RequerySuggested += value;
+			remove => CommandManager.RequerySuggested -= value;
 		}
 
 		public RelayCommand(Action<T> execute)
 		{
-			this.execute = execute ?? throw new ArgumentNullException("execute", "Необходимо указать действие команды");
+			_execute = execute ?? throw new ArgumentNullException(nameof(execute));
 		}
 
-		public RelayCommand(Action<T> execute, Func<T, bool> canExecute) : this(execute)
+		public RelayCommand(Action<T> execute, Func<T, bool>? canExecute) 
+			: this(execute)
 		{
-			this.canExecute = canExecute;
+			_canExecute = canExecute;
 		}
 
 		public void Execute(object parameter)
 		{
-			execute((T)parameter);
+			_execute((T)parameter);
 		}
 
 		public bool CanExecute(object parameter)
 		{
-			return canExecute?.Invoke((T)parameter) ?? true;
+			return _canExecute?.Invoke((T)parameter) ?? true;
 		}
 	}
 }

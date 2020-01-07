@@ -9,7 +9,5 @@
                   Title="{Binding Path=WindowTitle}"
                   Width="735" Height="600"
                   WindowStartupLocation="CenterScreen">
-    <Grid>
-
-    </Grid>
+    <Grid />
 </local:BaseWindow>

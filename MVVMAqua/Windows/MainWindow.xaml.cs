@@ -1,9 +1,6 @@
 ﻿namespace MVVMAqua.Windows
 {
-	/// <summary>
-	/// Логика взаимодействия для MainWindow.xaml
-	/// </summary>
-	partial class MainWindow : BaseWindow
+	internal partial class MainWindow
 	{
 		public MainWindow()
 		{
