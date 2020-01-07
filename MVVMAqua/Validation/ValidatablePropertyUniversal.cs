@@ -41,7 +41,7 @@ namespace MVVMAqua.Validation
 		public T Value
 		{
 			get => _value;
-			set => SetProperty(ref _value, value, OnValueChanged, "Value");
+			set => SetProperty(ref _value, value, OnValueChanged, nameof(Value));
 		}
 
 		public bool IsValid => Errors.Count == 0;

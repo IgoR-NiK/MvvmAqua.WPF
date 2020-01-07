@@ -17,7 +17,7 @@ namespace MVVMAqua.ViewModels
         public string WindowTitle
         {
             get => _windowTitle;
-            set => SetProperty(ref _windowTitle, value, "WindowTitle");
+            set => SetProperty(ref _windowTitle, value, nameof(WindowTitle));
         }
 
         private IViewNavigator _viewNavigator;
