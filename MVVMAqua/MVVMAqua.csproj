@@ -42,6 +42,21 @@
     <Compile Update="Windows\ModalWindow.xaml.cs">
       <DependentUpon>ModalWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Converters\BooleanToVisibilityCollapsedConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Converters\BooleanToVisibilityHiddenConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Converters\InvertedBooleanConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Converters\InvertedBooleanToVisibilityCollapsedConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Converters\InvertedBooleanToVisibilityHiddenConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
