@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace MVVMAqua.Controls
 {
-	public partial class NavigationDrawer : UserControl
+	public partial class NavigationDrawer
 	{
 		#region Свойства зависимости
 
@@ -37,137 +36,137 @@ namespace MVVMAqua.Controls
 		static NavigationDrawer()
 		{
 			TopBarProperty = DependencyProperty.Register(
-				"TopBar",
+				nameof(TopBar),
 				typeof(object),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnTopBarChanged
 				});
 
 			MenuHeaderProperty = DependencyProperty.Register(
-				"MenuHeader",
+				nameof(MenuHeader),
 				typeof(object),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuHeaderChanged
 				});
 
 			MenuProperty = DependencyProperty.Register(
-				"Menu",
+				nameof(Menu),
 				typeof(object),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuChanged
 				});
 
 			MenuFooterProperty = DependencyProperty.Register(
-				"MenuFooter",
+				nameof(MenuFooter),
 				typeof(object),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuFooterChanged
 				});
 
 			ContentProperty = DependencyProperty.Register(
-				"Content",
+				nameof(Content),
 				typeof(object),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnContentChanged
 				});
 
 			TopBarBackgroundProperty = DependencyProperty.Register(
-				"TopBarBackground",
+				nameof(TopBarBackground),
 				typeof(Brush),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnTopBarBackgroundChanged
 				});
 
 			MenuBackgroundProperty = DependencyProperty.Register(
-				"MenuBackground",
+				nameof(MenuBackground),
 				typeof(Brush),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuBackgroundChanged
 				});
 
 			ShadowColorProperty = DependencyProperty.Register(
-				"ShadowColor",
+				nameof(ShadowColor),
 				typeof(Color),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnShadowColorChanged
 				});
 
 			ButtonMenuColorProperty = DependencyProperty.Register(
-				"ButtonMenuColor",
+				nameof(ButtonMenuColor),
 				typeof(Color),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnButtonMenuColorChanged
 				});
 
 			ButtonMenuHoverColorProperty = DependencyProperty.Register(
-				"ButtonMenuHoverColor",
+				nameof(ButtonMenuHoverColor),
 				typeof(Color),
 				typeof(NavigationDrawer));
 
 			IsMenuOpenProperty = DependencyProperty.Register(
-				"IsMenuOpen",
+				nameof(IsMenuOpen),
 				typeof(bool),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnIsMenuOpenChanged
 				});
 
 			ButtonMenuColorChangeDurationProperty = DependencyProperty.Register(
-				"ButtonMenuColorChangeDuration",
+				nameof(ButtonMenuColorChangeDuration),
 				typeof(Duration),
 				typeof(NavigationDrawer));
 
 			MinMenuWidthProperty = DependencyProperty.Register(
-				"MinMenuWidth",
+				nameof(MinMenuWidth),
 				typeof(double),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMinMenuWidthChanged
 				});
 
 			MaxMenuWidthProperty = DependencyProperty.Register(
-				"MaxMenuWidth",
+				nameof(MaxMenuWidth),
 				typeof(double),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMaxMenuWidthChanged
 				});
 
 			MenuHeaderVisibilityProperty = DependencyProperty.Register(
-				"MenuHeaderVisibility",
+				nameof(MenuHeaderVisibility),
 				typeof(Visibility),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuHeaderVisibilityChanged
 				});
 
 			MenuFooterVisibilityProperty = DependencyProperty.Register(
-				"MenuFooterVisibility",
+				nameof(MenuFooterVisibility),
 				typeof(Visibility),
 				typeof(NavigationDrawer),
-				new PropertyMetadata()
+				new PropertyMetadata
 				{
 					PropertyChangedCallback = OnMenuFooterVisibilityChanged
 				});
@@ -296,7 +295,7 @@ namespace MVVMAqua.Controls
 
 		#region Методы изменения свойств зависимости
 
-		static void OnTopBarChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnTopBarChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -304,7 +303,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuHeaderChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuHeaderChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -312,7 +311,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -320,7 +319,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuFooterChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuFooterChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -328,7 +327,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -336,7 +335,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnTopBarBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnTopBarBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -344,7 +343,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -352,7 +351,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnShadowColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnShadowColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -360,7 +359,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnButtonMenuColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnButtonMenuColorChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -368,7 +367,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnIsMenuOpenChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnIsMenuOpenChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{		
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -385,7 +384,7 @@ namespace MVVMAqua.Controls
 			}			
 		}
 
-		static void OnMinMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMinMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -399,7 +398,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMaxMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMaxMenuWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -410,7 +409,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuHeaderVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuHeaderVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -418,7 +417,7 @@ namespace MVVMAqua.Controls
 			}
 		}
 
-		static void OnMenuFooterVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+		private static void OnMenuFooterVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (sender is NavigationDrawer navigationDrawer)
 			{
@@ -428,12 +427,12 @@ namespace MVVMAqua.Controls
 
 		#endregion
 
-		void OpenMenuButton_Click(object sender, RoutedEventArgs e)
+		private void OpenMenuButton_Click(object sender, RoutedEventArgs e)
 		{
 			IsMenuOpen = !IsMenuOpen;
 		}
 
-		void Shadow_MouseDown(object sender, MouseButtonEventArgs e)
+		private void Shadow_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			IsMenuOpen = false;
 		}

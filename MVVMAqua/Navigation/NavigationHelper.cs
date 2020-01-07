@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace MVVMAqua.Navigation
 {
-	static class NavigationHelper
+	internal static class NavigationHelper
 	{
-		public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
+		public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) 
+			where T : DependencyObject
 		{
 			if (depObj != null)
 			{
-				foreach (object rawChild in LogicalTreeHelper.GetChildren(depObj))
+				foreach (var rawChild in LogicalTreeHelper.GetChildren(depObj))
 				{
 					if (rawChild is DependencyObject child)
 					{
@@ -22,7 +19,7 @@ namespace MVVMAqua.Navigation
 							yield return x;
 						}
 
-						foreach (T childOfChild in FindLogicalChildren<T>(child))
+						foreach (var childOfChild in FindLogicalChildren<T>(child))
 						{
 							yield return childOfChild;
 						}

@@ -2,7 +2,7 @@
 
 namespace MVVMAqua.Messaging
 {
-	class SubscriberWrapper
+	internal class SubscriberWrapper
 	{
 		public WeakReference Subscriber { get; }
 
@@ -10,8 +10,8 @@ namespace MVVMAqua.Messaging
 
 		public SubscriberWrapper(object subscriber)
 		{
-			if (subscriber == null)
-				throw new ArgumentNullException("subscriber", "Subscriber cannot be null");
+			if (subscriber == null) 
+				throw new ArgumentNullException(nameof(subscriber));
 
 			Subscriber = new WeakReference(subscriber);
 		}

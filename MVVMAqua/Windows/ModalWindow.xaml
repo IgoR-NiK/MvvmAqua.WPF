@@ -15,7 +15,5 @@
                   ResizeMode="NoResize"
                   PreviewMouseMove="Window_PreviewMouseMove"
                   PreviewMouseDown="Window_PreviewMouseDown">
-    <Grid>
-        
-    </Grid>
+    <Grid />
 </local:BaseWindow>

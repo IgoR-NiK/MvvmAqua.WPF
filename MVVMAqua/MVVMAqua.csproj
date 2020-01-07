@@ -54,7 +54,8 @@
     <Compile Include="Controls\NavigationDrawer.xaml.cs">
       <DependentUpon>NavigationDrawer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\IEnumerableHelper.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Helpers\EnumerableHelper.cs" />
     <Compile Include="Messaging\SubscriberWrapperGeneric.cs" />
     <Compile Include="Navigation\Interfaces\IDialogClosing.cs" />
     <Compile Include="Navigation\Interfaces\INavigator.cs" />
@@ -62,11 +63,21 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
-    <Compile Include="Converters\BoolToVisibilityCollapsedConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityHiddenConverter.cs" />
-    <Compile Include="Converters\InvertedBoolConverter.cs" />
-    <Compile Include="Converters\InvertedBoolToVisibilityCollapsedConverter.cs" />
-    <Compile Include="Converters\InvertedBoolToVisibilityHiddenConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityCollapsedConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BooleanToVisibilityHiddenConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\InvertedBooleanConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\InvertedBooleanToVisibilityCollapsedConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\InvertedBooleanToVisibilityHiddenConverter.cs">
+      <DependentUpon>BooleanConverter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Enums\ModalButtons.cs" />
     <Compile Include="Enums\ModalIcon.cs" />
     <Compile Include="Messaging\IMessenger.cs" />

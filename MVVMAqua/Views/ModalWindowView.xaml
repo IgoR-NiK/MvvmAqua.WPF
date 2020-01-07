@@ -6,12 +6,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:r="clr-namespace:MVVMAqua.Navigation.Regions"
              xmlns:converters="clr-namespace:MVVMAqua.Converters"
-             xmlns:local="clr-namespace:MVVMAqua.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <converters:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
+        <converters:BooleanToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
 
         <SolidColorBrush x:Key="BackgroundColor" Color="White" />
         <SolidColorBrush x:Key="ContentColor" Color="{Binding ThemeColor}" />
@@ -39,7 +38,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetProperty="Background.Color"
-													    To="DeepSkyBlue"
+                                                        To="DeepSkyBlue"
 													    Duration="0:0:0.25" />
                                     </Storyboard>
                                 </BeginStoryboard>
@@ -89,11 +88,14 @@
                 Grid.ColumnSpan ="3">
         </Border>
 
-        <Rectangle Grid.ColumnSpan="3"
+        <Rectangle Grid.Row="0" 
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3" 
                    Fill="{StaticResource ContentColor}">
         </Rectangle>
 
         <TextBlock Text="{Binding WindowTitle}"
+                   Grid.Row="0"
                    Grid.Column="1"
                    FontSize="20"
                    Foreground="{StaticResource BackgroundColor}"
@@ -102,7 +104,8 @@
                    VerticalAlignment="Center" />
 
         <Button Style="{StaticResource CloseButtonStyle}"
-				Grid.Column="1"
+                Grid.Row="0" 
+                Grid.Column="1"
                 Command="{Binding CloseCommand}" />
 
         <Border Grid.Row="1"

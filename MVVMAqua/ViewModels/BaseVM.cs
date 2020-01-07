@@ -9,24 +9,24 @@ namespace MVVMAqua.ViewModels
 	/// </summary>
 	public abstract class BaseVM : NotifyObject
 	{
-        private string windowTitle;
+        private string _windowTitle;
 
         /// <summary>
         /// Заголовок окна.
         /// </summary>
         public string WindowTitle
         {
-            get => windowTitle;
-            set => SetProperty(ref windowTitle, value);
+            get => _windowTitle;
+            set => SetProperty(ref _windowTitle, value);
         }
 
-        private IViewNavigator viewNavigator;
+        private IViewNavigator _viewNavigator;
 		public IViewNavigator ViewNavigator
 		{
-			get => viewNavigator;
+			get => _viewNavigator;
 			internal set
 			{
-				viewNavigator = value;
+				_viewNavigator = value;
 				ViewNavigatorInitialization();
 			}
 		}		
