@@ -4,29 +4,29 @@ using MVVMAqua.Enums;
 
 namespace MVVMAqua.ViewModels
 {
-	class ModalMessageVM : BaseVM
+	internal class ModalMessageVM : BaseVM
 	{
-		const string Path = "pack://application:,,,/MVVMAqua;component/Images/";
+		private const string Path = "pack://application:,,,/MVVMAqua;component/Images/";
 
-		private string iconPath;
+		private string _iconPath;
 		public string IconPath
 		{
-			get => iconPath;
-			set => SetProperty(ref iconPath, value, "IconPath");
+			get => _iconPath;
+			set => SetProperty(ref _iconPath, value, "IconPath");
 		}
 		
-		private bool iconVisible = true;
+		private bool _iconVisible = true;
 		public bool IconVisible
 		{
-			get => iconVisible;
-			set => SetProperty(ref iconVisible, value, "IconVisible");
+			get => _iconVisible;
+			set => SetProperty(ref _iconVisible, value, "IconVisible");
 		}
 
-		private string message;
+		private string _message;
 		public string Message
 		{
-			get => message;
-			set => SetProperty(ref message, value, "Message");
+			get => _message;
+			set => SetProperty(ref _message, value, "Message");
 		}
 
 		public ModalMessageVM(string message, ModalIcon icon)

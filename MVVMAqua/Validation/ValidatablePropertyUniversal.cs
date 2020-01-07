@@ -69,9 +69,7 @@ namespace MVVMAqua.Validation
 		public void AddRule(Func<T, TResult> rule, bool isValidateWhenPropertyChange)
 		{
 			if (rule == null)
-			{
-				throw new ArgumentException("Не указано правило валидации.");
-			}
+				throw new ArgumentNullException(nameof(rule));
 
 			ValidationRules.Add(new ValidationRuleWrapper<T, TResult>(rule, isValidateWhenPropertyChange));
 		}

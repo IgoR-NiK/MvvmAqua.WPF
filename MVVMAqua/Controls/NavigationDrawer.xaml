@@ -22,8 +22,7 @@
 		<Border x:Name="TopBarAreaBorder"
 				Grid.Row="0"
 				Grid.Column="0"
-				Grid.ColumnSpan="2"
-				Panel.ZIndex="0">
+				Grid.ColumnSpan="2">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
@@ -75,16 +74,15 @@
 					</Button.Triggers>
 				</Button>
 				
-				<ContentPresenter Grid.Row="0"
-								  x:Name="TopBarArea"
-								  Grid.Column="1" />
+				<ContentPresenter x:Name="TopBarArea"
+				                  Grid.Row="0"
+				                  Grid.Column="1" />
 			</Grid>
 		</Border>
 
 		<!-- Content -->
 		<Border Grid.Row="1"
-				Grid.Column="1"
-				Panel.ZIndex="0">
+				Grid.Column="1">
 			<ContentPresenter x:Name="ContentArea" />
 		</Border>
 

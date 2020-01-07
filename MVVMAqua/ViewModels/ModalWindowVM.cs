@@ -7,45 +7,45 @@ using MVVMAqua.Navigation.Interfaces;
 
 namespace MVVMAqua.ViewModels
 {
-	class ModalWindowVM : BaseVM, IDialogClosing
+	internal class ModalWindowVM : BaseVM, IDialogClosing
 	{
-		private bool btnVisible;
+		private bool _btnVisible;
 		public bool BtnVisible
 		{
-			get => btnVisible;
-			set => SetProperty(ref btnVisible, value, "BtnVisible");
+			get => _btnVisible;
+			set => SetProperty(ref _btnVisible, value, "BtnVisible");
 		}
 
-		private bool btnCancelVisible;
+		private bool _btnCancelVisible;
 		public bool BtnCancelVisible
 		{
-			get => btnCancelVisible;
-			set => SetProperty(ref btnCancelVisible, value, "BtnCancelVisible");
+			get => _btnCancelVisible;
+			set => SetProperty(ref _btnCancelVisible, value, "BtnCancelVisible");
 		}
 
-		private string btnOkText;
+		private string _btnOkText;
 		public string BtnOkText
 		{
-			get => btnOkText;
-			set => SetProperty(ref btnOkText, value, "BtnOkText");
+			get => _btnOkText;
+			set => SetProperty(ref _btnOkText, value, "BtnOkText");
 		}
 
-		private string btnCancelText;
+		private string _btnCancelText;
 		public string BtnCancelText
 		{
-			get => btnCancelText;
-			set => SetProperty(ref btnCancelText, value, "BtnCancelText");
+			get => _btnCancelText;
+			set => SetProperty(ref _btnCancelText, value, "BtnCancelText");
 		}
 
-		private Color themeColor;
+		private Color _themeColor;
         public Color ThemeColor
 		{
-			get => themeColor;
-			set => SetProperty(ref themeColor, value, "ThemeColor");
+			get => _themeColor;
+			set => SetProperty(ref _themeColor, value, "ThemeColor");
 		}
 
-        BaseVM ContentVM { get; }
-        Action<BaseVM> Initialization { get; }
+        private BaseVM ContentVM { get; }
+        private Action<BaseVM> Initialization { get; }
 
         public RelayCommand BtnOkCommand { get; }
         public RelayCommand CloseCommand { get; }

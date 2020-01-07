@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace MVVMAqua.Views
+﻿namespace MVVMAqua.Views
 {
-	/// <summary>
-	/// Логика взаимодействия для ModalView.xaml
-	/// </summary>
-	partial class ModalMessageView : UserControl
+	internal partial class ModalMessageView
 	{
 		public ModalMessageView()
 		{

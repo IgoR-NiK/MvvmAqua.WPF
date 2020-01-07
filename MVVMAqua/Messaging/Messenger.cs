@@ -6,7 +6,7 @@ namespace MVVMAqua.Messaging
 {
 	public sealed class Messenger : IMessenger
 	{
-		Dictionary<Type, List<SubscriberWrapper>> Subscribers { get; } = new Dictionary<Type, List<SubscriberWrapper>>();
+		private Dictionary<Type, List<SubscriberWrapper>> Subscribers { get; } = new Dictionary<Type, List<SubscriberWrapper>>();
 
 		public void Send<TMessage>(object sender, TMessage message)
 		{

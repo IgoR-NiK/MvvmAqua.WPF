@@ -56,21 +56,21 @@ namespace MVVMAqua.Navigation.Interfaces
         void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
             where T : BaseVM;
 
-        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window;
+        void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window;
 
-        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window;
+        void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window;
 
-        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window;
+        void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window;
 
-        void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window;
+        void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window;
 
         #endregion
                
@@ -104,21 +104,21 @@ namespace MVVMAqua.Navigation.Interfaces
 		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM;
 		bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM;
 
-        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window;
+        bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window;
 
-        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window;
+        bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window;
 
-        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window;
+        bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window;
 
-        bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult, Action<ViewModelType> cancelResult)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window;
+        bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult, Action<TViewModel> cancelResult)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window;
 
         #endregion
 	}

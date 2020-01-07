@@ -20,9 +20,11 @@ namespace MVVMAqua.Navigation
 	{
         #region Свойства
 
-        Bootstrapper Bootstrapper { get; }
+        private Bootstrapper Bootstrapper { get; }
 
-        ContentControl Container { get; }
+        private ContentControl Container { get; }
+        
+        private LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
 
         public Window Window { get; }
 
@@ -35,9 +37,7 @@ namespace MVVMAqua.Navigation
         public int CountViews => Views.Count;
 
         public RegionsCollection Regions { get; } = new RegionsCollection();
-
-        LinkedList<ViewWrapper> Views { get; } = new LinkedList<ViewWrapper>();
-
+        
 		#endregion
 
 
@@ -134,7 +134,7 @@ namespace MVVMAqua.Navigation
             }
             else
             {
-                if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+                if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
                 {
                     if (!IsEmpty && isCallbackCloseViewHandler)
                     {
@@ -145,7 +145,7 @@ namespace MVVMAqua.Navigation
                         }
                     }
 
-                    var viewWrapper = new ViewWrapper()
+                    var viewWrapper = new ViewWrapper
                     {
                         View = Activator.CreateInstance(viewType) as ContentControl,
                         ViewModel = viewModel,
@@ -190,12 +190,15 @@ namespace MVVMAqua.Navigation
         /// <summary>
         /// Отображает в окне новое представление, соответствующее указанной <paramref name="viewModel"/>.
         /// </summary>
-        /// <param name="viewModel">Указывает на представление, которое необходимо отобразить в окне.</param>
+        /// <param name="viewModel">Указывает на ViewModel, которую необходимо отобразить в окне.</param>
+        /// <param name="initialization">Инициализация ViewModel</param>
+        /// <param name="afterViewClosed">Действие при закрытии View</param>
+        /// <typeparam name="T">Тип ViewModel</typeparam>
         public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
 		{
-            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
 			{
-                var viewWrapper = new ViewWrapper()
+                var viewWrapper = new ViewWrapper
                 {
                     View = Activator.CreateInstance(viewType) as ContentControl,
                     ViewModel = viewModel,
@@ -376,30 +379,30 @@ namespace MVVMAqua.Navigation
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Action<ViewModelType> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Func<ViewModelType, bool> afterViewClosed, Action<WindowType> windowInitialization, Func<ViewModelType, bool> windowClosing)
-            where ViewModelType : BaseVM
-            where WindowType : Window
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+            where TViewModel : BaseVM
+            where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
@@ -534,11 +537,7 @@ namespace MVVMAqua.Navigation
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
-
-		/// <summary>
-		/// Отображает модальное диалоговое окно с указанным текстом.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
+		
 		private bool ShowDialog(string text, ModalIcon icon, string caption, ModalButtons buttonType,
 								string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
 		{
@@ -546,10 +545,6 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(viewModel, null, caption, buttonType, btnOkText, btnCancelText, _ => okResult?.Invoke(), _ => cancelResult?.Invoke());
 		}
 
-		/// <summary>
-		/// Отображает модальное диалоговое окно с указанным представлением.
-		/// </summary>
-		/// <param name="viewModel">Указывает на представление, которое необходимо отобразить в модальном окне.</param>
 		private bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType,
 								string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
 		{
@@ -559,34 +554,34 @@ namespace MVVMAqua.Navigation
             return ShowDialog(modalWindow, modalVm, null, _ => okResult?.Invoke(viewModel), _ => cancelResult?.Invoke(viewModel));                          
 		}
 
-        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window
         {
             return ShowDialog(window, viewModel, null, null, null);
         }
 
-        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window
         {
             return ShowDialog(window, viewModel, viewModelInitialization, null, null);
         }
 
-        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window
         {
             return ShowDialog(window, viewModel, viewModelInitialization, okResult, null);
         }
 
-        public bool ShowDialog<ViewModelType, WindowType>(WindowType window, ViewModelType viewModel, Action<ViewModelType> viewModelInitialization, Action<ViewModelType> okResult, Action<ViewModelType> cancelResult)
-            where ViewModelType : BaseVM, IDialogClosing
-            where WindowType : Window
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult, Action<TViewModel> cancelResult)
+            where TViewModel : BaseVM, IDialogClosing
+            where TWindow : Window
         {
             var result = false;
 
-            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out Type viewType))
+            if (Bootstrapper.ViewModelToViewMap.ContainsKey(typeof(TViewModel)))
             {
                 window.Owner = Window;
                 var navigator = new ViewNavigator(Bootstrapper, window, window, null);                

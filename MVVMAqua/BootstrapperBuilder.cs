@@ -17,7 +17,7 @@ namespace MVVMAqua
 	{
 		private Bootstrapper _bootstrapper;
 
-		private Assembly _callingAssembly;
+		private readonly Assembly _callingAssembly;
 		private List<Assembly> _assemblies;
 
 		private bool _isAutoMappingViewModelToView;
@@ -57,7 +57,8 @@ namespace MVVMAqua
 			return this;
 		}
 
-		public BootstrapperBuilder SetWindowType<T>() where T : Window, new()
+		public BootstrapperBuilder SetWindowType<T>() 
+			where T : Window, new()
 		{
 			_bootstrapper.SetWindowType<T>();
 
@@ -88,7 +89,8 @@ namespace MVVMAqua
 					.Where(x =>
 						typeof(ContentControl).IsAssignableFrom(x) &&
 						x.GetConstructor(Type.EmptyTypes) != null &&
-						(predicate?.Invoke(x) ?? true)));
+						(predicate?.Invoke(x) ?? true)))
+					.ToArray();
 
 				MappingViewModelBaseView(views);
 
@@ -104,7 +106,7 @@ namespace MVVMAqua
 		}
 
 		/// <summary>
-		/// Привязка VM к View, унаследованных от BaseView<T> where T : BaseVM.
+		/// Привязка VM к View, унаследованных от BaseView{T} where T : BaseVM.
 		/// Если представление создано с помощью BaseView привязывать вручную его не обязательно.
 		/// Представление будет привязано к ViewModel типа T.
 		/// </summary>
@@ -116,9 +118,9 @@ namespace MVVMAqua
 				{
 					var vm = view
 						.GetProperty(nameof(IBaseView<BaseVM>.ViewModel))
-						.PropertyType;
+						?.PropertyType;
 
-					if (!_bootstrapper.ViewModelToViewMap.ContainsKey(vm))
+					if (vm != null && !_bootstrapper.ViewModelToViewMap.ContainsKey(vm))
 					{
 						_bootstrapper.ViewModelToViewMap.Add(vm, view);
 					}
@@ -138,11 +140,14 @@ namespace MVVMAqua
 			{
 				if (!_bootstrapper.ViewModelToViewMap.ContainsKey(vm))
 				{
-					var viewModelName = vm.Name.ToLower();
+					var viewModelName = vm.Name.ToUpper();
 
-					viewModelName = Regex.Replace(viewModelName, "(vm|viewmodel)$", "");
+					viewModelName = Regex.Replace(viewModelName, "(VM|VIEWMODEL)$", "");
 
-					var view = views.FirstOrDefault(v => v.Name.ToLower() == viewModelName || v.Name.ToLower() == $"{viewModelName}view");
+					var view = views
+						.SingleOrDefault(
+							v => v.Name.ToUpper() == viewModelName 
+							     || v.Name.ToUpper() == $"{viewModelName}VIEW");
 
 					if (view != null)
 					{
@@ -153,25 +158,27 @@ namespace MVVMAqua
 		}
 
 		
-		private Type tempVM;
+		private Type _tempViewModel;
 
-		public BootstrapperBuilder Bind<T>() where T : BaseVM
+		public BootstrapperBuilder Bind<T>() 
+			where T : BaseVM
 		{
 			if (_bootstrapper.ViewModelToViewMap.ContainsKey(typeof(T)))
 			{
-				throw new ArgumentException("Для указанного типа ViewModel представление уже зарегистрировано.");
+				throw new ArgumentException($"The type {typeof(T).Name} is already registered");
 			}
 
-			tempVM = typeof(T);
+			_tempViewModel = typeof(T);
 			return this;
 		}
 
-		public BootstrapperBuilder To<T>() where T : ContentControl, new()
+		public BootstrapperBuilder To<T>() 
+			where T : ContentControl, new()
 		{
-			if (tempVM != null)
+			if (_tempViewModel != null)
 			{
-				_bootstrapper.ViewModelToViewMap.Add(tempVM, typeof(T));
-				tempVM = null;
+				_bootstrapper.ViewModelToViewMap.Add(_tempViewModel, typeof(T));
+				_tempViewModel = null;
 			}
 
 			return this;
@@ -183,7 +190,7 @@ namespace MVVMAqua
 		public void Reset()
 		{
 			_bootstrapper = new Bootstrapper();
-			_assemblies = new List<Assembly>() { _callingAssembly };
+			_assemblies = new List<Assembly> { _callingAssembly };
 			_isAutoMappingViewModelToView = true;
 			_isFirstMapping = true;
 			_viewModels = null;

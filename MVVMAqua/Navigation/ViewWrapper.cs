@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 using MVVMAqua.ViewModels;
 
 namespace MVVMAqua.Navigation
 {
-	class ViewWrapper
+	internal class ViewWrapper
 	{
 		public ContentControl View { get; set; }
 
-		private BaseVM viewModel;
+		private BaseVM _viewModel;
 		public BaseVM ViewModel
 		{
-			get => viewModel;
-			set { viewModel = value; View.DataContext = value; }
+			get => _viewModel;
+			set
+			{
+				_viewModel = value; 
+				View.DataContext = value;
+			}
 		}
 
 		/// <summary>
