@@ -5,15 +5,15 @@ namespace MVVMAqua.Validation
 	public class ValidatableProperty<T> : ValidatableProperty<T, ValidationResult>
 	{
 		public ValidatableProperty() 
-			: this(default, null, false) { }
+			: this(default!, null, false) { }
 
 		public ValidatableProperty(T initialValue) 
 			: this(initialValue, null, false) { }
 
-		public ValidatableProperty(T initialValue, Action onValueChanged) 
+		public ValidatableProperty(T initialValue, Action? onValueChanged) 
 			: this (initialValue, onValueChanged, false) { }
 
-		public ValidatableProperty(T initialValue, Action onValueChanged, bool isValidateWhenPropertyChange) 
+		public ValidatableProperty(T initialValue, Action? onValueChanged, bool isValidateWhenPropertyChange) 
 			: base(initialValue, onValueChanged, isValidateWhenPropertyChange) { }
 
 

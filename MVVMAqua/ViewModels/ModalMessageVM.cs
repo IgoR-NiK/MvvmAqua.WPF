@@ -8,7 +8,7 @@ namespace MVVMAqua.ViewModels
 	{
 		private const string Path = "pack://application:,,,/MVVMAqua;component/Images/";
 
-		private string _iconPath;
+		private string _iconPath = String.Empty;
 		public string IconPath
 		{
 			get => _iconPath;
@@ -22,7 +22,7 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref _iconVisible, value);
 		}
 
-		private string _message;
+		private string _message = String.Empty;
 		public string Message
 		{
 			get => _message;

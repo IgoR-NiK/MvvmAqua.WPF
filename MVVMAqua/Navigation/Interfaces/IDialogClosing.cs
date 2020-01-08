@@ -4,7 +4,7 @@ namespace MVVMAqua.Navigation.Interfaces
 {
     public interface IDialogClosing
     {
-        event CloseDialogEventHandler CloseDialog;
+        event CloseDialogEventHandler? CloseDialog;
     }
 
     public delegate void CloseDialogEventHandler(object sender, CloseDialogEventArgs e);
