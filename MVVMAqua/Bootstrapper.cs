@@ -96,8 +96,8 @@ namespace MVVMAqua
         public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Func<T, bool>? afterViewClosed, Action<Window>? windowInitialization, Func<T, bool>? windowClosing)
             where T : BaseVM
         {
-            var window = (Window)Activator.CreateInstance(_windowType);
-            OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
+            var window = Activator.CreateInstance(_windowType) ?? throw new NullReferenceException();
+            OpenNewWindow((Window)window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
         public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Action<TViewModel>? afterViewClosed, Action<TWindow>? windowInitialization, Action<TViewModel>? windowClosing)

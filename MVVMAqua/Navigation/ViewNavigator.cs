@@ -139,7 +139,8 @@ namespace MVVMAqua.Navigation
                     }
                 }
 
-                var viewWrapper = new ViewWrapper((ContentControl) Activator.CreateInstance(viewType), viewModel)
+                var view = Activator.CreateInstance(viewType) ?? throw new NullReferenceException();
+                var viewWrapper = new ViewWrapper((ContentControl) view, viewModel)
                 {
 	                AfterViewClosed = vm => afterViewClosed?.Invoke((T) vm) ?? true
                 };
@@ -189,7 +190,8 @@ namespace MVVMAqua.Navigation
 		{
             if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
             {
-	            var viewWrapper = new ViewWrapper((ContentControl) Activator.CreateInstance(viewType), viewModel)
+	            var view = Activator.CreateInstance(viewType) ?? throw new NullReferenceException();
+	            var viewWrapper = new ViewWrapper((ContentControl) view, viewModel)
 	            {
 		            AfterViewClosed = vm => afterViewClosed?.Invoke((T) vm) ?? true
 	            };
