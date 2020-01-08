@@ -23,7 +23,7 @@ Wiki: https://github.com/IgoR-NiK/MvvmAqua.WPF/wiki
 * .NET Framework 4.0 и выше
 * .NET Core 3.0 и выше (начиная с версии MVVMAqua 1.6.0)
 
-* Поддержка С# 8.0 и Nullable reference types (начиная с версии MVVMAqua 1.6.0)
+* С# 8.0 и Nullable reference types (начиная с версии MVVMAqua 1.6.0)
 
 
 ## Ссылки
