@@ -5,7 +5,7 @@ namespace MVVMAqua.Navigation
 {
 	internal static class NavigationHelper
 	{
-		public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) 
+		public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject? depObj) 
 			where T : DependencyObject
 		{
 			if (depObj != null)

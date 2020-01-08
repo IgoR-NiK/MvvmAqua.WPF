@@ -15,15 +15,15 @@ namespace MVVMAqua
 {
 	public class BootstrapperBuilder
 	{
-		private Bootstrapper _bootstrapper;
-
+		private Bootstrapper _bootstrapper = new Bootstrapper();
+		private List<Assembly> _assemblies = new List<Assembly>();
+		
 		private readonly Assembly _callingAssembly;
-		private List<Assembly> _assemblies;
 
 		private bool _isAutoMappingViewModelToView;
 		private bool _isFirstMapping;
 
-		private IEnumerable<Type> _viewModels;
+		private IEnumerable<Type>? _viewModels;
 
 
 		public BootstrapperBuilder()
@@ -69,7 +69,7 @@ namespace MVVMAqua
 
 		#region Привязка View к ViewModel
 
-		public BootstrapperBuilder WhereVM(Func<Type, bool> predicate)
+		public BootstrapperBuilder WhereVM(Func<Type, bool>? predicate)
 		{
 			_viewModels = _assemblies.SelectMany(assembly => assembly
 				.GetTypes()
@@ -80,7 +80,7 @@ namespace MVVMAqua
 			return this;
 		}
 
-		public BootstrapperBuilder WhereView(Func<Type, bool> predicate)
+		public BootstrapperBuilder WhereView(Func<Type, bool>? predicate)
 		{
 			if (_viewModels != null)
 			{
@@ -158,7 +158,7 @@ namespace MVVMAqua
 		}
 
 		
-		private Type _tempViewModel;
+		private Type? _tempViewModel;
 
 		public BootstrapperBuilder Bind<T>() 
 			where T : BaseVM

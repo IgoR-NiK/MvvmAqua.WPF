@@ -28,9 +28,9 @@ namespace MVVMAqua.Navigation
 
         public Window Window { get; }
 
-        public INavigator Parent { get; }
+        public INavigator? Parent { get; }
 
-        public BaseVM ViewModel => Views.Count > 0 ? Views.Last().ViewModel : null;
+        public BaseVM? ViewModel => Views.Count > 0 ? Views.Last().ViewModel : null;
 
         public bool IsEmpty => Views.Count == 0;
 
@@ -41,7 +41,7 @@ namespace MVVMAqua.Navigation
 		#endregion
 
 
-		public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator parent)
+		public ViewNavigator(Bootstrapper bootstrapper, ContentControl container, Window window, INavigator? parent)
 		{
 			Bootstrapper = bootstrapper;
             Container = container;
@@ -65,12 +65,30 @@ namespace MVVMAqua.Navigation
 
 		public void OpenFirstView()
         {
-            OpenFirstView<BaseVM>(null, null, null, true);
+            OpenFirstView(true);
         }
 
         public void OpenFirstView(bool isCallbackCloseViewHandler)
         {
-            OpenFirstView<BaseVM>(null, null, null, isCallbackCloseViewHandler);
+	        if (!IsEmpty)
+	        {                    
+		        if (isCallbackCloseViewHandler)
+		        {
+			        var lastViewWrapper = Views.Last();
+			        if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
+			        {
+				        return;
+			        }
+		        }
+
+		        for (var i = CountViews; i > 1; i--)
+		        {
+			        Views.RemoveLast();
+		        }
+
+		        Container.Content = Views.Last().View;
+		        Container.DataContext = Views.Last().ViewModel;
+	        }
         }
 
         public void OpenFirstView<T>(T viewModel) where T : BaseVM
@@ -83,89 +101,62 @@ namespace MVVMAqua.Navigation
             OpenFirstView(viewModel, null, null, isCallbackCloseViewHandler);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization) where T : BaseVM
         {
             OpenFirstView(viewModel, initialization, null, true);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization, bool isCallbackCloseViewHandler) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization, bool isCallbackCloseViewHandler) where T : BaseVM
         {
             OpenFirstView(viewModel, initialization, null, isCallbackCloseViewHandler);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization, Action<T>? afterViewClosed) where T : BaseVM
         {
             OpenFirstView(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; }, true);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization, Action<T>? afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
         {
             OpenFirstView(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; }, isCallbackCloseViewHandler);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization, Func<T, bool>? afterViewClosed) where T : BaseVM
         {
             OpenFirstView(viewModel, initialization, afterViewClosed, true);
         }
 
-        public void OpenFirstView<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
+        public void OpenFirstView<T>(T viewModel, Action<T>? initialization, Func<T, bool>? afterViewClosed, bool isCallbackCloseViewHandler) where T : BaseVM
         {
-            if (viewModel == null)
+            if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
             {
-                if (!IsEmpty)
-                {                    
-                    if (isCallbackCloseViewHandler)
-                    {
-                        var lastViewWrapper = Views.Last();
-                        if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
-                        {
-                            return;
-                        }
-                    }
-
-                    for (var i = CountViews; i > 1; i--)
-                    {
-                        Views.RemoveLast();
-                    }
-
-                    Container.Content = Views.Last().View;
-                    Container.DataContext = Views.Last().ViewModel;
-                }
-            }
-            else
-            {
-                if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
+                if (!IsEmpty && isCallbackCloseViewHandler)
                 {
-                    if (!IsEmpty && isCallbackCloseViewHandler)
+                    var lastViewWrapper = Views.Last();
+                    if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
                     {
-                        var lastViewWrapper = Views.Last();
-                        if (!lastViewWrapper.AfterViewClosed?.Invoke(lastViewWrapper.ViewModel) ?? false)
-                        {
-                            return;
-                        }
+                        return;
                     }
-
-                    var viewWrapper = new ViewWrapper
-                    {
-                        View = Activator.CreateInstance(viewType) as ContentControl,
-                        ViewModel = viewModel,
-                        AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true
-                    };
-
-                    foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
-                    {
-                        viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window, this));
-                    }
-
-                    viewModel.ViewNavigator = this;
-                    initialization?.Invoke(viewModel);
-                    
-                    Views.Clear();
-                    Views.AddLast(viewWrapper);
-
-                    Container.Content = viewWrapper.View;
-                    Container.DataContext = viewWrapper.ViewModel;
                 }
+
+                var viewWrapper = new ViewWrapper((ContentControl) Activator.CreateInstance(viewType), viewModel)
+                {
+	                AfterViewClosed = vm => afterViewClosed?.Invoke((T) vm) ?? true
+                };
+
+                foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
+                {
+                    viewWrapper.ViewModel.RegionNavigators.Add(region.Name, new ViewNavigator(Bootstrapper, region, Window, this));
+                }
+
+                viewModel.ViewNavigator = this;
+                initialization?.Invoke(viewModel);
+                
+                Views.Clear();
+                Views.AddLast(viewWrapper);
+
+                Container.Content = viewWrapper.View;
+                Container.DataContext = viewWrapper.ViewModel;
             }
         }
 
@@ -177,12 +168,12 @@ namespace MVVMAqua.Navigation
 		{
 			NavigateTo(viewModel, null, null);
 		}
-		public void NavigateTo<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		public void NavigateTo<T>(T viewModel, Action<T>? initialization) where T : BaseVM
 		{
 			NavigateTo(viewModel, initialization, null);
 		}
 
-        public void NavigateTo<T>(T viewModel, Action<T> initialization, Action<T> afterViewClosed) where T : BaseVM
+        public void NavigateTo<T>(T viewModel, Action<T>? initialization, Action<T>? afterViewClosed) where T : BaseVM
         {
             NavigateTo(viewModel, initialization, vm => { afterViewClosed?.Invoke(vm); return true; });
         }
@@ -194,16 +185,14 @@ namespace MVVMAqua.Navigation
         /// <param name="initialization">Инициализация ViewModel</param>
         /// <param name="afterViewClosed">Действие при закрытии View</param>
         /// <typeparam name="T">Тип ViewModel</typeparam>
-        public void NavigateTo<T>(T viewModel, Action<T> initialization, Func<T, bool> afterViewClosed) where T : BaseVM
+        public void NavigateTo<T>(T viewModel, Action<T>? initialization, Func<T, bool>? afterViewClosed) where T : BaseVM
 		{
             if (Bootstrapper.ViewModelToViewMap.TryGetValue(viewModel.GetType(), out var viewType))
-			{
-                var viewWrapper = new ViewWrapper
-                {
-                    View = Activator.CreateInstance(viewType) as ContentControl,
-                    ViewModel = viewModel,
-                    AfterViewClosed = vm => afterViewClosed?.Invoke((T)vm) ?? true
-                };
+            {
+	            var viewWrapper = new ViewWrapper((ContentControl) Activator.CreateInstance(viewType), viewModel)
+	            {
+		            AfterViewClosed = vm => afterViewClosed?.Invoke((T) vm) ?? true
+	            };
 
                 foreach (var region in NavigationHelper.FindLogicalChildren<Region>(viewWrapper.View))
                 {
@@ -325,82 +314,82 @@ namespace MVVMAqua.Navigation
             Bootstrapper.OpenNewWindow(viewModel);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization)
            where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Action<T>? afterViewClosed)
            where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Func<T, bool>? afterViewClosed)
            where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Action<T>? afterViewClosed, Action<Window>? windowInitialization)
            where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Func<T, bool>? afterViewClosed, Action<Window>? windowInitialization)
            where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Action<T>? afterViewClosed, Action<Window>? windowInitialization, Action<T>? windowClosing)
             where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Action<T> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Action<T>? afterViewClosed, Action<Window>? windowInitialization, Func<T, bool>? windowClosing)
             where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Action<T> windowClosing)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Func<T, bool>? afterViewClosed, Action<Window>? windowInitialization, Action<T>? windowClosing)
             where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<T>(T viewModel, Action<T> viewModelInitialization, Func<T, bool> afterViewClosed, Action<Window> windowInitialization, Func<T, bool> windowClosing)
+        public void OpenNewWindow<T>(T viewModel, Action<T>? viewModelInitialization, Func<T, bool>? afterViewClosed, Action<Window>? windowInitialization, Func<T, bool>? windowClosing)
             where T : BaseVM
         {
             Bootstrapper.OpenNewWindow(viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Action<TViewModel>? afterViewClosed, Action<TWindow>? windowInitialization, Action<TViewModel>? windowClosing)
             where TViewModel : BaseVM
             where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Action<TViewModel>? afterViewClosed, Action<TWindow>? windowInitialization, Func<TViewModel, bool>? windowClosing)
             where TViewModel : BaseVM
             where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Action<TViewModel> windowClosing)
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Func<TViewModel, bool>? afterViewClosed, Action<TWindow>? windowInitialization, Action<TViewModel>? windowClosing)
             where TViewModel : BaseVM
             where TWindow : Window
         {
             Bootstrapper.OpenNewWindow(window, viewModel, viewModelInitialization, afterViewClosed, windowInitialization, windowClosing);
         }
 
-        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Func<TViewModel, bool> afterViewClosed, Action<TWindow> windowInitialization, Func<TViewModel, bool> windowClosing)
+        public void OpenNewWindow<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Func<TViewModel, bool>? afterViewClosed, Action<TWindow>? windowInitialization, Func<TViewModel, bool>? windowClosing)
             where TViewModel : BaseVM
             where TWindow : Window
         {
@@ -436,7 +425,7 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
 
-		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, Action? okResult)
 		{
 			return ShowDialog(text, icon, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
@@ -446,12 +435,12 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action? okResult)
 		{
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
 
-		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
+		public bool ShowDialog(string text, ModalIcon icon, string caption, string btnOkText, string btnCancelText, Action? okResult, Action? cancelResult)
 		{
 			return ShowDialog(text, icon, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
@@ -477,7 +466,7 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, Action<T>? okResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, null, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
@@ -487,66 +476,66 @@ namespace MVVMAqua.Navigation
 			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T>? okResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, string caption, string btnOkText, string btnCancelText, Action<T>? okResult, Action<T>? cancelResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, null, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, "Уведомление", ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, ModalButtons buttonType) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, buttonType, "Ок", "Отмена", null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, string btnOkText) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, string btnOkText, Action<T>? okResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.Ok, btnOkText, "Отмена", okResult, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, string btnOkText, string btnCancelText) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, null, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, string btnOkText, string btnCancelText, Action<T>? okResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, null);
 		}
 
-		public bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
+		public bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, string btnOkText, string btnCancelText, Action<T>? okResult, Action<T>? cancelResult) where T : BaseVM
 		{
 			return ShowDialog(viewModel, initialization, caption, ModalButtons.OkCancel, btnOkText, btnCancelText, okResult, cancelResult);
 		}
 		
 		private bool ShowDialog(string text, ModalIcon icon, string caption, ModalButtons buttonType,
-								string btnOkText, string btnCancelText, Action okResult, Action cancelResult)
+								string btnOkText, string btnCancelText, Action? okResult, Action? cancelResult)
 		{
 			var viewModel = new ModalMessageVM(text, icon);
 			return ShowDialog(viewModel, null, caption, buttonType, btnOkText, btnCancelText, _ => okResult?.Invoke(), _ => cancelResult?.Invoke());
 		}
 
-		private bool ShowDialog<T>(T viewModel, Action<T> initialization, string caption, ModalButtons buttonType,
-								string btnOkText, string btnCancelText, Action<T> okResult, Action<T> cancelResult) where T : BaseVM
+		private bool ShowDialog<T>(T viewModel, Action<T>? initialization, string caption, ModalButtons buttonType,
+								string btnOkText, string btnCancelText, Action<T>? okResult, Action<T>? cancelResult) where T : BaseVM
 		{
             var modalWindow = new ModalWindow();
             var modalVm = new ModalWindowVM(viewModel, vm => initialization?.Invoke((T)vm), caption, buttonType, btnOkText, btnCancelText, Bootstrapper.ModalWindowColorTheme);
@@ -561,21 +550,21 @@ namespace MVVMAqua.Navigation
             return ShowDialog(window, viewModel, null, null, null);
         }
 
-        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization)
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization)
             where TViewModel : BaseVM, IDialogClosing
             where TWindow : Window
         {
             return ShowDialog(window, viewModel, viewModelInitialization, null, null);
         }
 
-        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult)
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Action<TViewModel>? okResult)
             where TViewModel : BaseVM, IDialogClosing
             where TWindow : Window
         {
             return ShowDialog(window, viewModel, viewModelInitialization, okResult, null);
         }
 
-        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel> viewModelInitialization, Action<TViewModel> okResult, Action<TViewModel> cancelResult)
+        public bool ShowDialog<TViewModel, TWindow>(TWindow window, TViewModel viewModel, Action<TViewModel>? viewModelInitialization, Action<TViewModel>? okResult, Action<TViewModel>? cancelResult)
             where TViewModel : BaseVM, IDialogClosing
             where TWindow : Window
         {

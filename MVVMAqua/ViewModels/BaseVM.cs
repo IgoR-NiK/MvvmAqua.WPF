@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using MVVMAqua.Navigation.Interfaces;
 
@@ -9,7 +10,7 @@ namespace MVVMAqua.ViewModels
 	/// </summary>
 	public abstract class BaseVM : NotifyObject
 	{
-        private string _windowTitle;
+        private string _windowTitle = String.Empty;
 
         /// <summary>
         /// Заголовок окна.
@@ -20,7 +21,7 @@ namespace MVVMAqua.ViewModels
             set => SetProperty(ref _windowTitle, value, nameof(WindowTitle));
         }
 
-        private IViewNavigator _viewNavigator;
+        private IViewNavigator _viewNavigator = default!;
 		public IViewNavigator ViewNavigator
 		{
 			get => _viewNavigator;
