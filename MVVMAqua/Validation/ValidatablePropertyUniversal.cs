@@ -14,15 +14,15 @@ namespace MVVMAqua.Validation
 
 
 		public ValidatableProperty() 
-			: this(default, null, false) { }
+			: this(default!, null, false) { }
 
 		public ValidatableProperty(T initialValue) 
 			: this(initialValue, null, false) { }
 
-		public ValidatableProperty(T initialValue, Action onValueChanged) 
+		public ValidatableProperty(T initialValue, Action? onValueChanged) 
 			: this (initialValue, onValueChanged, false) { }
 
-		public ValidatableProperty(T initialValue, Action onValueChanged, bool isValidateWhenPropertyChange)
+		public ValidatableProperty(T initialValue, Action? onValueChanged, bool isValidateWhenPropertyChange)
 		{
 			Value = initialValue;
 
@@ -34,10 +34,10 @@ namespace MVVMAqua.Validation
 		}
 
 
-		private protected List<ValidationRuleWrapper<T, TResult>> ValidationRules { get; } = new List<ValidationRuleWrapper<T, TResult>>();
+		private List<ValidationRuleWrapper<T, TResult>> ValidationRules { get; } = new List<ValidationRuleWrapper<T, TResult>>();
 		public ObservableCollection<TResult> Errors { get; } = new ObservableCollection<TResult>();
 
-		private T _value;
+		private T _value = default!;
 		public T Value
 		{
 			get => _value;
@@ -46,7 +46,7 @@ namespace MVVMAqua.Validation
 
 		public bool IsValid => Errors.Count == 0;
 
-		public event Action IsValidChanged;
+		public event Action? IsValidChanged;
 
 
 		#region AddRule

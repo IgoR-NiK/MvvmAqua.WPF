@@ -7,7 +7,7 @@ namespace MVVMAqua
 {
 	public abstract class NotifyObject : INotifyPropertyChanged
 	{
-		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = null)
+		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = "")
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
@@ -16,7 +16,7 @@ namespace MVVMAqua
 			}
 		}
 
-		protected void SetProperty<T>(ref T property, T value, Action onValueChanged, [CallerMemberName]string propertyName = null)
+		protected void SetProperty<T>(ref T property, T value, Action onValueChanged, [CallerMemberName]string propertyName = "")
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
@@ -27,9 +27,9 @@ namespace MVVMAqua
 		}
 
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
-		protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+		protected void OnPropertyChanged([CallerMemberName]string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

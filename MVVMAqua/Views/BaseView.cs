@@ -7,6 +7,6 @@ namespace MVVMAqua.Views
 	public class BaseView<T> : UserControl, IBaseView<T>
 		where T : BaseVM
 	{
-		public T ViewModel => DataContext as T;
+		public T ViewModel => (T)DataContext;
 	}
 }

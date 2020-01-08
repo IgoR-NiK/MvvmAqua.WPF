@@ -23,14 +23,14 @@ namespace MVVMAqua.ViewModels
 			set => SetProperty(ref _btnCancelVisible, value);
 		}
 
-		private string _btnOkText;
+		private string _btnOkText = String.Empty;
 		public string BtnOkText
 		{
 			get => _btnOkText;
 			set => SetProperty(ref _btnOkText, value);
 		}
 
-		private string _btnCancelText;
+		private string _btnCancelText = String.Empty;
 		public string BtnCancelText
 		{
 			get => _btnCancelText;
@@ -71,7 +71,7 @@ namespace MVVMAqua.ViewModels
 			ViewNavigator.Regions[this, "ModalContentView"].NavigateTo(ContentVM, Initialization);
 		}
 
-        public event CloseDialogEventHandler CloseDialog;
+        public event CloseDialogEventHandler? CloseDialog;
 
         private void OnCloseDialog(bool dialogResult)
         {
