@@ -185,7 +185,6 @@ namespace MVVMAqua.Controls
 			ButtonMenuHoverColor = Colors.DeepSkyBlue;
 
 			ButtonMenuColorChangeDuration = TimeSpan.FromMilliseconds(250);
-			MinMenuWidth = 0;
 			MaxMenuWidth = Double.NaN;
 
 			ButtonMenu.Click += OpenMenuButton_Click;
