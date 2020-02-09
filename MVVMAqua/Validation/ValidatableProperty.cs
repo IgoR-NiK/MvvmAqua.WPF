@@ -1,4 +1,5 @@
 ﻿using System;
+using MVVMAqua.Arguments;
 
 namespace MVVMAqua.Validation
 {
@@ -10,10 +11,10 @@ namespace MVVMAqua.Validation
 		public ValidatableProperty(T initialValue) 
 			: this(initialValue, null, false) { }
 
-		public ValidatableProperty(T initialValue, Action? onValueChanged) 
+		public ValidatableProperty(T initialValue, Action<ValueChangedArgs<T>>? onValueChanged) 
 			: this (initialValue, onValueChanged, false) { }
 
-		public ValidatableProperty(T initialValue, Action? onValueChanged, bool isValidateWhenPropertyChange) 
+		public ValidatableProperty(T initialValue, Action<ValueChangedArgs<T>>? onValueChanged, bool isValidateWhenPropertyChange) 
 			: base(initialValue, onValueChanged, isValidateWhenPropertyChange) { }
 
 

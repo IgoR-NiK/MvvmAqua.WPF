@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MVVMAqua.Arguments;
 
 namespace MVVMAqua
 {
@@ -12,24 +13,24 @@ namespace MVVMAqua
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
 				property = value;
-				OnPropertyChanged(propertyName);
+				NotifyPropertyChanged(propertyName);
 			}
 		}
 
-		protected void SetProperty<T>(ref T property, T value, Action onValueChanged, [CallerMemberName]string propertyName = "")
+		protected void SetProperty<T>(ref T property, T value, Action<ValueChangedArgs<T>> onValueChanged, [CallerMemberName]string propertyName = "")
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
+				onValueChanged(new ValueChangedArgs<T>(property, value));
 				property = value;
-				onValueChanged?.Invoke();
-				OnPropertyChanged(propertyName);
+				NotifyPropertyChanged(propertyName);
 			}
 		}
 
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
-		protected void OnPropertyChanged([CallerMemberName]string propertyName = "")
+		protected void NotifyPropertyChanged([CallerMemberName]string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

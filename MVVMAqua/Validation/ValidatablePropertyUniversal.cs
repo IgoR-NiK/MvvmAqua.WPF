@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
+using MVVMAqua.Arguments;
 using MVVMAqua.Helpers;
 
 namespace MVVMAqua.Validation
@@ -10,7 +10,7 @@ namespace MVVMAqua.Validation
 	public class ValidatableProperty<T, TResult> : NotifyObject, IValidatable<T, TResult>
 		where TResult : IValidationResult
 	{
-		private Action OnValueChanged { get; }
+		private Action<ValueChangedArgs<T>> OnValueChanged { get; }
 
 
 		public ValidatableProperty() 
@@ -19,17 +19,17 @@ namespace MVVMAqua.Validation
 		public ValidatableProperty(T initialValue) 
 			: this(initialValue, null, false) { }
 
-		public ValidatableProperty(T initialValue, Action? onValueChanged) 
+		public ValidatableProperty(T initialValue, Action<ValueChangedArgs<T>>? onValueChanged) 
 			: this (initialValue, onValueChanged, false) { }
 
-		public ValidatableProperty(T initialValue, Action? onValueChanged, bool isValidateWhenPropertyChange)
+		public ValidatableProperty(T initialValue, Action<ValueChangedArgs<T>>? onValueChanged, bool isValidateWhenPropertyChange)
 		{
 			Value = initialValue;
 
 			OnValueChanged += onValueChanged;
 			if (isValidateWhenPropertyChange)
 			{
-				OnValueChanged += () => Validate(ValidationRules.Where(x => x.IsValidateWhenPropertyChange));
+				OnValueChanged += args => Validate(ValidationRules.Where(x => x.IsValidateWhenPropertyChange));
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace MVVMAqua.Validation
 
 			if (isValidPrevious != IsValid)
 			{
-				OnPropertyChanged(nameof(IsValid));
+				NotifyPropertyChanged(nameof(IsValid));
 				IsValidChanged?.Invoke();
 			}
 
