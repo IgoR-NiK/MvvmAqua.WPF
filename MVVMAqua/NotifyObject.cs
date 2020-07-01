@@ -10,18 +10,14 @@ namespace MVVMAqua
 	{
 		protected void SetProperty<T>(ref T property, T value, [CallerMemberName]string propertyName = "")
 		{
-			if (!EqualityComparer<T>.Default.Equals(property, value))
-			{
-				property = value;
-				NotifyPropertyChanged(propertyName);
-			}
+			SetProperty(ref property, value, null, propertyName);
 		}
 
-		protected void SetProperty<T>(ref T property, T value, Action<ValueChangedArgs<T>> onValueChanged, [CallerMemberName]string propertyName = "")
+		protected void SetProperty<T>(ref T property, T value, Action<ValueChangedArgs<T>>? onValueChanged, [CallerMemberName]string propertyName = "")
 		{
 			if (!EqualityComparer<T>.Default.Equals(property, value))
 			{
-				onValueChanged(new ValueChangedArgs<T>(property, value));
+				onValueChanged?.Invoke(new ValueChangedArgs<T>(property, value));
 				property = value;
 				NotifyPropertyChanged(propertyName);
 			}
