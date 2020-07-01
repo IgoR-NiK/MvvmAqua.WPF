@@ -10,7 +10,7 @@ namespace MVVMAqua.Validation
 	public class ValidatableProperty<T, TResult> : NotifyObject, IValidatable<T, TResult>
 		where TResult : IValidationResult
 	{
-		private Action<ValueChangedArgs<T>> OnValueChanged { get; }
+		private Action<ValueChangedArgs<T>>? OnValueChanged { get; }
 
 
 		public ValidatableProperty() 
